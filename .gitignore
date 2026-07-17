@@ -21,3 +21,11 @@ data/processed/*
 !data/raw/social_posts.json
 node_modules/
 .DS_Store
+
+# P3 scratch (eval diagnostics)
+eval/_diag*.py
+eval/_diag*.txt
+eval/_diag_cache.json
+eval/_last_run.txt
+eval/_last_run*.txt
+eval/_scoped*

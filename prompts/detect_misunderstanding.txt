@@ -10,13 +10,30 @@ verdict: ACCURATE | PARTIALLY_INACCURATE | INACCURATE | UNVERIFIABLE
 
 - CHỈ căn cứ vào TEXT điều luật được cung cấp. KHÔNG dùng kiến thức ngoài, KHÔNG
   suy đoán điều luật không nói.
-- Không đủ căn cứ trong text -> UNVERIFIABLE. Đây KHÔNG phải thất bại, đây là câu
-  trả lời ĐÚNG khi luật được trích dẫn không nói tới điều claim khẳng định.
-- ACCURATE: claim khớp đúng điều luật.
-- INACCURATE: claim sai về bản chất so với điều luật.
-- PARTIALLY_INACCURATE: đúng một phần (đúng cấu trúc, sai con số / sai điều kiện áp dụng).
+- **Phán LÕI của claim, đừng rút lui vì chi tiết phụ.** Một claim thường có một
+  khẳng định pháp lý CHÍNH cộng vài chi tiết bên lề. Nếu điều luật được cung cấp đủ
+  để kết luận phần LÕI, hãy kết luận ACCURATE/INACCURATE/PARTIALLY — KHÔNG trả
+  UNVERIFIABLE chỉ vì claim còn nhắc tới thứ khác (VAT, thuế môn bài, so sánh với
+  lương...) mà luật cung cấp không nói.
+    Ví dụ: "doanh thu 100tr phải đóng thuế, còn thua lương công ty" — lõi là
+    "ngưỡng 100tr phải đóng thuế". Luật nói ngưỡng miễn là 500tr -> INACCURATE.
+    Đừng vì vế "so với lương" mà trả UNVERIFIABLE.
+- **UNVERIFIABLE chỉ khi CHÍNH khẳng định lõi không kiểm được** bằng luật cung cấp —
+  ví dụ claim hoàn toàn về VAT/thuế môn bài trong khi chỉ có luật thuế TNCN. Nếu
+  claim có nhắc một con số ngưỡng / thuế suất mà luật cung cấp có đề cập, thì kiểm
+  được -> KHÔNG phải UNVERIFIABLE.
+- ACCURATE: khẳng định lõi khớp đúng điều luật.
+- INACCURATE: khẳng định lõi sai về bản chất (sai ngưỡng, sai đối tượng, sai chiều).
+- PARTIALLY_INACCURATE: đúng cấu trúc/ý nhưng sai con số hoặc sai điều kiện áp dụng.
 - correct_statement: phát biểu đúng, dẫn nguyên văn Điều-Khoản-Điểm. Để rỗng nếu UNVERIFIABLE.
 - confidence: 0-1, mức chắc chắn của kết luận.
+
+## Thứ tự quyết định (theo đúng thứ tự này)
+
+1. Lõi claim có kiểm được bằng luật cung cấp không? Không -> UNVERIFIABLE, dừng.
+2. Kiểm được. Lõi có khớp đúng luật không? Khớp hoàn toàn -> ACCURATE.
+3. Sai hẳn (ngược nghĩa, sai ngưỡng) -> INACCURATE.
+4. Đúng ý nhưng lệch con số / lệch điều kiện -> PARTIALLY_INACCURATE.
 
 ## Bẫy của đề tài thuế (đọc kỹ — đây là chỗ hay sai)
 

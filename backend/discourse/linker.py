@@ -34,10 +34,15 @@ from backend.core import llm
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.show_law import load_nodes  # noqa: E402
 
-TOP_K = 8            # số node lấy từ TF-IDF trước khi mở rộng
+TOP_K = 8            # số node lấy mỗi retriever trước khi mở rộng
 FAMILY_ARTICLES = 2  # mở rộng toàn văn N Điều NHIỀU HIT NHẤT (Điều thật sự liên quan)
 MAX_CANDIDATES = 55  # trần số ứng viên gửi LLM: đủ recall, không đắt vô lý
 SUCCESSOR_DOCS = {"qlt2019": "qlt2025"}  # doc cũ -> doc thay thế (đọc từ replaces)
+
+# Retrieval HYBRID: gộp embedding ngữ nghĩa (bắc cầu 200tr<->500tr) + TF-IDF từ vựng.
+# Đo trên gold: TF-IDF một mình 63%, hybrid 86%. Embedding cần API -> lỗi/không key
+# thì tự lùi về TF-IDF (test chạy offline vẫn được).
+USE_EMBEDDINGS = True
 
 
 # ---------- Bước 3 output ----------
@@ -173,9 +178,35 @@ def _graph_expand(node_ids: list[str], nodes: dict) -> list[str]:
     return expanded
 
 
+def _hybrid_retrieve(claim_text: str, k: int) -> list[str]:
+    """Gộp ứng viên embedding (ngữ nghĩa) + TF-IDF (từ vựng), giữ thứ tự xen kẽ.
+
+    Embedding lỗi (không key / mạng) -> lùi về TF-IDF, không làm hỏng pipeline.
+    """
+    tfidf = _retrieve(claim_text, k)
+    if not USE_EMBEDDINGS:
+        return tfidf
+    try:
+        from backend.discourse import embeddings
+        semantic = embeddings.retrieve(claim_text, k)
+    except Exception as exc:  # noqa: BLE001 — retrieval phải sống sót khi embedding hỏng
+        print(f"  ! embedding lỗi, lùi về TF-IDF: {exc}")
+        return tfidf
+    # Xen kẽ để cả hai nguồn đều có mặt ở đầu danh sách (ảnh hưởng _family_expand).
+    merged: list[str] = []
+    for a, b in zip(semantic, tfidf):
+        for nid in (a, b):
+            if nid not in merged:
+                merged.append(nid)
+    for nid in semantic + tfidf:
+        if nid not in merged:
+            merged.append(nid)
+    return merged
+
+
 def _candidate_set(claim_text: str) -> tuple[list[str], dict]:
     _, _, _, nodes = _index()
-    retrieved = _retrieve(claim_text, TOP_K)
+    retrieved = _hybrid_retrieve(claim_text, TOP_K)
     family = _family_expand(retrieved, nodes)  # anh em cùng Điều
     expanded = _graph_expand(family, nodes)    # bắc cầu SUPERSEDED_BY sang luật mới
     return expanded[:MAX_CANDIDATES], nodes

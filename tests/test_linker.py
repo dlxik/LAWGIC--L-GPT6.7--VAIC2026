@@ -67,15 +67,17 @@ def test_family_expand_pulls_sibling_clause():
     assert "tncn2025-d7-k2" in expanded
 
 
-def test_retrieval_recall_on_gold_stays_above_floor():
-    """Recall mốc: expected_citation nằm trong ứng viên cho >=55% claim có căn cứ.
+def test_retrieval_recall_on_gold_stays_above_floor(monkeypatch):
+    """Recall mốc TF-IDF (chạy offline, không gọi embedding API): >=55% claim có căn cứ.
 
     Đây là TRẦN TRÊN của citation_accuracy (LLM không chọn được node không có trong
-    ứng viên). Linker từ vựng + graph, không embedding -> ~63%. Tụt dưới 55% nghĩa
-    là có người vừa phá retrieval. Không phải mục tiêu chất lượng, là chốt chặn hồi quy.
+    ứng viên). TF-IDF + graph một mình ~63%; hybrid embedding nâng lên ~86% nhưng
+    cần API nên không đo trong unit test. Tụt dưới 55% nghĩa là có người vừa phá
+    retrieval từ vựng. Chốt chặn hồi quy, không phải mục tiêu chất lượng.
     """
     from eval.run_eval import load_gold
 
+    monkeypatch.setattr(linker, "USE_EMBEDDINGS", False)  # offline, tái lập
     with_cite = [r for r in load_gold() if r.get("expected_citation")]
     hits = 0
     for row in with_cite:
@@ -83,7 +85,7 @@ def test_retrieval_recall_on_gold_stays_above_floor():
         if row["expected_citation"] in candidates:
             hits += 1
     recall = hits / len(with_cite)
-    assert recall >= 0.55, f"retrieval recall tụt còn {recall:.0%} (<55%)"
+    assert recall >= 0.55, f"retrieval recall (TF-IDF) tụt còn {recall:.0%} (<55%)"
 
 
 # ---------- Bước 3: LLM chọn ----------

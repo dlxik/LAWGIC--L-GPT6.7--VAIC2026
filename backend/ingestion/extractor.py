@@ -24,12 +24,18 @@ Khong mat gi: noi dung cua Dieu da nam het o Khoan/Diem roi.
 
 from __future__ import annotations
 
+import time
 from typing import Iterator
 
 from backend.core import llm
 from backend.models.schemas import ExtractedEntities
 
 PROMPT_NAME = "extract_entities"
+
+# Loi tam thoi la CHAC CHAN xay ra khi chay 1.842 node trong ~24 phut.
+# Cloudflare 520 bao "retry_after: 60" -> backoff phai du dai.
+MAX_RETRIES = 3
+RETRY_BACKOFF = 20  # giay; nhan voi so lan retry -> 20s, 40s, 60s
 
 
 def iter_extractable_nodes(doc: dict) -> Iterator[tuple[str, str]]:
@@ -64,29 +70,53 @@ def extract_entities(node_text: str, node_id: str) -> dict:
     return result.model_dump()
 
 
-def extract_all(doc: dict) -> list[dict]:
+def extract_all(doc: dict, *, max_retries: int = MAX_RETRIES) -> list[dict]:
     """Chay batch cho toan bo node co text cua 1 van ban.
 
-    custom_id = node_id. Batches API tra ve KHONG theo thu tu gui -> luon key
-    theo custom_id, khong bao gio theo vi tri.
+    custom_id = node_id. extract_batch() tra ve dict KHONG theo thu tu gui ->
+    luon key theo custom_id, khong bao gio zip theo vi tri.
+
+    RETRY: voi 1.842 node chay ~24 phut, loi TAM THOI la chac chan xay ra:
+      - Cloudflare 520 (retryable, retry_after 60)
+      - LLM lo khong goi tool 'emit', tra content rong
+    Ca hai deu het sau khi goi lai. No ngay vi 2/1842 node la qua gat.
+    Docstring cua llm.extract_batch() da noi ro: caller kiem thieu key nao thi
+    retry qua extract(). Day la cho lam viec do.
     """
     template = llm.load_prompt(PROMPT_NAME)
     nodes = list(iter_extractable_nodes(doc))
-    items = [(node_id, _build_prompt(node_id, text, template)) for node_id, text in nodes]
+    expected = {node_id for node_id, _ in nodes}
+    by_id = dict(nodes)
 
+    items = [(node_id, _build_prompt(node_id, text, template)) for node_id, text in nodes]
     results = llm.extract_batch(items, ExtractedEntities)
 
-    # BAT BIEN: LLM khong duoc bo sot node. Thieu thi phai BIET, khong nuot im lang.
-    missing = {node_id for node_id, _ in nodes} - set(results)
+    # Retry tung node thieu. Backoff tang dan: 520 bao retry_after=60.
+    for attempt in range(1, max_retries + 1):
+        missing = sorted(expected - set(results))
+        if not missing:
+            break
+        delay = RETRY_BACKOFF * attempt
+        print(f"  [{doc['doc_id']}] thieu {len(missing)} node, retry {attempt}/{max_retries} sau {delay}s")
+        time.sleep(delay)
+        for node_id in missing:
+            try:
+                prompt = _build_prompt(node_id, by_id[node_id], template)
+                results[node_id] = llm.extract(prompt, ExtractedEntities).model_dump()
+            except Exception as exc:  # noqa: BLE001 - retry vong sau
+                print(f"    {node_id} -> {type(exc).__name__}: {str(exc)[:80]}")
+
+    # BAT BIEN: LLM khong duoc bo sot node. Het retry ma van thieu thi phai BIET.
+    missing = expected - set(results)
     if missing:
         raise ValueError(
-            f"{doc['doc_id']}: batch thieu {len(missing)}/{len(nodes)} node. "
-            f"Vi du: {sorted(missing)[:5]}"
+            f"{doc['doc_id']}: thieu {len(missing)}/{len(nodes)} node sau {max_retries} "
+            f"lan retry. Vi du: {sorted(missing)[:5]}"
         )
 
     # BAT BIEN: LLM khong duoc bia node_id khong ton tai.
-    extra = set(results) - {node_id for node_id, _ in nodes}
+    extra = set(results) - expected
     if extra:
-        raise ValueError(f"{doc['doc_id']}: batch tra ve node_id la: {sorted(extra)[:5]}")
+        raise ValueError(f"{doc['doc_id']}: tra ve node_id la: {sorted(extra)[:5]}")
 
     return [{**results[node_id], "node_id": node_id} for node_id, _ in nodes]

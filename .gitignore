@@ -18,5 +18,6 @@ data/processed/*
 !data/processed/qlt2019.json
 !data/processed/qlt2025.json
 !data/processed/tncn2025.json
+!data/raw/social_posts.json
 node_modules/
 .DS_Store

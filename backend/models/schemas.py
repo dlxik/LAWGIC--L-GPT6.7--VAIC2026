@@ -107,6 +107,16 @@ class ExtractedEntities(BaseModel):
 
 
 class Post(BaseModel):
+    """Một bình luận công khai. Gốc hoặc trả lời.
+
+    THẢO LUẬN LÀ CẢ LUỒNG, không phải câu nói lẻ. Hiểu nhầm và đính chính nằm
+    cạnh nhau trong cùng luồng:
+        gốc:   "Doanh thu 200 triệu là phải đóng thuế rồi"
+        reply: "Bạn nhầm, từ 2026 là 500 triệu"
+    Không có parent_id thì hai câu đó rời nhau, và misinformation.py mất ngữ cảnh
+    quan trọng nhất — chính chỗ dư luận tự sửa nhau.
+    """
+
     post_id: str
     platform: str
     url: str
@@ -114,6 +124,7 @@ class Post(BaseModel):
     content: str
     created_at: datetime
     engagement: int = 0
+    parent_id: str | None = None  # post_id của comment gốc; None = chính nó là gốc
 
 
 class Verdict(str, Enum):

@@ -12,6 +12,7 @@ NODES
   Obligation | Right | Prohibition | Deadline {node_id, text}
   Topic   {topic_id, name}
   Post    {post_id, platform, url, author_hash, content, created_at, engagement}
+          (parent_id chở bằng quan hệ REPLY_TO, không lưu làm property)
   Claim   {claim_id, text, verdict, confidence, explanation}
   Misconception {misconception_id, canonical_text, first_seen, last_seen, count}
 
@@ -26,6 +27,7 @@ RELATIONSHIPS
   (Point)-[:SUPERSEDED_BY {change_type, similarity, effective_from}]->(Point)
   (Post)-[:ABOUT]->(Topic)
   (Post)-[:CONTAINS_CLAIM]->(Claim)
+  (Post)-[:REPLY_TO]->(Post)          -- reply -> comment gốc; luồng thảo luận
   (Claim)-[:REFERS_TO {confidence, method}]->(Point|Clause|Article)
   (Claim)-[:INSTANCE_OF]->(Misconception)
   (Misconception)-[:CONTRADICTS]->(Point)

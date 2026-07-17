@@ -114,6 +114,14 @@ SET p.platform = $platform,
     p.engagement = $engagement
 """
 
+# Luồng thảo luận. MERGE node cha trước để reply nạp trước gốc vẫn nối được —
+# thứ tự nạp không được phép quyết định graph có đúng hay không.
+_MERGE_REPLY_TO = """
+MATCH (child:Post {post_id: $post_id})
+MERGE (parent:Post {post_id: $parent_id})
+MERGE (child)-[:REPLY_TO]->(parent)
+"""
+
 _MERGE_TOPIC = """
 MATCH (p:Post {post_id: $post_id})
 MERGE (t:Topic {topic_id: $topic_id})
@@ -317,6 +325,16 @@ def load_post(post: dict[str, Any], claims: list[dict[str, Any]] | None = None) 
             },
         )
     ]
+
+    # REPLY_TO: nối reply về comment gốc. Thiếu quan hệ này thì hiểu nhầm và
+    # đính chính nằm rời nhau, misinformation.py mất ngữ cảnh.
+    if post.get("parent_id"):
+        stmts.append(
+            (
+                _MERGE_REPLY_TO,
+                {"post_id": post["post_id"], "parent_id": post["parent_id"]},
+            )
+        )
 
     for claim in claims or []:
         topic = claim.get("topic")

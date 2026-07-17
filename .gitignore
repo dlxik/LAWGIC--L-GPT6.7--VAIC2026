@@ -4,19 +4,29 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
-data/raw/*
-data/processed/*
-!data/**/.gitkeep
-
-# Ngoại lệ: 3 văn bản demo + JSON parse ra PHẢI vào git.
-# Văn bản QPPL là công khai, không vướng bản quyền. Tổng ~1,4 MB.
-# Không commit thì P2 `git pull` về không thấy gì -> mốc bàn giao giờ 8 vỡ,
-# hoặc P2 phải tự tải lại -> dán khác P1 -> node_id lệch -> graph hỏng.
-!data/raw/qlt2019.docx
-!data/raw/qlt2025.docx
-!data/raw/tncn2025.docx
-!data/processed/qlt2019.json
-!data/processed/qlt2025.json
-!data/processed/tncn2025.json
 node_modules/
 .DS_Store
+
+# ---------------------------------------------------------------------------
+# Dữ liệu: mặc định KHÔNG vào git (nặng, sinh lại được), trừ 3 văn bản demo.
+#
+# BẪY GITIGNORE: không thể mở lại một file nằm trong thư mục đã bị loại — git
+# không buồn đi vào thư mục bị loại. Nên phải mở lại THƯ MỤC trước, rồi mới loại
+# nội dung, rồi mới mở lại đúng file cần. Thứ tự 4 dòng dưới là bắt buộc.
+#
+# Vì sao 3 văn bản này phải vào git: văn bản QPPL là công khai, tổng ~950KB.
+# Không commit thì cả team pull về không có gì để chạy, hoặc mỗi người tự tải
+# một bản khác nhau -> node_id lệch -> graph của mỗi người một kiểu.
+# ---------------------------------------------------------------------------
+
+data/raw/*
+!data/raw/legal_docs/
+data/raw/legal_docs/*
+!data/raw/legal_docs/*.docx
+
+data/processed/*
+!data/processed/legal_docs_structured/
+data/processed/legal_docs_structured/*
+!data/processed/legal_docs_structured/*.json
+
+!data/**/.gitkeep

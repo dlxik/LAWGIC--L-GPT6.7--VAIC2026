@@ -163,6 +163,65 @@ def test_unrelated_points_not_paired():
     assert (None, "mock-new-d5-k2-d") in pairs, "phải là ADDED"
 
 
+def test_structural_match_requires_text_corroboration():
+    """LỖI ĐÃ XẢY RA (teammate bắt): vị trí trùng nhau bị coi là bằng chứng.
+
+    Bản đầu ghép cặp theo (Điều, Khoản, Điểm) VÔ ĐIỀU KIỆN, không kiểm text.
+    Fixture mock không lộ ra vì hai văn bản cùng đánh số. Dữ liệu thật thì
+    qlt2025 thay thế toàn bộ qlt2019 và đánh số lại (152 Điều -> 53 Điều), nên
+    40/73 cặp là rác — tệ nhất sim=0.01, sinh SUPERSEDED_BY rác, hỏng im lặng.
+
+    Hai Điểm dưới đây lấy nguyên văn từ dữ liệu thật, cùng Điều 34 Khoản 1
+    Điểm c, nội dung chẳng liên quan gì nhau.
+    """
+    from backend.graph.diffing import _pair_points
+
+    old = [{
+        "point_id": "qlt2019-d34-k1-c", "letter": "c", "article": 34, "clause": 1,
+        "text": "Số, ngày, tháng, năm của giấy chứng nhận đăng ký kinh doanh "
+                "hoặc giấy phép thành lập và hoạt động;",
+    }]
+    new = [{
+        "point_id": "qlt2025-d34-k1-c", "letter": "c", "article": 34, "clause": 1,
+        "text": "Áp dụng chế độ ưu tiên đối với người nộp thuế tuân thủ tốt "
+                "pháp luật về thuế, sẵn sàng kết nối;",
+    }]
+    pairs = _pair_points(old, new)
+    matched = {(o["point_id"] if o else None, n["point_id"] if n else None) for o, n in pairs}
+
+    assert ("qlt2019-d34-k1-c", "qlt2025-d34-k1-c") not in matched, (
+        "trùng vị trí KHÔNG phải bằng chứng — text phải xác nhận"
+    )
+    assert ("qlt2019-d34-k1-c", None) in matched, "phải là REMOVED"
+    assert (None, "qlt2025-d34-k1-c") in matched, "phải là ADDED"
+
+
+def test_renumbered_point_still_found():
+    """Ngược lại: Điểm bị đánh số lại nhưng giữ nội dung PHẢI ghép được.
+
+    Đây là lý do vẫn cần nhánh ghép theo text. Cặp thật từ dữ liệu thật:
+    Điều 52 -> Điều 25, và luật mới đổi thuật ngữ "Người khai thuế" ->
+    "Người nộp thuế" khiến similarity tụt xuống ~0.82.
+    """
+    from backend.graph.diffing import _pair_points
+
+    old = [{
+        "point_id": "qlt2019-d52-k1-c", "letter": "c", "article": 52, "clause": 1,
+        "text": "Người khai thuế không chứng minh, giải trình hoặc quá thời hạn "
+                "quy định mà không giải trình được;",
+    }]
+    new = [{
+        "point_id": "qlt2025-d25-k1-c", "letter": "c", "article": 25, "clause": 1,
+        "text": "Người nộp thuế không chứng minh, giải trình hoặc quá thời hạn "
+                "quy định mà không giải trình được;",
+    }]
+    pairs = _pair_points(old, new)
+    matched = {(o["point_id"] if o else None, n["point_id"] if n else None) for o, n in pairs}
+    assert ("qlt2019-d52-k1-c", "qlt2025-d25-k1-c") in matched, (
+        "đổi thuật ngữ hệ thống kéo sim xuống ~0.82 — ngưỡng fallback phải nhận"
+    )
+
+
 def test_diff_is_idempotent():
     """Chạy diff 2 lần không tạo SUPERSEDED_BY trùng."""
     diff_documents("mock-old", "mock-new")
@@ -203,6 +262,29 @@ def test_point_history_walks_supersede_chain():
 def test_law_as_of(date, expected):
     got = sorted(r["point_id"] for r in law_as_of(None, date))
     assert got == sorted(expected)
+
+
+def test_law_as_of_returns_leaf_clauses_not_just_points():
+    """LỖI ĐÃ XẢY RA: Q2 chỉ MATCH (p:Point) -> bỏ sót 53% nội dung văn bản.
+
+    Luật Việt Nam thật: phần lớn Khoản KHÔNG có Điểm nào — text của Khoản chính
+    là quy định. Đo trên qlt2019+qlt2025: 775/988 Khoản không có Điểm, 16 Điều
+    không có Khoản. Điều 89 "Hóa đơn điện tử" của Luật 2019 có 5 Khoản, 0 Điểm
+    -> vô hình hoàn toàn với Q2.
+
+    Quy tắc đúng (đã ghi trong docstring Temporal ngay từ đầu, nhưng quên cài):
+    node SÂU NHẤT giữ sự thật -> Q2 trả về node LÁ, bất kể Point/Clause/Article.
+    """
+    rows = {r["point_id"]: r for r in law_as_of(None, "2026-06-30")}
+    assert "mock-old-d5-k9" in rows, (
+        "Khoản không có Điểm phải xuất hiện trong kết quả — chính nó là node lá"
+    )
+    assert rows["mock-old-d5-k9"]["level"] == "Clause"
+    assert "phạt tiền" in rows["mock-old-d5-k9"]["text"]
+
+    # Khoản CÓ Điểm thì không phải lá -> không được trả về (nếu không sẽ trùng
+    # nội dung với các Điểm con của nó)
+    assert "mock-old-d5-k2" not in rows, "Khoản có Điểm không phải node lá"
 
 
 def test_law_as_of_returns_each_point_once():

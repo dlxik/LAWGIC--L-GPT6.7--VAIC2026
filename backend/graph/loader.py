@@ -401,8 +401,78 @@ def load_misconceptions(miscs: list[dict[str, Any]]) -> None:
 # ---------------------------------------------------------------------------
 
 
+def load_processed(processed_dir: Path | None = None) -> list[str]:
+    """Nạp văn bản THẬT của P1 từ data/processed/legal_docs_structured/*.json.
+
+    Đây là đường chính của pipeline. Trả list doc_id đã nạp.
+
+    Mock ở data/fixtures/ KHÔNG dùng ở đây nữa — nó chỉ còn sống trong tests/,
+    vì nó là thứ duy nhất có đáp án viết sẵn (expected_diff, expected_q2...).
+    Dữ liệu thật không có nhãn nên không làm regression test được.
+    """
+    from backend.core.config import ROOT
+
+    d = processed_dir or ROOT / "data" / "processed" / "legal_docs_structured"
+    files = sorted(d.glob("*.json"))
+    if not files:
+        raise FileNotFoundError(f"không có văn bản nào trong {d}")
+
+    loaded: list[str] = []
+    for path in files:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        load_document(doc)
+        n_art = len(doc.get("articles") or [])
+        n_pt = sum(
+            len(c.get("points") or [])
+            for a in doc.get("articles") or []
+            for c in a.get("clauses") or []
+        )
+        rel = doc.get("replaces") or doc.get("amends")
+        print(
+            f"  {doc['doc_id']:<12} {doc['doc_number']:<16} "
+            f"{n_art:>3} Điều / {n_pt:>3} Điểm"
+            + (f"  -> thay thế {rel}" if rel else "")
+        )
+        loaded.append(doc["doc_id"])
+
+        if doc.get("entities"):
+            load_entities(doc["entities"])
+            print(f"  {'':<12} + entity cho {len(doc['entities'])} node")
+
+    return loaded
+
+
+def diff_all_replacements() -> None:
+    """Chạy diffing cho mọi cặp (văn bản mới)-[:REPLACES]->(văn bản cũ) trong graph.
+
+    Phải chạy SAU load_processed(): nó đóng effective_to của Điểm cũ, thiếu bước
+    này thì query time-travel trả cả luật cũ lẫn luật mới cho cùng một ngày.
+    """
+    from backend.graph.diffing import diff_documents
+
+    pairs = connection.run(
+        "MATCH (new:LegalDocument)-[:REPLACES|AMENDS]->(old:LegalDocument) "
+        "RETURN old.doc_id AS old, new.doc_id AS new"
+    )
+    if not pairs:
+        print("  (không có cặp thay thế nào)")
+        return
+
+    for p in pairs:
+        diffs = diff_documents(p["old"], p["new"])
+        from collections import Counter
+
+        c = Counter(d["change_type"] for d in diffs)
+        paired = sum(v for k, v in c.items() if k not in ("ADDED", "REMOVED"))
+        print(f"  {p['old']} -> {p['new']}: {paired} cặp ghép được | {dict(c)}")
+
+
 def load_fixtures(fixtures_dir: Path | None = None) -> None:
-    """Nạp data/fixtures/*.json. Dùng lúc dev, trước khi P1 giao dữ liệu thật."""
+    """Nạp data/fixtures/*.json — CHỈ dùng cho tests/, không dùng cho pipeline.
+
+    Mock giữ lại vì nó có đáp án viết sẵn để làm regression test. Pipeline và
+    demo dùng load_processed() với dữ liệu thật của P1.
+    """
     from backend.core.config import ROOT
 
     d = fixtures_dir or ROOT / "data" / "fixtures"
@@ -434,10 +504,28 @@ def _normalize(text: str) -> str:
 
 
 if __name__ == "__main__":
-    from backend.graph.schema import apply_schema
+    # Đường chính: nạp văn bản THẬT của P1 rồi chạy diffing.
+    #   python -m backend.graph.loader           -> nạp thêm vào graph hiện có
+    #   python -m backend.graph.loader --wipe    -> xoá sạch rồi nạp lại
+    import sys
+
+    from backend.graph.schema import apply_schema, print_acceptance
+
+    if "--wipe" in sys.argv:
+        print("wipe graph...")
+        connection.wipe()
 
     print("apply_schema...")
     apply_schema()
-    print("load_fixtures...")
-    load_fixtures()
+
+    print("nạp văn bản thật:")
+    load_processed()
+
+    print("diffing các cặp thay thế:")
+    diff_all_replacements()
+
+    if "--verify" in sys.argv:
+        print("nghiệm thu (chạy trên fixture mock, cần --wipe trước):")
+        print_acceptance()
+
     print("xong")

@@ -54,3 +54,4 @@ eval/_diag_cache.json
 eval/_last_run.txt
 eval/_last_run*.txt
 eval/_scoped*
+eval/_pipeline_run.txt

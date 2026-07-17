@@ -37,6 +37,7 @@ from backend.core import llm
 from backend.discourse.threads import build_threads
 
 MAX_RETRY_ROUNDS = 2
+MAX_THREAD_POSTS = 15  # luồng dài hơn thì cắt khúc (tool-calling nghẹn với output lớn)
 
 
 class Topic(str, Enum):
@@ -55,19 +56,19 @@ class Topic(str, Enum):
     KHAC = "khac"
 
 
-class ClaimText(BaseModel):
-    text: str
-
-
 class PostClassification(BaseModel):
     post_id: str
     topic: Topic = Topic.KHAC
     is_legal_claim: bool = False
-    claims: list[ClaimText] = Field(default_factory=list)
+    claims: list[str] = Field(default_factory=list)  # PHẲNG: list chuỗi, không lồng object
 
 
 class ThreadClassification(BaseModel):
-    """Kết quả cho MỘT luồng. Model nội bộ của P3 — không đụng schemas.py."""
+    """Kết quả cho MỘT luồng. Model nội bộ của P3 — không đụng schemas.py.
+
+    Schema càng phẳng càng tốt: backend tool-calling của P4 nghẹn với schema lồng
+    sâu -> trả rỗng. claims là list[str] (không phải list[{text}]) chính vì vậy.
+    """
 
     posts: list[PostClassification] = Field(default_factory=list)
 
@@ -106,17 +107,37 @@ def _missing_post_ids(thread: list[dict], result: dict | None) -> set[str]:
 
 
 def _finalize(post_id: str, data: dict) -> dict:
-    """Gắn claim_id deterministic. Giữ nguyên phần còn lại."""
+    """Gắn claim_id deterministic. claims đến ở dạng list[str] (đã làm phẳng)."""
     claims = [
-        {"claim_id": f"{post_id}-c{i}", "text": claim["text"]}
-        for i, claim in enumerate(data.get("claims", []))
+        {"claim_id": f"{post_id}-c{i}", "text": text}
+        for i, text in enumerate(data.get("claims", []))
     ]
+    topic = data.get("topic", Topic.KHAC.value)
+    if isinstance(topic, Topic):  # model_dump có thể giữ enum -> lấy chuỗi
+        topic = topic.value
     return {
         "post_id": post_id,
-        "topic": data.get("topic", Topic.KHAC.value),
+        "topic": topic,
         "is_legal_claim": data.get("is_legal_claim", False),
         "claims": claims,
     }
+
+
+def _chunk_threads(threads: dict[str, list[dict]]) -> dict[str, list[dict]]:
+    """Cắt luồng dài thành khúc <= MAX_THREAD_POSTS. custom_id = thread_id#c{i}.
+
+    Luồng 90 post gửi một lần -> tool-calling của backend trả rỗng (output quá lớn).
+    Cắt khúc giữ được phần lớn ngữ cảnh (hiểu nhầm + đính chính thường nằm sát nhau),
+    và mỗi call nhẹ đủ để model trả đúng. Khúc đầu giữ comment gốc.
+    """
+    units: dict[str, list[dict]] = {}
+    for tid, thread in threads.items():
+        if len(thread) <= MAX_THREAD_POSTS:
+            units[tid] = thread
+            continue
+        for i in range(0, len(thread), MAX_THREAD_POSTS):
+            units[f"{tid}#c{i // MAX_THREAD_POSTS}"] = thread[i:i + MAX_THREAD_POSTS]
+    return units
 
 
 def classify_posts(posts: list[dict]) -> dict[str, dict]:
@@ -128,7 +149,7 @@ def classify_posts(posts: list[dict]) -> dict[str, dict]:
     threads = build_threads(posts)
     instructions = llm.load_prompt("classify_topic")
 
-    pending = dict(threads)
+    pending = _chunk_threads(threads)
     collected: dict[str, dict] = {}
 
     for round_no in range(MAX_RETRY_ROUNDS + 1):

@@ -23,7 +23,7 @@ JSON, mỗi bình luận trong luồng đúng một phần tử, GIỮ NGUYÊN t
       "post_id": "vne-...",
       "topic": "<một giá trị trong danh sách chủ đề bên dưới>",
       "is_legal_claim": true | false,
-      "claims": [{"text": "<khẳng định, viết lại thành câu đứng độc lập>"}]
+      "claims": ["<khẳng định, viết lại thành câu đứng độc lập>"]
     }
   ]
 }
@@ -101,8 +101,8 @@ Trả về:
       "topic": "nguong_doanh_thu",
       "is_legal_claim": true,
       "claims": [
-        {"text": "Doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân"},
-        {"text": "Với doanh thu 505 triệu đồng, chỉ phần 5 triệu vượt trên 500 triệu bị tính thuế"}
+        "Doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân",
+        "Với doanh thu 505 triệu đồng, chỉ phần 5 triệu vượt trên 500 triệu bị tính thuế"
       ]
     },
     {
@@ -116,7 +116,7 @@ Trả về:
       "topic": "nguong_doanh_thu",
       "is_legal_claim": true,
       "claims": [
-        {"text": "Doanh thu 40 triệu đồng một tháng thì chưa phải nộp thuế"}
+        "Doanh thu 40 triệu đồng một tháng thì chưa phải nộp thuế"
       ]
     }
   ]

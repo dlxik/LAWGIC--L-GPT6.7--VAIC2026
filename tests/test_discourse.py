@@ -206,7 +206,7 @@ def test_claim_id_is_deterministic(fake_llm):
     responses = {
         "vne-1": {"posts": [{
             "post_id": "vne-1", "topic": "nguong_doanh_thu", "is_legal_claim": True,
-            "claims": [{"text": "Ngưỡng là 500 triệu"}, {"text": "Chỉ phần vượt bị tính thuế"}],
+            "claims": ["Ngưỡng là 500 triệu", "Chỉ phần vượt bị tính thuế"],
         }]}
     }
     fake_llm(responses)

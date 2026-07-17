@@ -64,6 +64,14 @@ class LegalDocument(BaseModel):
     source_url: str
     articles: list[Article] = Field(default_factory=list)
 
+    # Quan hệ giữa văn bản. loader.py:237 đọc đúng hai field này để tạo
+    # (:LegalDocument)-[:REPLACES|AMENDS]->(:LegalDocument).
+    # Thiếu chúng thì Pydantic nuốt im lặng -> loader không tạo quan hệ ->
+    # diffing không có cặp -> SUPERSEDED_BY không bao giờ sinh -> mất phần
+    # khác biệt cốt lõi, mà KHÔNG một lỗi nào.
+    replaces: str | None = None  # doc_id của văn bản bị thay thế toàn bộ
+    amends: str | None = None  # doc_id của văn bản bị sửa đổi một phần
+
 
 class PenaltyType(str, Enum):
     FINE = "FINE"

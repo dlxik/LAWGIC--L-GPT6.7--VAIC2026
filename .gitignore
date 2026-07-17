@@ -7,5 +7,16 @@ venv/
 data/raw/*
 data/processed/*
 !data/**/.gitkeep
+
+# Ngoại lệ: 3 văn bản demo + JSON parse ra PHẢI vào git.
+# Văn bản QPPL là công khai, không vướng bản quyền. Tổng ~1,4 MB.
+# Không commit thì P2 `git pull` về không thấy gì -> mốc bàn giao giờ 8 vỡ,
+# hoặc P2 phải tự tải lại -> dán khác P1 -> node_id lệch -> graph hỏng.
+!data/raw/qlt2019.docx
+!data/raw/qlt2025.docx
+!data/raw/tncn2025.docx
+!data/processed/qlt2019.json
+!data/processed/qlt2025.json
+!data/processed/tncn2025.json
 node_modules/
 .DS_Store

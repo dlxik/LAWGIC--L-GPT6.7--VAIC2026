@@ -1,0 +1,10 @@
+[P3 dien] Doi chieu claim voi dieu luat duoc trich dan.
+
+Output JSON: {verdict, confidence, explanation, correct_statement}
+verdict: ACCURATE | PARTIALLY_INACCURATE | INACCURATE | UNVERIFIABLE
+
+QUY TAC:
+- CHI can cu vao TEXT dieu luat duoc cung cap. Khong dung kien thuc ngoai.
+- Khong du can cu trong text -> UNVERIFIABLE. Day KHONG phai that bai, day la cau tra loi dung.
+- PARTIALLY_INACCURATE: dung mot phan (dung hanh vi bi phat, sai muc phat).
+- correct_statement: phat bieu dung, dan nguyen van Dieu-Khoan-Diem.

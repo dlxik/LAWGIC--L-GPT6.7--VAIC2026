@@ -1,0 +1,10 @@
+[P3 dien] Phan loai chu de phap ly + tach claim tu binh luan cong khai.
+
+Output JSON: {topic, is_legal_claim, claims: [{claim_id, text}]}
+
+QUY TAC:
+- Claim = phat bieu KIEM CHUNG DUOC ve noi dung phap luat.
+  "Uong 1 lon bia bi tuoc bang vinh vien"  -> claim
+  "Luat nay vo ly qua"                     -> KHONG phai claim (cam xuc)
+- Mot post co the chua nhieu claim, hoac khong claim nao.
+- Khong lien quan phap luat -> is_legal_claim = false, claims = [].

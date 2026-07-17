@@ -1,0 +1,165 @@
+"""CONTRACT CHUNG — chốt ở giờ thứ 1, sau đó KHÔNG ai sửa một mình.
+
+Mọi module trao đổi dữ liệu qua các model dưới đây. Ai muốn đổi field phải
+báo cả team, vì 4 người đang code song song dựa trên đúng file này.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime
+from enum import Enum
+
+from pydantic import BaseModel, Field
+
+# ---------- Phía văn bản pháp luật (P1 sinh ra, P2 nạp vào graph) ----------
+
+
+class Point(BaseModel):
+    point_id: str  # "nd168-d5-k2-a"
+    letter: str  # "a"
+    text: str
+
+
+class Clause(BaseModel):
+    clause_id: str  # "nd168-d5-k2"
+    number: int
+    text: str
+    points: list[Point] = Field(default_factory=list)
+
+
+class Article(BaseModel):
+    article_id: str  # "nd168-d5"
+    number: int
+    heading: str
+    text: str
+    clauses: list[Clause] = Field(default_factory=list)
+
+
+class LegalDocument(BaseModel):
+    doc_id: str  # "nd168"
+    doc_number: str  # "168/2025/ND-CP"
+    title: str
+    issuer: str
+    issued_date: str  # ISO date
+    effective_date: str
+    expiry_date: str | None = None
+    status: str = "ACTIVE"  # ACTIVE | SUPERSEDED | REPEALED
+    source_url: str
+    articles: list[Article] = Field(default_factory=list)
+
+
+class PenaltyType(str, Enum):
+    FINE = "FINE"
+    LICENSE_SUSPENSION = "LICENSE_SUSPENSION"
+    LICENSE_REVOCATION = "LICENSE_REVOCATION"
+    CRIMINAL = "CRIMINAL"
+    OTHER = "OTHER"
+
+
+class Penalty(BaseModel):
+    type: PenaltyType
+    min_amount: int | None = None  # VND
+    max_amount: int | None = None
+    duration_months: int | None = None
+    is_permanent: bool = False
+    text: str
+
+
+class ExtractedEntities(BaseModel):
+    """Output của backend/ingestion/extractor.py cho MỘT node Điều/Khoản/Điểm."""
+
+    node_id: str
+    subjects: list[str] = Field(default_factory=list)
+    obligations: list[str] = Field(default_factory=list)
+    rights: list[str] = Field(default_factory=list)
+    prohibitions: list[str] = Field(default_factory=list)
+    penalties: list[Penalty] = Field(default_factory=list)
+    deadlines: list[str] = Field(default_factory=list)
+    references: list[str] = Field(default_factory=list)
+
+
+# ---------- Phía dư luận (P3 sinh ra, P2 nạp vào graph) ----------
+
+
+class Post(BaseModel):
+    post_id: str
+    platform: str
+    url: str
+    author_hash: str  # KHÔNG lưu danh tính thật
+    content: str
+    created_at: datetime
+    engagement: int = 0
+
+
+class Verdict(str, Enum):
+    ACCURATE = "ACCURATE"
+    PARTIALLY_INACCURATE = "PARTIALLY_INACCURATE"
+    INACCURATE = "INACCURATE"
+    UNVERIFIABLE = "UNVERIFIABLE"
+
+
+class Citation(BaseModel):
+    node_id: str  # "nd168-d5-k2-a"
+    node_label: str  # "Point" | "Clause" | "Article"
+    display: str  # "Điều 5 Khoản 2 Điểm a Nghị định 168/2025/ND-CP"
+    text: str
+    confidence: float = Field(ge=0, le=1)
+
+
+class Claim(BaseModel):
+    claim_id: str
+    post_id: str
+    text: str
+    topic: str
+    citations: list[Citation] = Field(default_factory=list)
+    verdict: Verdict = Verdict.UNVERIFIABLE
+    confidence: float = 0.0
+    explanation: str = ""
+    correct_statement: str = ""
+
+
+class Misconception(BaseModel):
+    misconception_id: str
+    canonical_text: str
+    contradicts: list[str] = Field(default_factory=list)  # node_id
+    first_seen: datetime
+    last_seen: datetime
+    count: int = 0
+    total_engagement: int = 0
+
+
+# ---------- Diffing (P2) ----------
+
+
+class ChangeType(str, Enum):
+    UNCHANGED = "UNCHANGED"
+    REWORDED = "REWORDED"
+    TIGHTENED = "TIGHTENED"
+    LOOSENED = "LOOSENED"
+    ADDED = "ADDED"
+    REMOVED = "REMOVED"
+
+
+class PointDiff(BaseModel):
+    old_point_id: str | None
+    new_point_id: str | None
+    change_type: ChangeType
+    similarity: float = 0.0
+    summary: str = ""
+
+
+# ---------- API (P4) ----------
+
+
+class QAResponse(BaseModel):
+    answer: str
+    citations: list[Citation]
+    confidence: float
+    as_of_date: str | None = None
+
+
+class TrendAlert(BaseModel):
+    misconception: Misconception
+    velocity: float  # số lần lặp / giờ
+    severity: str  # LOW | MEDIUM | HIGH
+    correction: str

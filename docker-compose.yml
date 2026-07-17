@@ -1,0 +1,32 @@
+# Chay ca he thong 1 lenh: docker compose up
+services:
+  neo4j:
+    image: neo4j:5.25-community
+    ports: ["7474:7474", "7687:7687"]
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-lawgic-dev-password}
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "${NEO4J_PASSWORD:-lawgic-dev-password}", "RETURN 1"]
+      interval: 10s
+      retries: 12
+
+  api:
+    build: ./backend
+    ports: ["8000:8000"]
+    env_file: .env
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/data
+      - ./prompts:/app/prompts
+    command: uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  neo4j_data:

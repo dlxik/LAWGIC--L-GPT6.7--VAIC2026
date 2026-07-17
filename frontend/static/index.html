@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- [P4] Dashboard 1 trang, 2 tab. HTML+JS thuan, khong build step. -->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LAWGIC</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>LAWGIC</h1>
+    <p>Legal Analytics With Graph-Integrated Cognition</p>
+  </header>
+
+  <nav>
+    <button data-tab="trends" class="active">Canh bao hieu nham</button>
+    <button data-tab="qa">Hoi - Dap</button>
+  </nav>
+
+  <!-- TAB 1: canh bao trend -->
+  <section id="trends">
+    <!-- TODO[P4]: GET /trends -> render card:
+         canonical_text | so lan lap | do lan truyen | dieu luat bi hieu sai | dinh chinh -->
+  </section>
+
+  <!-- TAB 2: Q&A -->
+  <section id="qa" hidden>
+    <!-- TODO[P4]: input cau hoi -> POST /qa -> render answer + citation Dieu-Khoan-Diem.
+         Citation PHAI hien thi. Khong co citation -> hien "khong du can cu". -->
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

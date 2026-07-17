@@ -1,0 +1,1617 @@
+{
+  "doc_id": "tncn2025",
+  "doc_number": "109/2025/QH15",
+  "title": "Luật Thuế thu nhập cá nhân",
+  "issuer": "Quốc hội",
+  "issued_date": "2025-12-10",
+  "effective_date": "2026-07-01",
+  "expiry_date": null,
+  "status": "ACTIVE",
+  "source_url": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Luat-Thue-thu-nhap-ca-nhan-2025-so-109-2025-QH15-665870.aspx",
+  "articles": [
+    {
+      "number": 1,
+      "heading": "Phạm vi điều chỉnh",
+      "text": "Luật này quy định về người nộp thuế, thu nhập chịu thuế, thu nhập được miễn thuế, giảm thuế và căn cứ tính thuế thu nhập cá nhân.",
+      "clauses": [],
+      "article_id": "tncn2025-d1",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 2,
+      "heading": "Người nộp thuế",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Người nộp thuế thu nhập cá nhân là cá nhân cư trú có thu nhập chịu thuế quy định tại Điều 3 của Luật này phát sinh trong và ngoài lãnh thổ Việt Nam và cá nhân không cư trú có thu nhập chịu thuế quy định tại Điều 3 của Luật này phát sinh trong lãnh thổ Việt Nam.",
+          "points": [],
+          "clause_id": "tncn2025-d2-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Cá nhân cư trú là người đáp ứng một trong các điều kiện sau đây:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Có mặt tại Việt Nam từ 183 ngày trở lên tính trong 01 năm dương lịch hoặc tính theo 12 tháng liên tục kể từ ngày đầu tiên có mặt tại Việt Nam;",
+              "point_id": "tncn2025-d2-k2-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Có nơi ở thường xuyên tại Việt Nam, bao gồm có nơi ở đăng ký thường trú hoặc có nhà thuê để ở tại Việt Nam theo hợp đồng thuê có thời hạn.",
+              "point_id": "tncn2025-d2-k2-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d2-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Cá nhân không cư trú là người không đáp ứng điều kiện quy định tại khoản 2 Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d2-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d2-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d2",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 3,
+      "heading": "Thu nhập chịu thuế",
+      "text": "Thu nhập chịu thuế thu nhập cá nhân gồm các loại thu nhập sau đây, trừ thu nhập được miễn thuế quy định tại Điều 4 của Luật này:",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thu nhập từ kinh doanh, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập từ hoạt động sản xuất, kinh doanh hàng hoá, dịch vụ;",
+              "point_id": "tncn2025-d3-k1-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Thu nhập từ hoạt động hành nghề độc lập của cá nhân có giấy phép hoặc chứng chỉ hành nghề theo quy định của pháp luật;",
+              "point_id": "tncn2025-d3-k1-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Thu nhập từ hoạt động đại lý, môi giới, hợp tác kinh doanh với tổ chức;",
+              "point_id": "tncn2025-d3-k1-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Thu nhập từ hoạt động kinh doanh thương mại điện tử, kinh doanh dựa trên nền tảng số.",
+              "point_id": "tncn2025-d3-k1-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập từ tiền lương, tiền công, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Tiền lương, tiền công và các khoản có tính chất tiền lương, tiền công;",
+              "point_id": "tncn2025-d3-k2-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Tiền thù lao, các khoản lợi ích bằng tiền hoặc không bằng tiền dưới mọi hình thức;",
+              "point_id": "tncn2025-d3-k2-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Các khoản phụ cấp, trợ cấp, thu nhập khác trừ các khoản: phụ cấp, trợ cấp theo quy định của pháp luật về ưu đãi người có công; phụ cấp quốc phòng, an ninh; phụ cấp độc hại, nguy hiểm đối với ngành, nghề hoặc công việc ở nơi làm việc có yếu tố độc hại, nguy hiểm; phụ cấp thu hút, phụ cấp khu vực theo quy định của pháp luật; phụ cấp, trợ cấp, sinh hoạt phí do cơ quan Việt Nam ở nước ngoài chi trả; trợ cấp khó khăn đột xuất, trợ cấp tai nạn lao động, bệnh nghề nghiệp, trợ cấp một lần khi sinh con hoặc nhận nuôi con nuôi, trợ cấp do suy giảm khả năng lao động, trợ cấp hưu trí một lần, trợ cấp tuất hàng tháng và các khoản trợ cấp khác theo quy định của pháp luật về bảo hiểm xã hội; trợ cấp thôi việc, trợ cấp mất việc làm; trợ cấp mang tính chất bảo trợ xã hội và các khoản phụ cấp, trợ cấp, thu nhập khác không mang tính chất tiền lương, tiền công do Chính phủ quy định.",
+              "point_id": "tncn2025-d3-k2-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thu nhập từ đầu tư vốn, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Tiền lãi cho vay;",
+              "point_id": "tncn2025-d3-k3-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Lợi tức cổ phần;",
+              "point_id": "tncn2025-d3-k3-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Thu nhập từ đầu tư vốn dưới các hình thức khác.",
+              "point_id": "tncn2025-d3-k3-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Thu nhập từ chuyển nhượng vốn, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập từ chuyển nhượng phần vốn trong các tổ chức kinh tế;",
+              "point_id": "tncn2025-d3-k4-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Thu nhập từ chuyển nhượng chứng khoán;",
+              "point_id": "tncn2025-d3-k4-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Thu nhập từ chuyển nhượng vốn dưới các hình thức khác.",
+              "point_id": "tncn2025-d3-k4-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 5,
+          "text": "Thu nhập từ chuyển nhượng bất động sản, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập từ chuyển nhượng quyền sử dụng đất và tài sản gắn liền với đất;",
+              "point_id": "tncn2025-d3-k5-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Thu nhập từ chuyển nhượng quyền sở hữu hoặc sử dụng nhà ở;",
+              "point_id": "tncn2025-d3-k5-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Thu nhập từ chuyển nhượng quyền thuê đất, quyền thuê mặt nước;",
+              "point_id": "tncn2025-d3-k5-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Các khoản thu nhập khác nhận được từ chuyển nhượng bất động sản dưới mọi hình thức.",
+              "point_id": "tncn2025-d3-k5-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k5",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 6,
+          "text": "Thu nhập từ trúng thưởng, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Trúng thưởng xổ số;",
+              "point_id": "tncn2025-d3-k6-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Trúng thưởng trong các hình thức khuyến mại;",
+              "point_id": "tncn2025-d3-k6-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Trúng thưởng trong các hình thức đặt cược;",
+              "point_id": "tncn2025-d3-k6-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Trúng thưởng trong các trò chơi, cuộc thi có thưởng và các hình thức trúng thưởng khác, trừ trúng thưởng trong casino.",
+              "point_id": "tncn2025-d3-k6-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k6",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 7,
+          "text": "Thu nhập từ tiền bản quyền, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập từ chuyển giao, chuyển quyền sử dụng các đối tượng của quyền sở hữu trí tuệ;",
+              "point_id": "tncn2025-d3-k7-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Thu nhập từ chuyển giao công nghệ.",
+              "point_id": "tncn2025-d3-k7-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k7",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 8,
+          "text": "Thu nhập từ nhượng quyền thương mại.",
+          "points": [],
+          "clause_id": "tncn2025-d3-k8",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 9,
+          "text": "Thu nhập từ nhận thừa kế, quà tặng là chứng khoán, phần vốn trong các tổ chức kinh tế, cơ sở kinh doanh, bất động sản và các tài sản phải đăng ký sở hữu hoặc đăng ký sử dụng.",
+          "points": [],
+          "clause_id": "tncn2025-d3-k9",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 10,
+          "text": "Thu nhập khác, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập từ chuyển nhượng tên miền internet quốc gia Việt Nam “.vn”;",
+              "point_id": "tncn2025-d3-k10-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Thu nhập từ chuyển nhượng kết quả giảm phát thải khí nhà kính, tín chỉ các bon;",
+              "point_id": "tncn2025-d3-k10-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Thu nhập từ chuyển nhượng biển số xe trúng đấu giá theo quy định của pháp luật;",
+              "point_id": "tncn2025-d3-k10-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Thu nhập từ chuyển nhượng tài sản số;",
+              "point_id": "tncn2025-d3-k10-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "đ",
+              "text": "Thu nhập từ chuyển nhượng vàng miếng. Chính phủ quy định ngưỡng giá trị vàng miếng chịu thuế, thời điểm áp dụng thu và điều chỉnh thuế suất thuế thu nhập cá nhân đối với chuyển nhượng vàng miếng phù hợp với lộ trình quản lý thị trường vàng.",
+              "point_id": "tncn2025-d3-k10-đ",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d3-k10",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 11,
+          "text": "Chính phủ quy định chi tiết Điều này và việc quy đổi thu nhập chịu thuế nhận được không bằng tiền, không bằng Đồng Việt Nam.",
+          "points": [],
+          "clause_id": "tncn2025-d3-k11",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d3",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 4,
+      "heading": "Thu nhập được miễn thuế",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thu nhập từ chuyển nhượng, nhận thừa kế, quà tặng là bất động sản giữa vợ với chồng; cha đẻ, mẹ đẻ với con đẻ; cha nuôi, mẹ nuôi với con nuôi; cha chồng, mẹ chồng với con dâu; cha vợ, mẹ vợ với con rể; ông nội, bà nội với cháu nội; ông ngoại, bà ngoại với cháu ngoại; anh, chị, em ruột với nhau.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập từ chuyển nhượng nhà ở, quyền sử dụng đất ở và tài sản gắn liền với đất ở của cá nhân trong trường hợp cá nhân chỉ có một nhà ở, đất ở duy nhất tại Việt Nam.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thu nhập từ giá trị quyền sử dụng đất của cá nhân được Nhà nước giao đất.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Thu nhập của hộ gia đình, cá nhân trực tiếp sản xuất sản phẩm cây trồng, rừng trồng, chăn nuôi, thủy sản nuôi trồng, đánh bắt chưa qua chế biến thành các sản phẩm khác hoặc chỉ qua sơ chế thông thường; sản xuất muối; thu nhập từ lợi tức cổ phần của thành viên hợp tác xã, liên hiệp hợp tác xã nông nghiệp, cá nhân là nông dân ký kết hợp đồng với doanh nghiệp tham gia “Cánh đồng lớn”, trồng rừng sản xuất, nuôi trồng thủy sản.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 5,
+          "text": "Thu nhập từ chuyển đổi đất nông nghiệp của hộ gia đình, cá nhân được Nhà nước giao để sản xuất.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k5",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 6,
+          "text": "Thu nhập từ lãi trái phiếu chính phủ, lãi trái phiếu chính quyền địa phương, lãi tiền gửi tại tổ chức tín dụng, lãi từ hợp đồng bảo hiểm nhân thọ.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k6",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 7,
+          "text": "Thu nhập từ kiều hối.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k7",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 8,
+          "text": "Tiền lương làm việc ban đêm, làm thêm giờ, tiền lương, tiền công trả cho những ngày không nghỉ phép theo quy định của pháp luật.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k8",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 9,
+          "text": "Tiền lương hưu do Quỹ bảo hiểm xã hội chi trả; thu nhập do quỹ bảo hiểm hưu trí bổ sung, quỹ hưu trí tự nguyện chi trả.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k9",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 10,
+          "text": "Thu nhập từ học bổng, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Học bổng nhận được từ ngân sách nhà nước;",
+              "point_id": "tncn2025-d4-k10-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Học bổng nhận được từ tổ chức trong nước và ngoài nước theo chương trình hỗ trợ khuyến học của tổ chức đó.",
+              "point_id": "tncn2025-d4-k10-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d4-k10",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 11,
+          "text": "Thu nhập từ bồi thường hợp đồng bảo hiểm nhân thọ, phi nhân thọ, tiền bồi thường tai nạn lao động, khoản bồi thường nhà nước và các khoản bồi thường khác theo quy định của pháp luật.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k11",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 12,
+          "text": "Thu nhập nhận được từ các tổ chức và quỹ từ thiện được cơ quan nhà nước có thẩm quyền cho phép thành lập hoặc công nhận, hoạt động vì mục đích từ thiện, nhân đạo, không vì mục tiêu lợi nhuận.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k12",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 13,
+          "text": "Thu nhập nhận được từ nguồn viện trợ nước ngoài vì mục đích từ thiện, nhân đạo dưới hình thức chính phủ và phi chính phủ được cơ quan nhà nước có thẩm quyền phê duyệt.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k13",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 14,
+          "text": "Thu nhập từ tiền lương, tiền công của thuyền viên là người Việt Nam làm việc cho các hãng tàu nước ngoài hoặc các hãng tàu Việt Nam vận tải quốc tế.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k14",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 15,
+          "text": "Thu nhập của cá nhân là chủ tàu, cá nhân có quyền sử dụng tàu và cá nhân làm việc trên tàu từ hoạt động cung cấp hàng hóa, dịch vụ trực tiếp phục vụ hoạt động khai thác, đánh bắt thủy sản xa bờ.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k15",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 16,
+          "text": "Thu nhập từ chuyển nhượng lần đầu kết quả giảm phát thải khí nhà kính của cá nhân được công nhận kết quả giảm phát thải khí nhà kính, tín chỉ các bon của cá nhân được cấp tín chỉ các bon; thu nhập từ tiền lãi trái phiếu xanh; thu nhập từ chuyển nhượng lần đầu trái phiếu xanh sau khi phát hành.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k16",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 17,
+          "text": "Thu nhập từ tiền lương, tiền công từ thực hiện nhiệm vụ khoa học, công nghệ và đổi mới sáng tạo.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k17",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 18,
+          "text": "Thu nhập từ quyền tác giả của nhiệm vụ khoa học, công nghệ và đổi mới sáng tạo khi kết quả nhiệm vụ được thương mại hóa theo quy định của pháp luật về khoa học, công nghệ và đổi mới sáng tạo, pháp luật về sở hữu trí tuệ.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k18",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 19,
+          "text": "Thu nhập của nhà đầu tư cá nhân, chuyên gia từ dự án khởi nghiệp sáng tạo, sáng lập viên cho doanh nghiệp khởi nghiệp sáng tạo, nhà đầu tư cá nhân góp vốn vào quỹ đầu tư mạo hiểm.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k19",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 20,
+          "text": "Thu nhập từ tiền lương, tiền công của chuyên gia nước ngoài làm việc tại chương trình, dự án tài trợ bằng nguồn vốn ODA không hoàn lại, chương trình, dự án phi chính phủ nước ngoài tại Việt Nam; cá nhân là người Việt Nam làm việc tại cơ quan đại diện của tổ chức quốc tế thuộc Hệ thống Liên hợp quốc tại Việt Nam; cá nhân tham gia lực lượng gìn giữ hòa bình của Liên hợp quốc.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k20",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 21,
+          "text": "Thu nhập sau khi đã nộp thuế thu nhập doanh nghiệp của cá nhân là chủ doanh nghiệp tư nhân, cá nhân là chủ công ty trách nhiệm hữu hạn một thành viên.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k21",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 22,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d4-k22",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d4",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 5,
+      "heading": "Các trường hợp miễn thuế, giảm thuế khác",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Người nộp thuế gặp khó khăn do thiên tai, dịch bệnh, hoả hoạn, tai nạn, bệnh hiểm nghèo ảnh hưởng đến khả năng nộp thuế thì được giảm thuế tương ứng với mức độ thiệt hại nhưng không vượt quá số thuế phải nộp.",
+          "points": [],
+          "clause_id": "tncn2025-d5-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Miễn thuế thu nhập cá nhân trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công của cá nhân là nhân lực công nghiệp công nghệ số chất lượng cao thuộc các trường hợp sau:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập từ dự án hoạt động công nghiệp công nghệ số trong khu công nghệ số tập trung;",
+              "point_id": "tncn2025-d5-k2-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Thu nhập từ dự án nghiên cứu và phát triển, sản xuất sản phẩm công nghệ số trọng điểm, chip bán dẫn, hệ thống trí tuệ nhân tạo;",
+              "point_id": "tncn2025-d5-k2-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Thu nhập từ các hoạt động đào tạo nhân lực công nghiệp công nghệ số.",
+              "point_id": "tncn2025-d5-k2-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d5-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Miễn thuế thu nhập cá nhân trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công của cá nhân là nhân lực công nghệ cao thực hiện hoạt động nghiên cứu và phát triển công nghệ cao hoặc công nghệ chiến lược thuộc Danh mục công nghệ cao được ưu tiên đầu tư phát triển hoặc Danh mục công nghệ chiến lược và sản phẩm công nghệ chiến lược theo quy định của pháp luật về công nghệ cao.",
+          "points": [],
+          "clause_id": "tncn2025-d5-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Miễn thuế thu nhập cá nhân đối với chuyển nhượng chứng chỉ quỹ mở thành lập theo quy định của pháp luật về chứng khoán được nắm giữ từ 02 năm trở lên kể từ ngày mua.",
+          "points": [],
+          "clause_id": "tncn2025-d5-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 5,
+          "text": "Giảm 50% thuế thu nhập cá nhân đối với lợi tức của nhà đầu tư cá nhân được chia từ quỹ đầu tư chứng khoán, quỹ đầu tư bất động sản thành lập theo quy định của Luật Chứng khoán trong thời hạn do Chính phủ quy định.",
+          "points": [],
+          "clause_id": "tncn2025-d5-k5",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 6,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d5-k6",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d5",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 6,
+      "heading": "Quản lý thuế đối với thuế thu nhập cá nhân",
+      "text": "Căn cứ quy định của Luật này, Chính phủ quy định về kỳ tính thuế theo năm đối với thu nhập từ kinh doanh, thu nhập từ tiền lương, tiền công của cá nhân cư trú, kỳ tính thuế theo từng lần phát sinh đối với các khoản thu nhập khác của cá nhân cư trú và cá nhân không cư trú; thời điểm xác định thu nhập tính thuế; quyết toán thuế; hoàn thuế đối với trường hợp cá nhân có số thuế đã nộp lớn hơn số thuế phải nộp hoặc chưa đến mức phải nộp; trách nhiệm khấu trừ, khai thay, nộp thay cho người nộp thuế phù hợp với quy định của Luật Quản lý thuế.",
+      "clauses": [],
+      "article_id": "tncn2025-d6",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 7,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ kinh doanh",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Cá nhân cư trú có hoạt động sản xuất, kinh doanh có mức doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân. Chính phủ trình Ủy ban Thường vụ Quốc hội điều chỉnh mức doanh thu không phải nộp thuế thu nhập cá nhân cho phù hợp với tình hình kinh tế - xã hội trong từng thời kỳ.",
+          "points": [],
+          "clause_id": "tncn2025-d7-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ kinh doanh của cá nhân cư trú có doanh thu năm trên mức quy định tại khoản 1 Điều này được xác định bằng thu nhập tính thuế nhân (x) với thuế suất. Trong đó:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Thu nhập tính thuế được xác định bằng doanh thu của hàng hóa, dịch vụ bán ra trừ (-) đi chi phí liên quan đến hoạt động sản xuất, kinh doanh trong kỳ tính thuế;",
+              "point_id": "tncn2025-d7-k2-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Cá nhân kinh doanh có doanh thu năm trên mức quy định tại khoản 1 Điều này đến 03 tỷ đồng: thuế suất 15%;",
+              "point_id": "tncn2025-d7-k2-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Cá nhân kinh doanh có doanh thu năm trên 03 tỷ đồng đến 50 tỷ đồng: thuế suất 17%;",
+              "point_id": "tncn2025-d7-k2-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Cá nhân kinh doanh có doanh thu năm trên 50 tỷ đồng: thuế suất 20%. Thu nhập từ cho thuê bất động sản quy định tại khoản 4 Điều này không áp dụng cách tính thuế quy định tại khoản này.",
+              "point_id": "tncn2025-d7-k2-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d7-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Cá nhân kinh doanh có doanh thu năm trên mức quy định tại khoản 1 Điều này đến 03 tỷ đồng được lựa chọn nộp thuế theo quy định tại điểm a và điểm b khoản 2 Điều này hoặc nộp thuế theo thuế suất nhân (x) với doanh thu tính thuế. Doanh thu tính thuế và thuế suất được xác định như sau:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Doanh thu tính thuế được xác định bằng phần doanh thu vượt trên mức quy định tại khoản 1 Điều này;",
+              "point_id": "tncn2025-d7-k3-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Phân phối, cung cấp hàng hoá: thuế suất 0,5%;",
+              "point_id": "tncn2025-d7-k3-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Dịch vụ, xây dựng không bao thầu nguyên vật liệu: thuế suất 2%. Riêng hoạt động cho thuê tài sản, đại lý bảo hiểm, đại lý xổ số, đại lý bán hàng đa cấp: thuế suất 5%;",
+              "point_id": "tncn2025-d7-k3-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Sản xuất, vận tải, dịch vụ có gắn với hàng hoá, xây dựng có bao thầu nguyên vật liệu: thuế suất 1,5%;",
+              "point_id": "tncn2025-d7-k3-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "đ",
+              "text": "Hoạt động cung cấp sản phẩm và dịch vụ nội dung thông tin số về giải trí, trò chơi điện tử, phim số, ảnh số, nhạc số, quảng cáo số: thuế suất 5%;",
+              "point_id": "tncn2025-d7-k3-đ",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "e",
+              "text": "Hoạt động kinh doanh khác: thuế suất 1%.",
+              "point_id": "tncn2025-d7-k3-e",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d7-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Cá nhân cho thuê bất động sản, trừ hoạt động kinh doanh lưu trú, nộp thuế thu nhập cá nhân được xác định bằng phần doanh thu vượt trên mức quy định tại khoản 1 Điều này nhân (x) với thuế suất 5%.",
+          "points": [],
+          "clause_id": "tncn2025-d7-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 5,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d7-k5",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d7",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 8,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ tiền lương, tiền công",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ tiền lương, tiền công của cá nhân cư trú được xác định bằng thu nhập tính thuế quy định tại khoản 2 Điều này, không phân biệt nơi trả thu nhập, nhân (x) với thuế suất tại Biểu thuế lũy tiến từng phần quy định tại Điều 9 của Luật này.",
+          "points": [],
+          "clause_id": "tncn2025-d8-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập tính thuế đối với thu nhập từ tiền lương, tiền công là tổng thu nhập chịu thuế quy định tại khoản 2 Điều 3 của Luật này mà người nộp thuế nhận được trong kỳ tính thuế, trừ (-) đi các khoản đóng góp bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp, bảo hiểm trách nhiệm nghề nghiệp đối với một số ngành, nghề phải tham gia bảo hiểm bắt buộc, khoản đóng góp tham gia bảo hiểm hưu trí bổ sung theo quy định của Luật Bảo hiểm xã hội, mua bảo hiểm hưu trí tự nguyện, bảo hiểm nhân thọ không vượt quá mức do Chính phủ quy định và các khoản giảm trừ quy định tại Điều 10 và Điều 11 của Luật này.",
+          "points": [],
+          "clause_id": "tncn2025-d8-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế từ tiền lương, tiền công là thời điểm tổ chức, cá nhân trả thu nhập cho người nộp thuế hoặc thời điểm người nộp thuế nhận được thu nhập.",
+          "points": [],
+          "clause_id": "tncn2025-d8-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d8",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 9,
+      "heading": "Biểu thuế luỹ tiến từng phần",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Biểu thuế luỹ tiến từng phần áp dụng đối với thu nhập tính thuế quy định tại khoản 2 Điều 8 của Luật này.",
+          "points": [],
+          "clause_id": "tncn2025-d9-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Biểu thuế luỹ tiến từng phần được quy định như sau: Bậc thuế Phần thu nhập tính thuế/năm(triệu đồng) Phần thu nhập tính thuế/tháng(triệu đồng) Thuế suất (%) 1 Đến 120 Đến 10 5 2 Trên 120 đến 360 Trên 10 đến 30 10 3 Trên 360 đến 720 Trên 30 đến 60 20 4 Trên 720 đến 1.200 Trên 60 đến 100 30 5 Trên 1.200 Trên 100 35",
+          "points": [],
+          "clause_id": "tncn2025-d9-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d9",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 10,
+      "heading": "Giảm trừ gia cảnh",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Giảm trừ gia cảnh là số tiền được trừ vào thu nhập chịu thuế trước khi tính thuế đối với thu nhập từ tiền lương, tiền công của người nộp thuế là cá nhân cư trú. Giảm trừ gia cảnh gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Mức giảm trừ đối với người nộp thuế là 15,5 triệu đồng/tháng (186 triệu đồng/năm);",
+              "point_id": "tncn2025-d10-k1-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Mức giảm trừ đối với mỗi người phụ thuộc là 6,2 triệu đồng/tháng.",
+              "point_id": "tncn2025-d10-k1-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d10-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Căn cứ biến động của giá cả, thu nhập, Chính phủ trình Ủy ban Thường vụ Quốc hội quy định mức giảm trừ gia cảnh quy định tại khoản 1 Điều này phù hợp với tình hình kinh tế - xã hội trong từng thời kỳ.",
+          "points": [],
+          "clause_id": "tncn2025-d10-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Việc xác định mức giảm trừ gia cảnh đối với người phụ thuộc thực hiện theo nguyên tắc mỗi người phụ thuộc chỉ được tính giảm trừ một lần vào một người nộp thuế.",
+          "points": [],
+          "clause_id": "tncn2025-d10-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Người phụ thuộc là người mà người nộp thuế có trách nhiệm nuôi dưỡng, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Con chưa thành niên; con là người mất năng lực hành vi dân sự, người khuyết tật, không có khả năng lao động;",
+              "point_id": "tncn2025-d10-k4-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Các cá nhân không có thu nhập hoặc có thu nhập không vượt quá mức do Bộ trưởng Bộ Tài chính quy định, bao gồm con thành niên đang học đại học, cao đẳng, trung học chuyên nghiệp hoặc học nghề; vợ hoặc chồng không có khả năng lao động; bố, mẹ đã hết tuổi lao động hoặc không có khả năng lao động; những người khác không nơi nương tựa mà người nộp thuế phải trực tiếp nuôi dưỡng.",
+              "point_id": "tncn2025-d10-k4-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d10-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d10",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 11,
+      "heading": "Giảm trừ đối với các khoản đóng góp từ thiện, nhân đạo và các khoản giảm trừ khác",
+      "text": "Cá nhân cư trú được giảm trừ vào thu nhập chịu thuế trước khi tính thuế đối với thu nhập từ tiền lương, tiền công các khoản sau đây:",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Khoản đóng góp từ thiện, nhân đạo, bao gồm:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Khoản đóng góp vào tổ chức, cơ sở chăm sóc, nuôi dưỡng trẻ em có hoàn cảnh đặc biệt khó khăn, người khuyết tật, người già không nơi nương tựa;",
+              "point_id": "tncn2025-d11-k1-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Khoản đóng góp vào quỹ từ thiện, quỹ nhân đạo, quỹ khuyến học;",
+              "point_id": "tncn2025-d11-k1-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Khoản đóng góp vào các tổ chức có chức năng huy động tài trợ được thành lập và hoạt động theo quy định của pháp luật. Tổ chức, cơ sở và các quỹ quy định tại khoản này phải được cơ quan nhà nước có thẩm quyền cho phép thành lập hoặc công nhận, hoạt động vì mục đích từ thiện, nhân đạo, khuyến học, không vì mục tiêu lợi nhuận.",
+              "point_id": "tncn2025-d11-k1-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d11-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Khoản chi cho y tế, giáo dục - đào tạo của người nộp thuế, người phụ thuộc của người nộp thuế được giảm trừ vào thu nhập trước khi tính thuế theo mức do Chính phủ quy định.",
+          "points": [],
+          "clause_id": "tncn2025-d11-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Các khoản chi quy định tại Điều này phải đáp ứng các điều kiện về hóa đơn, chứng từ theo quy định của pháp luật và không được chi trả từ các nguồn khác.",
+          "points": [],
+          "clause_id": "tncn2025-d11-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d11-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d11",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 12,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ đầu tư vốn",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế đối với thu nhập từ đầu tư vốn của cá nhân cư trú được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 5%.",
+          "points": [],
+          "clause_id": "tncn2025-d12-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập tính thuế từ đầu tư vốn là tổng số các khoản thu nhập chịu thuế từ đầu tư vốn quy định tại khoản 3 Điều 3 của Luật này mà người nộp thuế nhận được theo từng lần phát sinh.",
+          "points": [],
+          "clause_id": "tncn2025-d12-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế từ đầu tư vốn là thời điểm tổ chức, cá nhân trả thu nhập cho người nộp thuế hoặc thời điểm người nộp thuế nhận được thu nhập.",
+          "points": [],
+          "clause_id": "tncn2025-d12-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d12-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d12",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 13,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng vốn",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng vốn của cá nhân cư trú được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 20% theo từng lần chuyển nhượng. Trong đó, thu nhập tính thuế từ chuyển nhượng vốn được xác định bằng giá chuyển nhượng trừ (-) đi giá mua và các khoản chi phí hợp lý liên quan đến việc tạo ra thu nhập từ chuyển nhượng vốn. Trường hợp không xác định giá mua và các chi phí liên quan đến việc chuyển nhượng vốn thì thuế thu nhập cá nhân được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 2%.",
+          "points": [],
+          "clause_id": "tncn2025-d13-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng chứng khoán được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 0,1% theo từng lần chuyển nhượng.",
+          "points": [],
+          "clause_id": "tncn2025-d13-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế là thời điểm giao dịch hoàn thành theo quy định của pháp luật.",
+          "points": [],
+          "clause_id": "tncn2025-d13-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d13-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d13",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 14,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng bất động sản",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng bất động sản của cá nhân cư trú được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 2%.",
+          "points": [],
+          "clause_id": "tncn2025-d14-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thời điểm xác định thu nhập tính thuế từ chuyển nhượng bất động sản là thời điểm hợp đồng chuyển nhượng có hiệu lực theo quy định của pháp luật hoặc thời điểm đăng ký quyền sử dụng, quyền sở hữu bất động sản.",
+          "points": [],
+          "clause_id": "tncn2025-d14-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d14-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d14",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 15,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ trúng thưởng",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ trúng thưởng của cá nhân cư trú được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 10%.",
+          "points": [],
+          "clause_id": "tncn2025-d15-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập tính thuế từ trúng thưởng là phần giá trị giải thưởng vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần trúng thưởng.",
+          "points": [],
+          "clause_id": "tncn2025-d15-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế từ trúng thưởng là thời điểm tổ chức, cá nhân trả thu nhập cho người nộp thuế.",
+          "points": [],
+          "clause_id": "tncn2025-d15-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d15",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 16,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ tiền bản quyền",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ tiền bản quyền của cá nhân cư trú được tính bằng thu nhập tính thuế nhân (x) với thuế suất 5%.",
+          "points": [],
+          "clause_id": "tncn2025-d16-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập tính thuế từ tiền bản quyền là phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được khi chuyển giao, chuyển quyền sử dụng các đối tượng của quyền sở hữu trí tuệ, chuyển giao công nghệ theo từng hợp đồng.",
+          "points": [],
+          "clause_id": "tncn2025-d16-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế từ tiền bản quyền là thời điểm tổ chức, cá nhân trả thu nhập cho người nộp thuế.",
+          "points": [],
+          "clause_id": "tncn2025-d16-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d16",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 17,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ nhượng quyền thương mại",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ nhượng quyền thương mại của cá nhân cư trú được tính bằng thu nhập tính thuế nhân (x) với thuế suất 5%.",
+          "points": [],
+          "clause_id": "tncn2025-d17-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập tính thuế từ nhượng quyền thương mại là phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng hợp đồng nhượng quyền thương mại.",
+          "points": [],
+          "clause_id": "tncn2025-d17-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế từ nhượng quyền thương mại là thời điểm tổ chức, cá nhân trả thu nhập cho người nộp thuế.",
+          "points": [],
+          "clause_id": "tncn2025-d17-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d17",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 18,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ nhận thừa kế, quà tặng",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ nhận thừa kế, quà tặng của cá nhân cư trú được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 10%.",
+          "points": [],
+          "clause_id": "tncn2025-d18-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thu nhập tính thuế từ nhận thừa kế, quà tặng là phần giá trị tài sản thừa kế, quà tặng vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần phát sinh.",
+          "points": [],
+          "clause_id": "tncn2025-d18-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế được quy định như sau:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Đối với thu nhập từ nhận thừa kế là thời điểm người nộp thuế nhận được thừa kế;",
+              "point_id": "tncn2025-d18-k3-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Đối với thu nhập từ nhận quà tặng là thời điểm tổ chức, cá nhân tặng cho người nộp thuế hoặc thời điểm người nộp thuế nhận được thu nhập.",
+              "point_id": "tncn2025-d18-k3-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d18-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d18-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d18",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 19,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập khác",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập khác của cá nhân cư trú quy định tại các điểm a, b và c khoản 10 Điều 3 của Luật này được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 5%. Trong đó, thu nhập tính thuế là phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần phát sinh.",
+          "points": [],
+          "clause_id": "tncn2025-d19-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập khác của cá nhân cư trú quy định tại điểm d và điểm đ khoản 10 Điều 3 của Luật này được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 0,1%.",
+          "points": [],
+          "clause_id": "tncn2025-d19-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế là thời điểm tổ chức, cá nhân chi trả thu nhập cho người nộp thuế hoặc thời điểm người nộp thuế nhận được thu nhập.",
+          "points": [],
+          "clause_id": "tncn2025-d19-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d19-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d19",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 20,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ kinh doanh",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ kinh doanh của cá nhân không cư trú được xác định bằng doanh thu từ hoạt động kinh doanh quy định tại khoản 2 Điều này nhân (x) với thuế suất quy định tại khoản 3 Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d20-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Doanh thu là toàn bộ tiền bán hàng, tiền gia công, tiền cung ứng dịch vụ kể cả trợ giá, phụ thu, phụ trội mà cá nhân được hưởng, không phân biệt đã thu được tiền hay chưa thu được tiền, bao gồm cả chi phí do bên mua hàng hoá, dịch vụ trả thay cho cá nhân không cư trú mà không được hoàn trả. Trường hợp thoả thuận hợp đồng không bao gồm thuế thu nhập cá nhân thì doanh thu tính thuế phải quy đổi là toàn bộ số tiền mà cá nhân không cư trú nhận được dưới bất kỳ hình thức nào từ việc cung cấp hàng hoá, dịch vụ tại Việt Nam không phụ thuộc vào địa điểm tiến hành các hoạt động kinh doanh.",
+          "points": [],
+          "clause_id": "tncn2025-d20-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thuế suất:",
+          "points": [
+            {
+              "letter": "a",
+              "text": "Phân phối, cung cấp hàng hoá: 1%;",
+              "point_id": "tncn2025-d20-k3-a",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "b",
+              "text": "Dịch vụ, xây dựng không bao thầu nguyên vật liệu: 5%;",
+              "point_id": "tncn2025-d20-k3-b",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "c",
+              "text": "Sản xuất, vận tải, dịch vụ có gắn với hàng hoá, xây dựng có bao thầu nguyên vật liệu: 2%;",
+              "point_id": "tncn2025-d20-k3-c",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "d",
+              "text": "Hoạt động cung cấp sản phẩm và dịch vụ nội dung thông tin số về giải trí, trò chơi điện tử, phim số, ảnh số, nhạc số, quảng cáo: 5%;",
+              "point_id": "tncn2025-d20-k3-d",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            },
+            {
+              "letter": "đ",
+              "text": "Hoạt động kinh doanh khác: 2%.",
+              "point_id": "tncn2025-d20-k3-đ",
+              "effective_from": "2026-07-01",
+              "effective_to": null
+            }
+          ],
+          "clause_id": "tncn2025-d20-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d20",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 21,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ tiền lương, tiền công",
+      "text": "Thuế thu nhập cá nhân đối với thu nhập từ tiền lương, tiền công của cá nhân không cư trú được xác định bằng tổng số tiền lương, tiền công mà cá nhân không cư trú nhận được do thực hiện công việc tại Việt Nam nhân (x) với thuế suất 20%, không phân biệt nơi trả thu nhập.",
+      "clauses": [],
+      "article_id": "tncn2025-d21",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 22,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ đầu tư vốn",
+      "text": "Thuế thu nhập cá nhân đối với thu nhập từ đầu tư vốn của cá nhân không cư trú được xác định bằng tổng số thu nhập mà cá nhân không cư trú nhận được từ việc đầu tư vốn vào tổ chức, cá nhân tại Việt Nam nhân (x) với thuế suất 5%.",
+      "clauses": [],
+      "article_id": "tncn2025-d22",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 23,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng vốn",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng vốn của cá nhân không cư trú được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 20% theo từng lần phát sinh, không phân biệt việc chuyển nhượng được thực hiện tại Việt Nam hay tại nước ngoài. Trong đó, thu nhập tính thuế từ chuyển nhượng vốn được xác định bằng giá chuyển nhượng trừ (-) đi giá mua và các khoản chi phí hợp lý liên quan đến việc tạo ra thu nhập từ chuyển nhượng phần vốn tại tổ chức, cá nhân Việt Nam. Trường hợp không xác định được giá mua và các chi phí liên quan đến việc chuyển nhượng vốn thì thuế thu nhập cá nhân được xác định bằng giá chuyển nhượng phần vốn tại tổ chức, cá nhân Việt Nam nhân (x) với thuế suất 2%.",
+          "points": [],
+          "clause_id": "tncn2025-d23-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng chứng khoán của cá nhân không cư trú được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 0,1%.",
+          "points": [],
+          "clause_id": "tncn2025-d23-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d23-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d23",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 24,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng bất động sản",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ chuyển nhượng bất động sản của cá nhân không cư trú được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 2%.",
+          "points": [],
+          "clause_id": "tncn2025-d24-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d24-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d24",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 25,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ tiền bản quyền, nhượng quyền thương mại",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ tiền bản quyền của cá nhân không cư trú được xác định bằng phần thu nhập vượt trên 20 triệu đồng theo từng hợp đồng chuyển giao, chuyển quyền sử dụng các đối tượng của quyền sở hữu trí tuệ, chuyển giao công nghệ tại Việt Nam nhân (x) với thuế suất 5%.",
+          "points": [],
+          "clause_id": "tncn2025-d25-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập từ nhượng quyền thương mại của cá nhân không cư trú được xác định bằng phần thu nhập vượt trên 20 triệu đồng theo từng hợp đồng nhượng quyền thương mại tại Việt Nam nhân (x) với thuế suất 5%.",
+          "points": [],
+          "clause_id": "tncn2025-d25-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d25",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 26,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập từ trúng thưởng, nhận thừa kế, quà tặng",
+      "text": "Thuế thu nhập cá nhân đối với thu nhập từ trúng thưởng, nhận thừa kế, quà tặng của cá nhân không cư trú được xác định bằng phần giá trị vượt trên 20 triệu đồng theo từng lần trúng thưởng, nhận thừa kế, quà tặng tại Việt Nam nhân (x) với thuế suất 10%.",
+      "clauses": [],
+      "article_id": "tncn2025-d26",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 27,
+      "heading": "Thuế thu nhập cá nhân đối với thu nhập khác",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập khác của cá nhân không cư trú quy định tại các điểm a, b và c khoản 10 Điều 3 của Luật này được xác định bằng thu nhập tính thuế nhân (x) với thuế suất 5%. Thu nhập tính thuế là phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần phát sinh.",
+          "points": [],
+          "clause_id": "tncn2025-d27-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thuế thu nhập cá nhân đối với thu nhập khác của cá nhân không cư trú quy định tại điểm d và điểm đ khoản 10 Điều 3 của Luật này được xác định bằng giá chuyển nhượng nhân (x) với thuế suất 0,1%.",
+          "points": [],
+          "clause_id": "tncn2025-d27-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d27-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d27",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 28,
+      "heading": "Thời điểm xác định thu nhập tính thuế",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Thời điểm xác định thu nhập tính thuế đối với thu nhập quy định tại Điều 20 của Luật này là thời điểm cá nhân không cư trú nhận được thu nhập hoặc thời điểm xuất hoá đơn bán hàng hoá, cung cấp dịch vụ.",
+          "points": [],
+          "clause_id": "tncn2025-d28-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Thời điểm xác định thu nhập tính thuế đối với thu nhập quy định tại các điều 21, 22, 25, 26 và 27 của Luật này là thời điểm tổ chức, cá nhân tại Việt Nam trả thu nhập cho cá nhân không cư trú hoặc thời điểm cá nhân không cư trú nhận được thu nhập.",
+          "points": [],
+          "clause_id": "tncn2025-d28-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Thời điểm xác định thu nhập tính thuế đối với thu nhập quy định tại Điều 23 của Luật này là thời điểm giao dịch hoàn thành theo quy định của pháp luật.",
+          "points": [],
+          "clause_id": "tncn2025-d28-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Thời điểm xác định thu nhập tính thuế đối với thu nhập quy định tại Điều 24 của Luật này là thời điểm hợp đồng chuyển nhượng có hiệu lực theo quy định của pháp luật hoặc thời điểm đăng ký quyền sử dụng, quyền sở hữu bất động sản.",
+          "points": [],
+          "clause_id": "tncn2025-d28-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 5,
+          "text": "Chính phủ quy định chi tiết Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d28-k5",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d28",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    },
+    {
+      "number": 29,
+      "heading": "Điều khoản thi hành",
+      "text": "",
+      "clauses": [
+        {
+          "number": 1,
+          "text": "Luật này có hiệu lực thi hành từ ngày 01 tháng 7 năm 2026, trừ quy định tại khoản 2 Điều này.",
+          "points": [],
+          "clause_id": "tncn2025-d29-k1",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 2,
+          "text": "Các quy định liên quan đến thu nhập từ kinh doanh, từ tiền lương, tiền công của cá nhân cư trú áp dụng từ kỳ tính thuế năm 2026.",
+          "points": [],
+          "clause_id": "tncn2025-d29-k2",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 3,
+          "text": "Luật Thuế thu nhập cá nhân số 04/2007/QH12 đã được sửa đổi, bổ sung một số điều theo Luật số 26/2012/QH13, Luật số 71/2014/QH13, Luật số 31/2024/QH15, Luật số 48/2024/QH15, Luật số 56/2025/QH15, Luật số 71/2025/QH15, Luật số 93/2025/QH15 hết hiệu lực kể từ ngày Luật này có hiệu lực thi hành; riêng các quy định liên quan đến thu nhập từ kinh doanh, từ tiền lương, tiền công của cá nhân cư trú hết hiệu lực thi hành từ kỳ tính thuế năm 2026.",
+          "points": [],
+          "clause_id": "tncn2025-d29-k3",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        },
+        {
+          "number": 4,
+          "text": "Trường hợp có quy định khác nhau về ưu đãi thuế giữa Luật này với Luật Thủ đô, nghị quyết của Quốc hội và giải pháp quy định tại điểm h khoản 8 Điều 10 của Luật Tổ chức Chính phủ thì áp dụng theo Luật Thủ đô, nghị quyết của Quốc hội và giải pháp quy định tại điểm h khoản 8 Điều 10 của Luật Tổ chức Chính phủ. Trường hợp quy định tại Luật này ưu đãi hơn thì người nộp thuế được lựa chọn áp dụng mức ưu đãi có lợi nhất.",
+          "points": [],
+          "clause_id": "tncn2025-d29-k4",
+          "effective_from": "2026-07-01",
+          "effective_to": null
+        }
+      ],
+      "article_id": "tncn2025-d29",
+      "effective_from": "2026-07-01",
+      "effective_to": null
+    }
+  ]
+}

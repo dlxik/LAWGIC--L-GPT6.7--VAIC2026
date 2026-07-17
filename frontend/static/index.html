@@ -4,31 +4,70 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LAWGIC</title>
+  <title>LAWGIC — Legal Analytics With Graph-Integrated Cognition</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>LAWGIC</h1>
-    <p>Legal Analytics With Graph-Integrated Cognition</p>
+    <div class="brand">
+      <h1>LAWGIC</h1>
+      <p>Legal Analytics With Graph-Integrated Cognition</p>
+    </div>
+    <div id="stats" class="stats" aria-live="polite"></div>
   </header>
 
-  <nav>
-    <button data-tab="trends" class="active">Canh bao hieu nham</button>
-    <button data-tab="qa">Hoi - Dap</button>
+  <nav role="tablist">
+    <button data-tab="trends" class="active" role="tab" aria-selected="true">Canh bao hieu nham</button>
+    <button data-tab="qa" role="tab" aria-selected="false">Hoi &mdash; Dap</button>
+    <button data-tab="diff" role="tab" aria-selected="false">Van ban cu vs moi</button>
   </nav>
 
   <!-- TAB 1: canh bao trend -->
-  <section id="trends">
-    <!-- TODO[P4]: GET /trends -> render card:
-         canonical_text | so lan lap | do lan truyen | dieu luat bi hieu sai | dinh chinh -->
+  <section id="trends" role="tabpanel">
+    <div class="panel-head">
+      <h2>Canh bao trend</h2>
+      <button id="refresh-trends" class="ghost">Lam moi</button>
+    </div>
+    <div id="trends-list" class="cards"></div>
+    <div id="misc-detail" class="detail" hidden></div>
   </section>
 
   <!-- TAB 2: Q&A -->
-  <section id="qa" hidden>
-    <!-- TODO[P4]: input cau hoi -> POST /qa -> render answer + citation Dieu-Khoan-Diem.
-         Citation PHAI hien thi. Khong co citation -> hien "khong du can cu". -->
+  <section id="qa" role="tabpanel" hidden>
+    <div class="panel-head"><h2>Hoi cau hoi phap luat</h2></div>
+    <form id="qa-form" class="qa-form">
+      <label for="qa-input">Cau hoi</label>
+      <textarea id="qa-input" rows="2" required
+        placeholder="Vi du: Uong 1 lon bia thi bi phat bao nhieu?"></textarea>
+      <div class="qa-row">
+        <label for="qa-date">Hieu luc tinh den ngay (tuy chon)
+          <input id="qa-date" type="date">
+        </label>
+        <button type="submit">Hoi</button>
+      </div>
+      <div class="qa-samples">
+        <span>Cau hoi mau:</span>
+        <button type="button" data-sample="Uong 1 lon bia thi bi phat bao nhieu tu 1/7/2026?">1 lon bia</button>
+        <button type="button" data-sample="Nong do con vuot 80mg/100ml mau bi tuoc bang lai bao lau?">nong do cao</button>
+        <button type="button" data-sample="Khong doi mu bao hiem bi phat bao nhieu?">mu bao hiem</button>
+        <button type="button" data-sample="Toi nen dau tu vao co phieu nao?">cau hoi khong lien quan</button>
+      </div>
+    </form>
+    <div id="qa-answer" class="answer" hidden></div>
   </section>
+
+  <!-- TAB 3: Diff van ban -->
+  <section id="diff" role="tabpanel" hidden>
+    <div class="panel-head">
+      <h2>So sanh van ban: <span id="diff-doc-title"></span></h2>
+    </div>
+    <div id="diff-list" class="diffs"></div>
+  </section>
+
+  <footer>
+    <span>Nguon du lieu: <span id="source-badge" class="badge">-</span></span>
+    <span>API: <code id="api-url"></code></span>
+  </footer>
 
   <script src="app.js"></script>
 </body>

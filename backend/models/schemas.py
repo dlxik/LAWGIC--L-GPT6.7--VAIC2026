@@ -14,20 +14,37 @@ from pydantic import BaseModel, Field
 # ---------- Phía văn bản pháp luật (P1 sinh ra, P2 nạp vào graph) ----------
 
 
-class Point(BaseModel):
+class Temporal(BaseModel):
+    """Hiệu lực gắn ở MỨC NODE, không phải mức văn bản.
+
+    Lý do: một nghị định mới thường chỉ sửa vài Điểm của nghị định cũ, phần còn
+    lại vẫn sống. Gắn hiệu lực ở LegalDocument thì không diễn tả được trạng thái
+    thật "Điểm a chết, Điểm b còn sống" -> query time-travel gãy.
+
+    Quy tắc: node sâu nhất giữ sự thật. Điều chỉ có text (không Khoản/Điểm) thì
+    đọc hiệu lực ở Điều; có Khoản/Điểm thì đọc ở tầng sâu nhất.
+
+    effective_to = None nghĩa là còn hiệu lực.
+    """
+
+    effective_from: str  # ISO date
+    effective_to: str | None = None
+
+
+class Point(Temporal):
     point_id: str  # "nd168-d5-k2-a"
     letter: str  # "a"
     text: str
 
 
-class Clause(BaseModel):
+class Clause(Temporal):
     clause_id: str  # "nd168-d5-k2"
     number: int
     text: str
     points: list[Point] = Field(default_factory=list)
 
 
-class Article(BaseModel):
+class Article(Temporal):
     article_id: str  # "nd168-d5"
     number: int
     heading: str

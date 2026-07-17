@@ -45,7 +45,7 @@ def _select_posts(n_threads: int | None) -> list[dict]:
     return [p for _, thread in chosen for p in thread]
 
 
-def run(n_threads: int | None, as_of: str | None) -> dict:
+def run(n_threads: int | None, as_of: str | None, window_hours: int | None = None) -> dict:
     posts = _select_posts(n_threads)
     print(f"  [1/5] Phân loại {len(posts)} post ({'toàn bộ' if n_threads is None else f'{n_threads} luồng'})...")
     classified = classifier.classify_posts(posts)
@@ -92,8 +92,8 @@ def run(n_threads: int | None, as_of: str | None) -> dict:
     print(f"  [4/5] Gom cụm hiểu nhầm...")
     misconceptions = misinformation.cluster_misconceptions(claims)
 
-    print(f"  [5/5] Phát hiện trend (as_of={as_of or 'tự động'})...")
-    trends = misinformation.detect_trends(misconceptions, as_of=as_of)
+    print(f"  [5/5] Phát hiện trend (as_of={as_of or 'tự động'}, window={window_hours or 'mặc định'}h)...")
+    trends = misinformation.detect_trends(misconceptions, as_of=as_of, window_hours=window_hours)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "claims_labeled.json").write_text(
@@ -134,10 +134,13 @@ def main() -> None:
     parser.add_argument("--threads", type=int, default=15, help="số luồng tranh luận (mặc định 15)")
     parser.add_argument("--all", action="store_true", help="chạy toàn bộ post (đắt)")
     parser.add_argument("--as-of", default=None, help="mốc thời gian tính trend, vd 2025-12-15")
+    parser.add_argument("--window", type=int, default=None,
+                        help="cửa sổ trend (giờ). Mặc định 48h thường TRỐNG vì post cũ (2025) "
+                             "so với ngày demo — dùng ~720 (30 ngày) neo vào giai đoạn sôi động")
     args = parser.parse_args()
 
     n = None if args.all else args.threads
-    _print_summary(run(n, args.as_of))
+    _print_summary(run(n, args.as_of, args.window))
 
 
 if __name__ == "__main__":

@@ -103,19 +103,20 @@ def test_retrieval_recall_on_gold_stays_above_floor(monkeypatch):
 
 
 class FakeLLM:
-    def __init__(self, picks):
-        self.picks = picks
+    def __init__(self, node_ids, confidence=0.9):
+        self.node_ids = node_ids
+        self.confidence = confidence
         self.last_prompt = None
 
     def extract(self, prompt, schema):
         self.last_prompt = prompt
-        return schema(picks=self.picks)
+        return schema(node_ids=self.node_ids, confidence=self.confidence)
 
 
 @pytest.fixture
 def fake_llm(monkeypatch):
-    def install(picks):
-        fake = FakeLLM(picks)
+    def install(node_ids, **kw):
+        fake = FakeLLM(node_ids, **kw)
         monkeypatch.setattr(linker.llm, "extract", fake.extract)
         return fake
 
@@ -123,7 +124,7 @@ def fake_llm(monkeypatch):
 
 
 def test_link_returns_citation_for_valid_pick(fake_llm):
-    fake_llm([{"node_id": "tncn2025-d7-k1", "confidence": 0.9}])
+    fake_llm(["tncn2025-d7-k1"], confidence=0.9)
     cites = linker.link_claim("doanh thu 500 triệu không phải nộp thuế", "nguong_doanh_thu")
 
     assert len(cites) == 1
@@ -138,10 +139,7 @@ def test_hallucinated_node_id_dropped(fake_llm):
 
     Claim phải có ứng viên thật, nhưng LLM cố tình chọn cả một node ma.
     """
-    fake_llm([
-        {"node_id": "tncn2025-d7-k1", "confidence": 0.9},
-        {"node_id": "nd168-d5-k2-a", "confidence": 0.9},  # node ma của đề tài cũ
-    ])
+    fake_llm(["tncn2025-d7-k1", "nd168-d5-k2-a"])  # node ma của đề tài cũ
     cites = linker.link_claim("doanh thu 500 triệu không phải nộp thuế")
     ids = [c["node_id"] for c in cites]
 

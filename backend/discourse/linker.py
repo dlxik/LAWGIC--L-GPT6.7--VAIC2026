@@ -48,15 +48,16 @@ USE_EMBEDDINGS = True
 # ---------- Bước 3 output ----------
 
 
-class _Pick(BaseModel):
-    node_id: str
-    confidence: float = Field(ge=0, le=1)
-
-
 class _LinkResult(BaseModel):
-    """LLM chọn node nào trong danh sách ứng viên. Model nội bộ, không đụng schemas.py."""
+    """LLM chọn node nào trong danh sách ứng viên. Model nội bộ, không đụng schemas.py.
 
-    picks: list[_Pick] = Field(default_factory=list)
+    Schema PHẲNG (list[str], không lồng object): backend tool-calling của P4 hay trả
+    picks thành list chuỗi khi schema lồng -> validate lỗi. Phẳng thì mọi backend đều
+    trả đúng. Confidence để một số chung, không cần per-node cho demo.
+    """
+
+    node_ids: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=0.8, ge=0, le=1)
 
 
 # ---------- Bước 1: TF-IDF retrieval ----------
@@ -233,10 +234,6 @@ def _to_citation(node_id: str, confidence: float, nodes: dict) -> dict:
     }
 
 
-def _pick_field(pick, name):
-    return getattr(pick, name) if hasattr(pick, name) else pick[name]
-
-
 def link_claim(claim_text: str, topic: str = "") -> list[dict]:
     """Trả list[Citation] cho một claim. [] nếu không tìm được căn cứ.
 
@@ -251,17 +248,17 @@ def link_claim(claim_text: str, topic: str = "") -> list[dict]:
         f"(chủ đề: {topic or 'không rõ'})\n\n"
         f"Dưới đây là các Điều/Khoản/Điểm ỨNG VIÊN. Chọn (các) node mà claim này "
         f"THỰC SỰ nói tới — node làm căn cứ để kết luận claim đúng hay sai. "
-        f"Chỉ chọn trong danh sách, KHÔNG bịa node_id. Nếu không node nào liên quan, "
-        f"trả picks rỗng.\n\n"
+        f"Chỉ chọn trong danh sách, KHÔNG bịa node_id. Trả về node_ids là danh sách "
+        f"mã node (chuỗi). Nếu không node nào liên quan, trả node_ids rỗng.\n\n"
         f"{_render_candidates(candidates, nodes)}"
     )
 
     result = llm.extract(prompt, _LinkResult)
 
     valid = set(candidates)
-    citations = []
-    for pick in getattr(result, "picks", []):
-        node_id = _pick_field(pick, "node_id")
-        if node_id in valid:  # LLM bịa node_id ngoài danh sách -> drop
-            citations.append(_to_citation(node_id, _pick_field(pick, "confidence"), nodes))
-    return citations
+    # LLM bịa node_id ngoài danh sách ứng viên -> drop (lớp chặn của P3).
+    return [
+        _to_citation(node_id, result.confidence, nodes)
+        for node_id in result.node_ids
+        if node_id in valid
+    ]

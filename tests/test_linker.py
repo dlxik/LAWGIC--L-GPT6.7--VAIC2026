@@ -13,6 +13,17 @@ import pytest
 from backend.discourse import linker
 
 
+@pytest.fixture(autouse=True)
+def _offline_retrieval(monkeypatch):
+    """Mọi test trong file này chạy TF-IDF thuần (không gọi embedding API).
+
+    Test kiểm LOGIC linking, không kiểm chất lượng embedding. Để USE_EMBEDDINGS=True
+    thì mỗi test đụng mạng -> chậm, treo khi cache phải dựng lại, không tái lập.
+    Đường embedding được đo riêng bằng script, không phải trong unit test.
+    """
+    monkeypatch.setattr(linker, "USE_EMBEDDINGS", False)
+
+
 # ---------- Bước 1: TF-IDF retrieval ----------
 
 

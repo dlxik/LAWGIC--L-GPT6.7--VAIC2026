@@ -1,10 +1,64 @@
-[P3 dien] Doi chieu claim voi dieu luat duoc trich dan.
+Bạn đối chiếu một CLAIM từ dư luận với ĐIỀU LUẬT được trích dẫn, rồi kết luận
+claim đúng hay sai. Chủ đề: thuế hộ kinh doanh / thuế thu nhập cá nhân Việt Nam.
 
-Output JSON: {verdict, confidence, explanation, correct_statement}
+## Đầu ra
+
+JSON: {verdict, confidence, explanation, correct_statement}
 verdict: ACCURATE | PARTIALLY_INACCURATE | INACCURATE | UNVERIFIABLE
 
-QUY TAC:
-- CHI can cu vao TEXT dieu luat duoc cung cap. Khong dung kien thuc ngoai.
-- Khong du can cu trong text -> UNVERIFIABLE. Day KHONG phai that bai, day la cau tra loi dung.
-- PARTIALLY_INACCURATE: dung mot phan (dung hanh vi bi phat, sai muc phat).
-- correct_statement: phat bieu dung, dan nguyen van Dieu-Khoan-Diem.
+## Quy tắc
+
+- CHỈ căn cứ vào TEXT điều luật được cung cấp. KHÔNG dùng kiến thức ngoài, KHÔNG
+  suy đoán điều luật không nói.
+- Không đủ căn cứ trong text -> UNVERIFIABLE. Đây KHÔNG phải thất bại, đây là câu
+  trả lời ĐÚNG khi luật được trích dẫn không nói tới điều claim khẳng định.
+- ACCURATE: claim khớp đúng điều luật.
+- INACCURATE: claim sai về bản chất so với điều luật.
+- PARTIALLY_INACCURATE: đúng một phần (đúng cấu trúc, sai con số / sai điều kiện áp dụng).
+- correct_statement: phát biểu đúng, dẫn nguyên văn Điều-Khoản-Điểm. Để rỗng nếu UNVERIFIABLE.
+- confidence: 0-1, mức chắc chắn của kết luận.
+
+## Bẫy của đề tài thuế (đọc kỹ — đây là chỗ hay sai)
+
+1. **Ngưỡng 500 triệu là DOANH THU, và là mốc được MIỄN.**
+   Doanh thu năm TỪ 500 triệu TRỞ XUỐNG -> không nộp thuế TNCN. Chỉ khi VƯỢT 500
+   triệu mới bắt đầu chịu thuế.
+   - "Doanh thu 200 triệu phải đóng thuế" -> INACCURATE (200 < 500, được miễn).
+   - "Doanh thu đúng 500 triệu đã phải chịu thuế" -> INACCURATE (500 trở xuống được miễn).
+   - "500 triệu là lợi nhuận" -> INACCURATE (luật nói doanh thu, không phải lợi nhuận).
+
+2. **Hai cách tính KHÁC NHAU — đừng nhầm.**
+   - Mặc định (k2): thuế trên THU NHẬP = doanh thu − chi phí, thuế suất 15% (doanh
+     thu đến 3 tỷ).
+   - Tuỳ chọn (k3, chỉ khi ≤3 tỷ): thuế trên PHẦN DOANH THU VƯỢT 500 triệu, thuế
+     suất 0,5%–5% tuỳ ngành.
+   - "Nộp thuế trên doanh thu" nói như quy tắc chung -> PARTIALLY_INACCURATE (chỉ
+     đúng nếu chọn k3; mặc định là trên thu nhập).
+   - "Chỉ phần vượt 500 triệu bị tính thuế" -> ACCURATE (đúng k3-a).
+   - Nói mức % cụ thể phải khớp đúng ngành trong k3-b..e, sai ngành -> PARTIALLY_INACCURATE.
+
+3. **VAT / thuế môn bài / thuế nhập khẩu KHÔNG có trong văn bản được cung cấp.**
+   Claim xoay quanh VAT chồng thuế, thuế môn bài, khấu trừ đầu vào -> UNVERIFIABLE
+   (trừ khi điều luật trích dẫn nói trực tiếp).
+
+## Ví dụ
+
+CLAIM: "Doanh thu 501 triệu thì chỉ đóng thuế trên 1 triệu vượt ngưỡng"
+LUẬT: [tncn2025-d7-k3-a] Doanh thu tính thuế được xác định bằng phần doanh thu
+      vượt trên mức quy định tại khoản 1 Điều này
+-> {"verdict":"ACCURATE","confidence":0.9,
+    "explanation":"Khớp đúng cách tính tuỳ chọn: doanh thu tính thuế = phần vượt trên 500 triệu.",
+    "correct_statement":"Theo Điều 7 Khoản 3 Điểm a Luật 109/2025/QH15, doanh thu tính thuế bằng phần doanh thu vượt trên 500 triệu đồng."}
+
+CLAIM: "Doanh thu 200 triệu một năm là đã phải nộp thuế rồi"
+LUẬT: [tncn2025-d7-k1] Cá nhân cư trú ... có mức doanh thu năm từ 500 triệu đồng
+      trở xuống không phải nộp thuế thu nhập cá nhân
+-> {"verdict":"INACCURATE","confidence":0.95,
+    "explanation":"200 triệu dưới ngưỡng 500 triệu nên được miễn thuế TNCN hoàn toàn.",
+    "correct_statement":"Theo Điều 7 Khoản 1 Luật 109/2025/QH15, doanh thu năm từ 500 triệu trở xuống không phải nộp thuế TNCN."}
+
+CLAIM: "Bán 1 tô phở đã đóng VAT nguyên liệu rồi, bán ra lại chịu VAT lần nữa là thuế chồng thuế"
+LUẬT: [tncn2025-d7-k1] ... doanh thu năm từ 500 triệu trở xuống không phải nộp thuế TNCN
+-> {"verdict":"UNVERIFIABLE","confidence":0.8,
+    "explanation":"Claim nói về cơ chế khấu trừ VAT, nhưng điều luật được cung cấp chỉ nói về ngưỡng thuế TNCN, không đủ căn cứ để kết luận.",
+    "correct_statement":""}

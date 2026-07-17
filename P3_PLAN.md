@@ -9,6 +9,30 @@
 > `scripts/fetch_social_posts.py` **không còn là việc của P3** — Quân đã làm xong, bàn giao
 > ở [`crawl_docs.md`](crawl_docs.md). Đọc file đó trước khi đọc file này.
 
+## Trạng thái (cập nhật)
+
+| Bước | Trạng thái | Ghi chú |
+|---|---|---|
+| classifier + prompt topic | ✅ xong, 14 test | gộp luồng, enum đóng, custom_id=thread_id |
+| gold set | ✅ 48/50 claim, LLM nháp | **cần soát tay** trước khi tin số — xem cảnh báo dưới |
+| `show_law.py` / `show_thread.py` / `make_worksheet.py` / `check_gold.py` | ✅ | bàn gắn nhãn |
+| linker (TF-IDF + graph expand) | ✅ xong, 10 test | recall gold **63%** — giới hạn, xem dưới |
+| misinformation (verdict/cluster/trend) | ✅ xong, 14 test | cluster char n-gram, trend neo `as_of` |
+| run_eval | ✅ xong, 8 test | chạy được end-to-end (oracle), verdict+citation tách riêng |
+| **chạy số THẬT** | ⛔ **chặn** | thiếu `.env` + `core/llm.py` của P4 còn stub |
+
+**Hai thứ đang chặn con số thật:**
+1. Không có `.env` → không có `ANTHROPIC_API_KEY`. Hỏi team ai giữ key.
+2. `backend/core/llm.py` của Nguyên vẫn 4 `NotImplementedError`. P3 đã code theo
+   interface + test bằng fake nên KHÔNG chặn code, nhưng chặn `python eval/run_eval.py`.
+
+**Giới hạn đã biết của linker (ghi để trả lời BGK, không giấu):**
+Retrieval recall trên gold = 63%: với 37% claim, TF-IDF không kéo được đúng điều
+luật vào ứng viên vì claim nói con số này (200 triệu) mà căn cứ đúng là ngưỡng
+khác (500 triệu) — liên quan về NGHĨA nhưng ngược về CHỮ. Đây là trần trên của
+citation_accuracy khi chưa có LLM chọn. Cách nâng: thêm embedding ngữ nghĩa
+(sentence-transformers) thay TF-IDF — hướng phát triển, không kịp trong 24h.
+
 ## Giao nộp cuối
 
 1. **3.321 post đã gắn nhãn** → `data/processed/posts_labeled/`. Post thô đã có sẵn.

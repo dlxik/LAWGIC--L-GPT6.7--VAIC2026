@@ -1,13 +1,236 @@
-"""[P3] Lien ket claim <-> Dieu/Khoan/Diem. Hybrid, KHONG phai vector RAG thuan.
+"""[P3] Liên kết claim <-> Điều/Khoản/Điểm. Hybrid, KHÔNG phải vector RAG thuần.
 
-  1. BM25/vector lay top-K Diem ung vien
-  2. Mo rong theo graph: Diem -> Khoan cha -> van ban lien quan -> SUPERSEDED_BY
-  3. LLM chon Diem dung nhat + confidence
+  1. Lấy ứng viên: TF-IDF trên text các node (local, không cần Neo4j, tái lập được)
+  2. Mở rộng theo graph: Điểm -> Khoản cha -> Điều -> đi SUPERSEDED_BY cả hai chiều
+  3. LLM chọn Điểm đúng nhất + confidence
 
-Buoc 2 la ly do dung graph database. Ghi ro vao slide.
-Output: list[Citation]
+BƯỚC 2 LÀ LÝ DO DÙNG GRAPH DATABASE. Ghi rõ vào slide.
+
+  Tin đồn thuế bám NGƯỠNG CŨ. Điểm khớp text nhất thường là Điểm của luật cũ
+  (qlt2019), nhưng Điểm ĐÚNG để trích dẫn là Điểm luật mới (qlt2025/tncn2025).
+  Vector store trả về Điểm giống nhất về mặt chữ -> trả nhầm luật cũ. Chỉ có cạnh
+  SUPERSEDED_BY mới bắc được cầu sang Điểm mới. Đây là chỗ vector thuần bó tay.
+
+HAI BACKEND CHO BƯỚC 2 (interface link_claim() KHÔNG đổi):
+  - Neo4j sống  -> point_history() đi đúng cạnh SUPERSEDED_BY (P2 tạo bằng diffing)
+  - Neo4j chưa lên -> fallback theo doc-level `replaces` trong data/processed/*.json
+    (yếu hơn: chỉ biết "văn bản A thay B", không biết Điểm nào ghép Điểm nào), đủ
+    để P3 chạy trước khi graph của Linh sẵn sàng. Không đứng chờ.
+
+Output: list[Citation] (schemas.py). node_id PHẢI khớp node có thật — LLM bịa thì drop.
 """
 
+from __future__ import annotations
 
-def link_claim(claim_text: str, topic: str) -> list[dict]:
-    raise NotImplementedError
+import re
+import sys
+from functools import lru_cache
+from pathlib import Path
+
+from pydantic import BaseModel, Field
+
+from backend.core import llm
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.show_law import load_nodes  # noqa: E402
+
+TOP_K = 8            # số node lấy từ TF-IDF trước khi mở rộng
+FAMILY_ARTICLES = 2  # mở rộng toàn văn N Điều NHIỀU HIT NHẤT (Điều thật sự liên quan)
+MAX_CANDIDATES = 55  # trần số ứng viên gửi LLM: đủ recall, không đắt vô lý
+SUCCESSOR_DOCS = {"qlt2019": "qlt2025"}  # doc cũ -> doc thay thế (đọc từ replaces)
+
+
+# ---------- Bước 3 output ----------
+
+
+class _Pick(BaseModel):
+    node_id: str
+    confidence: float = Field(ge=0, le=1)
+
+
+class _LinkResult(BaseModel):
+    """LLM chọn node nào trong danh sách ứng viên. Model nội bộ, không đụng schemas.py."""
+
+    picks: list[_Pick] = Field(default_factory=list)
+
+
+# ---------- Bước 1: TF-IDF retrieval ----------
+
+
+def _tokenize(text: str) -> str:
+    """Chuẩn hoá thô cho TF-IDF tiếng Việt: thường hoá, bỏ ký tự lạ.
+
+    Không tách từ tiếng Việt (cần thư viện ngoài) — TF-IDF theo word n-gram của
+    sklearn trên token trắng đã đủ tốt cho corpus 1.821 node.
+    """
+    text = text.lower()
+    text = re.sub(r"[^0-9a-zàáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệ"
+                  r"ìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ\s]", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+@lru_cache(maxsize=1)
+def _index():
+    """Dựng TF-IDF một lần. Trả (vectorizer, matrix, node_ids, nodes_dict).
+
+    lru_cache: eval gọi link_claim() ~48 lần, dựng lại index mỗi lần thì phí.
+    """
+    from sklearn.feature_extraction.text import TfidfVectorizer
+
+    nodes = load_nodes()
+    # Chỉ index node có text thật; Điều rỗng (chỉ heading) vẫn giữ trong nodes để
+    # bước 2 lấy cha.
+    indexable = [(nid, n) for nid, n in nodes.items() if n["text"].strip()]
+    node_ids = [nid for nid, _ in indexable]
+    corpus = [_tokenize(n["text"]) for _, n in indexable]
+
+    vectorizer = TfidfVectorizer(ngram_range=(1, 2), min_df=1)
+    matrix = vectorizer.fit_transform(corpus)
+    return vectorizer, matrix, node_ids, nodes
+
+
+def _retrieve(claim_text: str, k: int) -> list[str]:
+    """Top-k node_id gần nhất theo cosine TF-IDF."""
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    vectorizer, matrix, node_ids, _ = _index()
+    query = vectorizer.transform([_tokenize(claim_text)])
+    scores = cosine_similarity(query, matrix)[0]
+    ranked = scores.argsort()[::-1]
+    return [node_ids[i] for i in ranked[:k] if scores[i] > 0]
+
+
+# ---------- Bước 2: mở rộng theo graph ----------
+
+
+def _parent_ids(node_id: str) -> list[str]:
+    """Khoản cha, Điều ông của một node. Suy từ node_id: d7-k2-a -> d7-k2 -> d7."""
+    parts = node_id.split("-")  # ['tncn2025', 'd7', 'k2', 'a']
+    return ["-".join(parts[:cut]) for cut in range(len(parts) - 1, 1, -1)]
+
+
+def _article_id(node_id: str) -> str:
+    """Điều chứa node: d7-k2-a -> tncn2025-d7. Node đã ở mức Điều thì trả chính nó."""
+    parts = node_id.split("-")  # ['tncn2025', 'd7', ...]
+    return "-".join(parts[:2])
+
+
+def _family_expand(node_ids: list[str], nodes: dict) -> list[str]:
+    """Thêm toàn văn Điều NHIỀU HIT NHẤT: Khoản + Điểm anh em cùng Điều.
+
+    Lý do: claim nói 'doanh thu 200 triệu phải đóng thuế' khớp text với Khoản 3
+    (cách tính) nhưng căn cứ ĐÚNG là Khoản 1 (ngưỡng miễn) — hai Khoản anh em trong
+    cùng Điều 7. TF-IDF một mình không bắc được vì con số claim (200) khác luật (500).
+    Đi cạnh HAS_CLAUSE/HAS_POINT để kéo cả họ Điều vào cho LLM chọn.
+
+    Chọn Điều theo SỐ HIT trong retrieval, không theo vị trí: Điều mà nhiều ứng viên
+    cùng trỏ tới là Điều thật sự liên quan. Chỉ mở FAMILY_ARTICLES Điều — mở hết thì
+    một claim chạm Điều lớn của qlt2019 (152 điều) kéo vào hàng trăm node, đắt và loãng.
+    """
+    from collections import Counter
+
+    hits = Counter(_article_id(nid) for nid in node_ids)
+    top_articles = {a for a, _ in hits.most_common(FAMILY_ARTICLES)}
+
+    expanded = list(node_ids)
+    for nid in sorted(nodes):
+        if _article_id(nid) in top_articles and nid not in expanded:
+            expanded.append(nid)
+    return expanded
+
+
+def _graph_expand(node_ids: list[str], nodes: dict) -> list[str]:
+    """Thêm node liên quan qua SUPERSEDED_BY. Đây là bước ăn tiền.
+
+    Neo4j sống -> point_history() đi đúng cạnh Điểm<->Điểm.
+    Không -> fallback doc-level: node ở văn bản cũ thì kéo node cùng chủ đề ở
+    văn bản thay thế vào làm ứng viên (để LLM có cơ hội chọn luật mới).
+    """
+    expanded = list(node_ids)
+
+    try:
+        from backend.graph import connection
+        from backend.graph.diffing import point_history
+
+        if connection.healthcheck():
+            for nid in node_ids:
+                if nodes.get(nid, {}).get("label") == "Point":
+                    for step in point_history(nid):
+                        if step["point_id"] not in expanded:
+                            expanded.append(step["point_id"])
+            return expanded
+    except Exception:
+        pass  # Neo4j chưa lên -> fallback dưới
+
+    # Fallback doc-level: tin đồn bám luật cũ -> kéo ứng viên từ luật mới.
+    for nid in node_ids:
+        doc_id = nodes.get(nid, {}).get("doc_id")
+        successor = SUCCESSOR_DOCS.get(doc_id)
+        if successor:
+            for extra in _retrieve(nodes[nid]["text"], 3):
+                if nodes.get(extra, {}).get("doc_id") == successor and extra not in expanded:
+                    expanded.append(extra)
+    return expanded
+
+
+def _candidate_set(claim_text: str) -> tuple[list[str], dict]:
+    _, _, _, nodes = _index()
+    retrieved = _retrieve(claim_text, TOP_K)
+    family = _family_expand(retrieved, nodes)  # anh em cùng Điều
+    expanded = _graph_expand(family, nodes)    # bắc cầu SUPERSEDED_BY sang luật mới
+    return expanded[:MAX_CANDIDATES], nodes
+
+
+# ---------- Bước 3: LLM chọn ----------
+
+
+def _render_candidates(node_ids: list[str], nodes: dict) -> str:
+    return "\n\n".join(
+        f"[{nid}] {nodes[nid]['display']}\n{nodes[nid]['text'][:280]}"
+        for nid in node_ids
+    )
+
+
+def _to_citation(node_id: str, confidence: float, nodes: dict) -> dict:
+    node = nodes[node_id]
+    return {
+        "node_id": node_id,
+        "node_label": node["label"],
+        "display": node["display"],
+        "text": node["text"],
+        "confidence": confidence,
+    }
+
+
+def _pick_field(pick, name):
+    return getattr(pick, name) if hasattr(pick, name) else pick[name]
+
+
+def link_claim(claim_text: str, topic: str = "") -> list[dict]:
+    """Trả list[Citation] cho một claim. [] nếu không tìm được căn cứ.
+
+    Không đoán bừa: không có ứng viên -> [], để verdict thành UNVERIFIABLE.
+    """
+    candidates, nodes = _candidate_set(claim_text)
+    if not candidates:
+        return []
+
+    prompt = (
+        f"Claim từ dư luận: {claim_text!r}\n"
+        f"(chủ đề: {topic or 'không rõ'})\n\n"
+        f"Dưới đây là các Điều/Khoản/Điểm ỨNG VIÊN. Chọn (các) node mà claim này "
+        f"THỰC SỰ nói tới — node làm căn cứ để kết luận claim đúng hay sai. "
+        f"Chỉ chọn trong danh sách, KHÔNG bịa node_id. Nếu không node nào liên quan, "
+        f"trả picks rỗng.\n\n"
+        f"{_render_candidates(candidates, nodes)}"
+    )
+
+    result = llm.extract(prompt, _LinkResult)
+
+    valid = set(candidates)
+    citations = []
+    for pick in getattr(result, "picks", []):
+        node_id = _pick_field(pick, "node_id")
+        if node_id in valid:  # LLM bịa node_id ngoài danh sách -> drop
+            citations.append(_to_citation(node_id, _pick_field(pick, "confidence"), nodes))
+    return citations

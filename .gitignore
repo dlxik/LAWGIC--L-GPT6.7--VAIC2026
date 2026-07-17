@@ -4,25 +4,50 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
-data/raw/*
-data/processed/*
-!data/**/.gitkeep
-
-# Ngoại lệ: 3 văn bản demo + JSON parse ra PHẢI vào git.
-# Văn bản QPPL là công khai, không vướng bản quyền. Tổng ~1,4 MB.
-# Không commit thì P2 `git pull` về không thấy gì -> mốc bàn giao giờ 8 vỡ,
-# hoặc P2 phải tự tải lại -> dán khác P1 -> node_id lệch -> graph hỏng.
-!data/raw/qlt2019.docx
-!data/raw/qlt2025.docx
-!data/raw/tncn2025.docx
-!data/processed/qlt2019.json
-!data/processed/qlt2025.json
-!data/processed/tncn2025.json
-!data/raw/social_posts.json
 node_modules/
 .DS_Store
 
-# P3 scratch (eval diagnostics)
+# ---------------------------------------------------------------------------
+# Dữ liệu: mặc định KHÔNG vào git (nặng, sinh lại được), trừ dữ liệu demo.
+#
+# BẪY GITIGNORE: không thể mở lại một file nằm trong thư mục đã bị loại — git
+# không buồn đi vào thư mục bị loại. Nên phải mở lại THƯ MỤC trước, rồi mới loại
+# nội dung, rồi mới mở lại đúng file cần. Thứ tự các dòng dưới là bắt buộc.
+#
+# Vì sao dữ liệu demo phải vào git: cả team pull về phải có CÙNG một bộ. Chạy
+# lại crawl/LLM ra kết quả khác -> node_id lệch -> graph mỗi máy một kiểu ->
+# không ai debug được.
+# ---------------------------------------------------------------------------
+
+# Văn bản pháp luật: .docx gốc (P1)
+data/raw/*
+!data/raw/legal_docs/
+data/raw/legal_docs/*
+!data/raw/legal_docs/*.docx
+
+# JSON đã cấu trúc hoá Điều-Khoản-Điểm (P1)
+data/processed/*
+!data/processed/legal_docs_structured/
+data/processed/legal_docs_structured/*
+!data/processed/legal_docs_structured/*.json
+
+# Entity trích bằng LLM — output extractor.py (P1). Dẫn xuất từ văn bản QPPL công
+# khai -> KHÔNG chứa dữ liệu cá nhân. Commit để P2 nạp graph mà không phải chạy
+# lại ~38 phút LLM, và để mọi người dùng CÙNG một bộ entity.
+!data/processed/entities_qlt2019.json
+!data/processed/entities_qlt2025.json
+!data/processed/entities_tncn2025.json
+
+# ⚠️ CẢNH BÁO QUYỀN RIÊNG TƯ (teammate P3 nêu, giữ nguyên):
+# File này chứa 3.321 bình luận của NGƯỜI THẬT. author_hash là GIẢ DANH, KHÔNG
+# phải ẩn danh — mở `url` rồi tìm `content` là ra tên thật. Repo đang PUBLIC.
+# Xem crawl_docs.md mục Quyền riêng tư. Cân nhắc để repo private trước khi nộp.
+!data/raw/social_posts.json
+
+!data/**/.gitkeep
+
+# P3 scratch (chẩn đoán eval — không vào git). law_embeddings.npz cũng bị loại
+# bởi data/processed/* ở trên, sinh lại bằng embeddings.build_cache().
 eval/_diag*.py
 eval/_diag*.txt
 eval/_diag_cache.json

@@ -16,9 +16,14 @@ class Settings(BaseSettings):
     neo4j_user: str = "neo4j"
     neo4j_password: str = Field(default="lawgic-dev-password")
 
-    # De trong -> SDK tu doc ANTHROPIC_API_KEY tu moi truong
+    # --- LLM. Nha cung cap tuong thich OpenAI (FPT AI Marketplace). ---
+    # Doi nha cung cap = doi 3 bien nay, khong dong vao code.
+    llm_base_url: str = "https://mkp-api.fptcloud.com"
+    llm_api_key: str | None = None
+    llm_model: str = "gpt-oss-20b"
+
+    # Giu lai cho tuong thich nguoc. KHONG con duoc doc o dau.
     anthropic_api_key: str | None = None
-    llm_model: str = "claude-opus-4-8"
     llm_effort: str = "high"
 
     raw_legal_dir: Path = ROOT / "data" / "raw" / "legal_docs"

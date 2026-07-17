@@ -105,23 +105,35 @@ RETURN doc.doc_number AS doc, d.number AS dieu, k.number AS khoan,
 Q2_LAW_AS_OF = """
 // Time-travel — thứ RAG vector không làm được. Câu quan trọng nhất.
 //
-// PENALIZES là OPTIONAL có chủ đích. "Luật nào có hiệu lực ngày X" chỉ cần cây
-// Điều-Khoản-Điểm (parser của P1); Penalty là output của extractor (cũng P1,
-// nhưng xong muộn hơn). MATCH bắt buộc sẽ khiến câu này trả rỗng cho tới khi
-// P1 xong extractor -> P2 bị chặn vô cớ, và lỗi im lặng chứ không báo gì.
-MATCH (p:Point)
-WHERE p.effective_from <= date($date)
-  AND (p.effective_to IS NULL OR p.effective_to > date($date))
+// TRẢ VỀ NODE LÁ, không phải chỉ Point. "Node sâu nhất giữ sự thật":
+// quy định nằm ở Điểm nếu Khoản có Điểm, nằm ở Khoản nếu Khoản không có Điểm,
+// nằm ở Điều nếu Điều không có Khoản.
+//
+// LỖI ĐÃ XẢY RA: bản đầu chỉ MATCH (p:Point) -> bỏ sót 53% nội dung văn bản.
+// Đo trên dữ liệu thật: 775/988 Khoản KHÔNG có Điểm nào (luật Việt Nam thật
+// thì text của Khoản chính là quy định), 16 Điều không có Khoản. Điều 89
+// "Hóa đơn điện tử" của Luật 2019 có 5 Khoản, 0 Điểm -> vô hình hoàn toàn.
+// Mock không lộ ra vì fixture cho mọi Khoản đều có Điểm.
+MATCH (n)
+WHERE (n:Point OR n:Clause OR n:Article)
+  AND NOT (n)-[:HAS_POINT|HAS_CLAUSE]->()   // chỉ lấy node lá
+  AND n.effective_from <= date($date)
+  AND (n.effective_to IS NULL OR n.effective_to > date($date))
   AND ($topic IS NULL OR EXISTS {
-      MATCH (p)<-[:HAS_POINT]-(:Clause)<-[:HAS_CLAUSE]-(:Article)
-            <-[:HAS_ARTICLE]-(doc:LegalDocument)
+      MATCH (n)<-[:HAS_POINT|HAS_CLAUSE|HAS_ARTICLE*0..3]-(doc:LegalDocument)
       WHERE doc.title CONTAINS $topic
   })
-OPTIONAL MATCH (p)-[:PENALIZES]->(pen:Penalty)
-RETURN p.point_id AS point_id, p.text AS text,
-       pen.type AS penalty_type, pen.duration_months AS months,
-       pen.is_permanent AS is_permanent
-ORDER BY p.point_id
+// collect() BẮT BUỘC, không được trả pen.type thẳng. Một node thường có nhiều
+// Penalty (phạt tiền + tước bằng) -> mỗi Penalty đẻ một dòng -> cùng một node
+// trả về 2-3 lần. Lỗi này ẩn hoàn toàn khi chưa có entity (0 penalty = 1 dòng
+// null), và chỉ nổ khi P1 giao dữ liệu thật. collect() gộp về đúng 1 dòng/node.
+OPTIONAL MATCH (n)-[:PENALIZES]->(pen:Penalty)
+RETURN coalesce(n.point_id, n.clause_id, n.article_id) AS point_id,
+       labels(n)[0] AS level,
+       n.text AS text,
+       collect(DISTINCT pen{.type, .min_amount, .max_amount,
+                            .duration_months, .is_permanent}) AS penalties
+ORDER BY point_id
 """
 
 Q3_TRENDING_MISCONCEPTIONS = """

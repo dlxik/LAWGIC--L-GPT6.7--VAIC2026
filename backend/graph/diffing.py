@@ -25,21 +25,54 @@ from typing import Any
 
 from backend.graph import connection
 
-# Ngưỡng ghép cặp theo text khi khớp cấu trúc thất bại.
+# Ngưỡng ghép cặp theo text khi khớp cấu trúc thất bại (bắt Điểm bị đánh số lại).
 #
-# CAO CÓ CHỦ ĐÍCH. Văn bản luật tiếng Việt rất khuôn mẫu — hai Điểm KHÔNG liên
-# quan gì nhau vẫn đạt sim ~0.6 chỉ vì cùng dùng "Điều khiển xe...; phạt tiền
-# từ X đồng đến Y đồng". Đó là nhiễu nền, không phải tín hiệu.
+# 0.75 lấy từ số đo trên qlt2019 -> qlt2025, không phải đoán.
 #
-# Ghép theo text chỉ nhắm đúng một việc: bắt Điểm bị ĐÁNH SỐ LẠI, tức text gần
-# như y nguyên mà đổi vị trí (sim ~0.95+). Nếu đổi cả text lẫn vị trí thì không
-# đoán được — báo REMOVED + ADDED trung thực hơn là ghép bừa một cặp sai.
+# Với mỗi Điểm cũ chưa ghép, lấy bạn giống nhất trong 297 Điểm mới. Phân bố:
+#     0.3-0.4:  77
+#     0.4-0.5: 195   <- đỉnh = SÀN NHIỄU. Hai Điểm luật thuế bất kỳ đều giống
+#                       nhau ~0.45 vì cùng khuôn mẫu hành chính.
+#     0.5-0.6:  87   <- nhiều khả năng là max-của-nhiễu: lấy max trên 297 ứng
+#                       viên thì nhiễu bị thổi lên. KHÔNG tin vùng này.
+#     0.6-0.7:  27
+#     0.7-0.8:  11   <- kiểm tay: đều là cặp thật
+#     0.8-0.9:   5   <- kiểm tay: đều là cặp thật
 #
-# Hạ ngưỡng này xuống là mock-old-d5-k2-c bị ghép nhầm với mock-new-d5-k2-d
-# (hai hành vi hoàn toàn khác nhau). Chạy pytest tests/test_diffing.py để thấy.
-SIMILARITY_PAIR_THRESHOLD = 0.85
+# Vì sao cặp thật lại tụt xuống 0.75-0.85: luật mới đổi thuật ngữ hệ thống
+# ("Người khai thuế" -> "Người nộp thuế"), kéo similarity xuống 0.05-0.15 trên
+# toàn văn bản dù nội dung không đổi.
+#
+# Vùng xám 0.5-0.75 (khoảng 130 Điểm) là chỗ regex bó tay — để refine_with_llm()
+# xử lý nếu có thời gian. Trước mắt báo REMOVED + ADDED, thật thà hơn ghép bừa.
+SIMILARITY_PAIR_THRESHOLD = 0.75
+
+# Ngưỡng ghép ĐIỀU theo heading. Cao vì heading ngắn, khớp là khớp rõ.
+# Đo được: 29/152 Điều đạt >= 0.8, trong đó 18 cặp bằng 1.00 (heading y hệt).
+ARTICLE_HEADING_THRESHOLD = 0.8
 # Trên ngưỡng này coi như chỉ đổi chữ, không đổi nghĩa
 SIMILARITY_UNCHANGED_THRESHOLD = 0.995
+
+# Ngưỡng cho cặp khớp CẤU TRÚC (cùng Điều/Khoản/Điểm).
+#
+# LỖI ĐÃ XẢY RA — phiên bản đầu tin vị trí vô điều kiện: cùng (Điều, Khoản, Điểm)
+# là ghép ngay, không kiểm text. Chạy trên fixture mock thì không sao vì hai văn
+# bản cùng đánh số. Chạy trên dữ liệu thật thì 40/73 cặp là rác, cặp tệ nhất
+# sim=0.01 ("giấy chứng nhận đăng ký kinh doanh" ghép với "chế độ ưu tiên người
+# nộp thuế") — chỉ vì cùng nằm ở Điều 34 Khoản 1 Điểm c.
+#
+# Nguyên nhân: qlt2025 thay thế TOÀN BỘ qlt2019 và đánh số lại từ đầu (152 Điều
+# -> 53 Điều). "Điều 5 Khoản 2 Điểm a" của hai bản là hai quy định khác hẳn nhau.
+# Vị trí trùng là TRÙNG HỢP, không phải bằng chứng.
+#
+# Ngưỡng 0.5 lấy từ số đo thật, không phải đoán. Similarity của cặp khớp cấu trúc
+# phân bố lưỡng cực rõ rệt, khoảng 0.4-0.8 hoàn toàn trống:
+#     0.0-0.4  40 cặp  <- rác do trùng vị trí
+#     0.4-0.8   0 cặp  <- khoảng trống
+#     0.8-1.0  33 cặp  <- cặp thật
+# 0.5 nằm giữa khoảng trống nên tách sạch mà vẫn rộng tay với Điểm bị viết lại
+# nhiều nhưng vẫn cùng nội dung.
+STRUCTURAL_MIN_SIMILARITY = 0.5
 
 
 # ---------------------------------------------------------------------------
@@ -78,17 +111,89 @@ def _severity(text: str) -> dict[str, Any]:
 # Bước 1 — ghép cặp
 # ---------------------------------------------------------------------------
 
-_FETCH_POINTS = """
+# Lấy NODE LÁ, không phải chỉ Point — cùng quy tắc "node sâu nhất giữ sự thật"
+# như Q2. Bản đầu chỉ lấy Point nên diffing bỏ qua 775/988 Khoản không có Điểm
+# (luật Việt Nam thật thì text của Khoản chính là quy định), làm con số REMOVED
+# bị thổi phồng và mất hẳn phần diff của hơn nửa văn bản.
+#
+# CASE chọn tầng sâu nhất có mặt: có Điểm -> Điểm; không -> Khoản; không -> Điều.
+_FETCH_LEAVES = """
 MATCH (d:LegalDocument {doc_id: $doc_id})-[:HAS_ARTICLE]->(a:Article)
-      -[:HAS_CLAUSE]->(k:Clause)-[:HAS_POINT]->(p:Point)
-RETURN p.point_id AS point_id, p.letter AS letter, p.text AS text,
-       a.number AS article, k.number AS clause
-ORDER BY a.number, k.number, p.letter
+OPTIONAL MATCH (a)-[:HAS_CLAUSE]->(k:Clause)
+OPTIONAL MATCH (k)-[:HAS_POINT]->(p:Point)
+WITH a, k, p,
+     CASE WHEN p IS NOT NULL THEN p
+          WHEN k IS NOT NULL THEN k
+          ELSE a END AS n
+WHERE NOT (n)-[:HAS_CLAUSE|HAS_POINT]->()
+RETURN DISTINCT
+       coalesce(n.point_id, n.clause_id, n.article_id) AS node_id,
+       labels(n)[0] AS level,
+       n.text AS text,
+       a.number AS article,
+       k.number AS clause,
+       coalesce(p.letter, '') AS letter
+ORDER BY article, clause, letter
+"""
+
+_FETCH_ARTICLES = """
+MATCH (d:LegalDocument {doc_id: $doc_id})-[:HAS_ARTICLE]->(a:Article)
+RETURN a.number AS number, a.heading AS heading
+ORDER BY a.number
 """
 
 
-def _fetch_points(doc_id: str) -> list[dict]:
-    return connection.run(_FETCH_POINTS, doc_id=doc_id)
+def _fetch_leaves(doc_id: str) -> list[dict]:
+    """Mọi node lá của văn bản: Điểm, hoặc Khoản-không-Điểm, hoặc Điều-không-Khoản."""
+    return connection.run(_FETCH_LEAVES, doc_id=doc_id)
+
+
+# Tên cũ, giữ cho code/test đang gọi. Giờ trả về node lá chứ không chỉ Point.
+_fetch_points = _fetch_leaves
+
+
+def _fetch_articles(doc_id: str) -> list[dict]:
+    return connection.run(_FETCH_ARTICLES, doc_id=doc_id)
+
+
+def pair_articles(old_doc_id: str, new_doc_id: str) -> dict[int, int]:
+    """Ghép Điều cũ -> Điều mới theo HEADING. Trả {số Điều cũ: số Điều mới}.
+
+    Vì sao heading chứ không phải nội dung: đo trên qlt2019 -> qlt2025,
+        theo heading      29/152 Điều khớp >= 0.8  (18 cặp sim = 1.00)
+        theo nội dung      7/152 Điều khớp >= 0.6  -> vô dụng
+    Luật mới gom và viết lại nội dung, nhưng TÊN Điều thì giữ:
+        "Ấn định thuế đối với hàng hóa xuất khẩu, nhập khẩu"  D52 -> D25
+        "Hóa đơn điện tử"                                     D89 -> D26
+
+    Đây là bước bắt buộc trước khi ghép Điểm. Ghép Điểm toàn cục là ghép 442 với
+    332 giữa biển nhiễu; ghép trong phạm vi một cặp Điều đã khớp thì vị trí Điểm
+    lại thành bằng chứng mạnh, vì đã đúng ngữ cảnh.
+    """
+    old = _fetch_articles(old_doc_id)
+    new = _fetch_articles(new_doc_id)
+
+    candidates = sorted(
+        (
+            (_similarity(o["heading"] or "", n["heading"] or ""), o, n)
+            for o in old
+            for n in new
+            if o["heading"] and n["heading"]
+        ),
+        key=lambda t: t[0],
+        reverse=True,
+    )
+
+    mapping: dict[int, int] = {}
+    used_new: set[int] = set()
+    for score, o, n in candidates:
+        if score < ARTICLE_HEADING_THRESHOLD:
+            break
+        if o["number"] in mapping or n["number"] in used_new:
+            continue
+        mapping[o["number"]] = n["number"]
+        used_new.add(n["number"])
+    return mapping
 
 
 def _similarity(a: str, b: str) -> float:
@@ -96,38 +201,61 @@ def _similarity(a: str, b: str) -> float:
 
 
 def _pair_points(
-    old_points: list[dict], new_points: list[dict]
+    old_points: list[dict],
+    new_points: list[dict],
+    article_map: dict[int, int] | None = None,
 ) -> list[tuple[dict | None, dict | None]]:
-    """Ghép Điểm cũ <-> Điểm mới.
+    """Ghép Điểm cũ <-> Điểm mới. Ba vòng, vòng nào cũng ĐÒI TEXT XÁC NHẬN.
 
-    Ưu tiên khớp cấu trúc (cùng Điều/Khoản/Điểm). Điểm nào không khớp cấu trúc
-    thì thử ghép theo độ tương đồng text — bắt trường hợp văn bản mới đánh số lại.
+      1. Khớp vị trí TRONG cặp Điều đã ghép. `article_map` dịch số Điều cũ sang
+         số Điều mới trước khi so vị trí, nên "Điều 52 Khoản 1 Điểm c" của bản cũ
+         được so với "Điều 25 Khoản 1 Điểm c" của bản mới. Vẫn phải qua ngưỡng
+         STRUCTURAL_MIN_SIMILARITY — vị trí là gợi ý, không phải bằng chứng.
+      2. Ghép theo text cho phần còn lại, toàn cục — bắt Điểm chuyển sang Điều
+         không ghép được bằng heading.
+      3. Còn dư -> REMOVED / ADDED. Không đoán bừa.
+
+    Không truyền article_map thì lùi về so vị trí thô (dùng cho văn bản sửa đổi
+    một phần, nơi hai bản giữ nguyên cách đánh số).
     """
+    article_map = article_map or {}
     pairs: list[tuple[dict | None, dict | None]] = []
 
-    def key(p: dict) -> tuple:
+    def old_key(p: dict) -> tuple:
+        # Điều cũ này tương ứng Điều nào bên bản mới? Không ghép được thì giữ
+        # nguyên số (văn bản sửa đổi một phần vẫn dùng chung cách đánh số).
+        return (article_map.get(p["article"], p["article"]), p["clause"], p["letter"])
+
+    def new_key(p: dict) -> tuple:
         return (p["article"], p["clause"], p["letter"])
 
-    new_by_key = {key(p): p for p in new_points}
+    new_by_key = {new_key(p): p for p in new_points}
     used_new: set[str] = set()
 
     unmatched_old: list[dict] = []
     for old in old_points:
-        match = new_by_key.get(key(old))
-        if match:
+        match = new_by_key.get(old_key(old))
+        # Trùng vị trí là chưa đủ — text phải xác nhận đây là cùng một quy định
+        if (
+            match
+            and match["node_id"] not in used_new
+            and _similarity(old["text"], match["text"]) >= STRUCTURAL_MIN_SIMILARITY
+        ):
             pairs.append((old, match))
-            used_new.add(match["point_id"])
+            used_new.add(match["node_id"])
         else:
             unmatched_old.append(old)
 
-    leftover_new = [p for p in new_points if p["point_id"] not in used_new]
+    leftover_new = [p for p in new_points if p["node_id"] not in used_new]
 
-    # Ghép phần còn lại theo text — chọn cặp giống nhau nhất trước
+    # Ghép phần còn lại theo text — chọn cặp giống nhau nhất trước.
+    # Chỉ ghép node CÙNG TẦNG: một Điểm không thể là bản mới của cả một Khoản.
     candidates = sorted(
         (
             (_similarity(o["text"], n["text"]), o, n)
             for o in unmatched_old
             for n in leftover_new
+            if o.get("level") == n.get("level")
         ),
         key=lambda t: t[0],
         reverse=True,
@@ -137,15 +265,15 @@ def _pair_points(
     for score, o, n in candidates:
         if score < SIMILARITY_PAIR_THRESHOLD:
             break
-        if o["point_id"] in paired_old or n["point_id"] in paired_new:
+        if o["node_id"] in paired_old or n["node_id"] in paired_new:
             continue
         pairs.append((o, n))
-        paired_old.add(o["point_id"])
-        paired_new.add(n["point_id"])
+        paired_old.add(o["node_id"])
+        paired_new.add(n["node_id"])
 
     # Còn dư: cũ -> REMOVED, mới -> ADDED
-    pairs += [(o, None) for o in unmatched_old if o["point_id"] not in paired_old]
-    pairs += [(None, n) for n in leftover_new if n["point_id"] not in paired_new]
+    pairs += [(o, None) for o in unmatched_old if o["node_id"] not in paired_old]
+    pairs += [(None, n) for n in leftover_new if n["node_id"] not in paired_new]
     return pairs
 
 
@@ -209,18 +337,23 @@ def _classify(old: dict | None, new: dict | None) -> tuple[str, float, str]:
 # Bước 3 — ghi vào graph
 # ---------------------------------------------------------------------------
 
+# Khớp cả 3 tầng: node lá có thể là Point, Clause (không Điểm) hoặc Article
+# (không Khoản). Bản đầu chỉ MATCH (:Point) nên bỏ qua hơn nửa văn bản.
 _MERGE_SUPERSEDED = """
-MATCH (old:Point {point_id: $old_id})
-MATCH (new:Point {point_id: $new_id})
+MATCH (old) WHERE old.point_id = $old_id OR old.clause_id = $old_id
+                  OR old.article_id = $old_id
+MATCH (new) WHERE new.point_id = $new_id OR new.clause_id = $new_id
+                  OR new.article_id = $new_id
 MERGE (old)-[r:SUPERSEDED_BY]->(new)
 SET r.change_type = $change_type,
     r.similarity = $similarity,
     r.effective_from = date($effective_from)
 """
 
-_CLOSE_OLD_POINT = """
-MATCH (p:Point {point_id: $point_id})
-SET p.effective_to = date($effective_to)
+_CLOSE_OLD_NODE = """
+MATCH (n) WHERE n.point_id = $node_id OR n.clause_id = $node_id
+              OR n.article_id = $node_id
+SET n.effective_to = date($effective_to)
 """
 
 
@@ -241,7 +374,12 @@ def diff_documents(
         raise ValueError(f"không tìm thấy văn bản {new_doc_id}")
     cutover = new_doc[0]["eff"]
 
-    pairs = _pair_points(_fetch_points(old_doc_id), _fetch_points(new_doc_id))
+    # Ghép Điều trước, rồi mới ghép node lá trong phạm vi cặp Điều đã khớp.
+    # Bỏ bước này là ghép hàng trăm node giữa biển nhiễu.
+    article_map = pair_articles(old_doc_id, new_doc_id)
+    pairs = _pair_points(
+        _fetch_leaves(old_doc_id), _fetch_leaves(new_doc_id), article_map
+    )
 
     diffs: list[dict] = []
     stmts: list[tuple[str, dict]] = []
@@ -250,8 +388,12 @@ def diff_documents(
         change_type, sim, summary = _classify(old, new)
         diffs.append(
             {
-                "old_point_id": old["point_id"] if old else None,
-                "new_point_id": new["point_id"] if new else None,
+                # Tên field giữ nguyên theo contract PointDiff (P4 đang đọc).
+                # Giá trị giờ có thể là point_id, clause_id hoặc article_id —
+                # tuỳ node lá nằm ở tầng nào.
+                "old_point_id": old["node_id"] if old else None,
+                "new_point_id": new["node_id"] if new else None,
+                "level": (old or new).get("level"),
                 "change_type": change_type,
                 "similarity": round(sim, 4),
                 "summary": summary,
@@ -264,8 +406,8 @@ def diff_documents(
                 (
                     _MERGE_SUPERSEDED,
                     {
-                        "old_id": old["point_id"],
-                        "new_id": new["point_id"],
+                        "old_id": old["node_id"],
+                        "new_id": new["node_id"],
                         "change_type": change_type,
                         "similarity": round(sim, 4),
                         "effective_from": cutover,
@@ -273,10 +415,10 @@ def diff_documents(
                 )
             )
         if old:
-            # Điểm cũ hết hiệu lực từ ngày văn bản mới có hiệu lực.
-            # Thiếu bước này thì Q2 trả cả Điểm cũ lẫn Điểm mới -> sai.
+            # Node cũ hết hiệu lực từ ngày văn bản mới có hiệu lực.
+            # Thiếu bước này thì Q2 trả cả node cũ lẫn node mới -> sai.
             stmts.append(
-                (_CLOSE_OLD_POINT, {"point_id": old["point_id"], "effective_to": cutover})
+                (_CLOSE_OLD_NODE, {"node_id": old["node_id"], "effective_to": cutover})
             )
 
     if stmts:
@@ -298,18 +440,26 @@ def law_as_of(topic: str | None, date: str) -> list[dict]:
     return connection.run(Q2_LAW_AS_OF, date=date, topic=topic)
 
 
-def point_history(point_id: str) -> list[dict]:
-    """Lần theo chuỗi SUPERSEDED_BY: một Điểm đã đổi qua những bản nào."""
+def point_history(node_id: str) -> list[dict]:
+    """Lần theo chuỗi SUPERSEDED_BY: một quy định đã đổi qua những bản nào.
+
+    Nhận point_id, clause_id hoặc article_id — SUPERSEDED_BY giờ nối node lá ở
+    bất kỳ tầng nào, không chỉ Điểm.
+    """
     return connection.run(
         """
-        MATCH path = (start:Point {point_id: $point_id})-[:SUPERSEDED_BY*0..]->(p:Point)
-        RETURN p.point_id AS point_id, p.text AS text,
-               toString(p.effective_from) AS effective_from,
-               toString(p.effective_to) AS effective_to,
+        MATCH (start) WHERE start.point_id = $node_id OR start.clause_id = $node_id
+                          OR start.article_id = $node_id
+        MATCH path = (start)-[:SUPERSEDED_BY*0..]->(n)
+        RETURN coalesce(n.point_id, n.clause_id, n.article_id) AS point_id,
+               labels(n)[0] AS level,
+               n.text AS text,
+               toString(n.effective_from) AS effective_from,
+               toString(n.effective_to) AS effective_to,
                length(path) AS step
         ORDER BY step
         """,
-        point_id=point_id,
+        node_id=node_id,
     )
 
 

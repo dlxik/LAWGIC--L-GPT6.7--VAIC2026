@@ -24,7 +24,13 @@ import textwrap
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LAW_DIR = ROOT / "data" / "processed"
+# Đường dẫn theo config của P4 (P1 đổi chỗ lưu sang legal_docs_structured/ ở giờ 16).
+# Đọc từ config để nếu P1 dời tiếp thì không phải sửa nhiều chỗ.
+try:
+    from backend.core.config import get_settings
+    LAW_DIR = get_settings().structured_legal_dir
+except Exception:
+    LAW_DIR = ROOT / "data" / "processed" / "legal_docs_structured"
 DOC_IDS = ("qlt2019", "qlt2025", "tncn2025")
 
 

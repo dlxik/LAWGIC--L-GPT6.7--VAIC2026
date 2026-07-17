@@ -51,6 +51,15 @@
                   "effective_to": "2026-07-01"
                 }
               ]
+            },
+            {
+              "_WHY": "Khoản KHÔNG có Điểm nào — text của Khoản CHÍNH LÀ quy định. Dữ liệu thật: 775/988 Khoản không có Điểm. Bản đầu Q2 chỉ MATCH (p:Point) nên bỏ sót 53% nội dung văn bản, và mock cũ không lộ ra vì mọi Khoản đều có Điểm. Đừng thêm points[] vào đây.",
+              "clause_id": "mock-old-d5-k9",
+              "number": 9,
+              "text": "[GIẢ] Người điều khiển xe có trách nhiệm chấp hành hiệu lệnh của người điều khiển giao thông; phạt tiền từ 4.000.000 đồng đến 6.000.000 đồng đối với hành vi không chấp hành.",
+              "effective_from": "2020-01-01",
+              "effective_to": "2026-07-01",
+              "points": []
             }
           ]
         }
@@ -163,9 +172,11 @@
 
   "_DATE_CONVENTION": "effective_to là NỬA KHOẢNG, loại trừ: [effective_from, effective_to). effective_to = NGÀY ĐẦU TIÊN HẾT hiệu lực, không phải ngày cuối còn hiệu lực. Luật cũ hết hiệu lực khi luật mới có hiệu lực (2026-07-01), nên effective_to = 2026-07-01 chứ KHÔNG phải 2026-06-30. Ghi 06-30 là ngày 30/6 trả về rỗng — một ngày luật biến mất. Query dùng: effective_from <= date AND (effective_to IS NULL OR effective_to > date).",
 
+  "_Q2_RETURNS_LEAVES": "Q2 trả về NODE LÁ (node không có con), không phải chỉ Point. mock-old-d5-k9 là một Khoản không có Điểm -> chính nó là lá -> phải có trong kết quả. Bỏ nó khỏi list dưới đây là che mất lỗi bỏ sót 53% nội dung.",
+
   "expected_q2_law_as_of": {
-    "2026-06-15": ["mock-old-d5-k2-a", "mock-old-d5-k2-b", "mock-old-d5-k2-c"],
-    "2026-06-30": ["mock-old-d5-k2-a", "mock-old-d5-k2-b", "mock-old-d5-k2-c"],
+    "2026-06-15": ["mock-old-d5-k2-a", "mock-old-d5-k2-b", "mock-old-d5-k2-c", "mock-old-d5-k9"],
+    "2026-06-30": ["mock-old-d5-k2-a", "mock-old-d5-k2-b", "mock-old-d5-k2-c", "mock-old-d5-k9"],
     "2026-07-01": ["mock-new-d5-k2-a", "mock-new-d5-k2-b", "mock-new-d5-k2-d"],
     "2026-07-15": ["mock-new-d5-k2-a", "mock-new-d5-k2-b", "mock-new-d5-k2-d"]
   },

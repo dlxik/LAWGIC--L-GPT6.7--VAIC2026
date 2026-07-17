@@ -74,11 +74,37 @@ class LegalDocument(BaseModel):
 
 
 class PenaltyType(str, Enum):
-    FINE = "FINE"
+    """Loại chế tài. Enum này quyết định `Penalty.type` có dùng được hay không.
+
+    Lý do Penalty là NODE chứ không phải property (quyết định #5 trong
+    graph/schema.py) là để truy vấn theo `type`:
+        MATCH (p:Point)-[:PENALIZES]->(:Penalty {type: 'ENFORCEMENT'})
+    Nếu mọi chế tài đều rơi vào OTHER thì câu này trả về hổ lốn -> node Penalty
+    tồn tại nhưng vô dụng.
+
+    ĐO TRÊN 3 VĂN BẢN THUẾ THẬT (qlt2019 / qlt2025 / tncn2025):
+        tiền chậm nộp        127 node   <- nhiều nhất
+        cưỡng chế             85 node
+        truy cứu hình sự      10 node
+        phạt tiền              9 node
+        ngừng dùng hoá đơn     5 node
+        tước giấy phép lái xe  0 node   <- enum có, luật thuế KHÔNG có
+    """
+
+    # --- Chế tài thuế (đo được trong 3 văn bản demo) ---
+    FINE = "FINE"  # phạt tiền
+    LATE_PAYMENT_INTEREST = "LATE_PAYMENT_INTEREST"  # tiền chậm nộp - LÃI, không phải phạt
+    ENFORCEMENT = "ENFORCEMENT"  # cưỡng chế thi hành quyết định hành chính thuế
+    INVOICE_SUSPENSION = "INVOICE_SUSPENSION"  # ngừng sử dụng hoá đơn
+    CRIMINAL = "CRIMINAL"  # truy cứu trách nhiệm hình sự
+
+    # --- Giao thông. Không xuất hiện trong 3 văn bản thuế, GIỮ vì:
+    #     mock_legal_docs.json + tests/test_graph.py::test_no_permanent_penalty_anywhere
+    #     của P2 đang dùng. Xoá là gãy test của Linh.
     LICENSE_SUSPENSION = "LICENSE_SUSPENSION"
     LICENSE_REVOCATION = "LICENSE_REVOCATION"
-    CRIMINAL = "CRIMINAL"
-    OTHER = "OTHER"
+
+    OTHER = "OTHER"  # thật sự không thuộc loại nào - KHÔNG dùng làm chỗ chứa rác
 
 
 class Penalty(BaseModel):

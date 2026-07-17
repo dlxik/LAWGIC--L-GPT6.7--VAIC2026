@@ -1,10 +1,133 @@
-[P3 dien] Phan loai chu de phap ly + tach claim tu binh luan cong khai.
+Bạn phân tích một LUỒNG thảo luận công khai về luật thuế Việt Nam (bình luận báo
+điện tử). Nhiệm vụ: với TỪNG bình luận trong luồng, xác định chủ đề và trích ra
+các khẳng định pháp lý kiểm chứng được.
 
-Output JSON: {topic, is_legal_claim, claims: [{claim_id, text}]}
+## Vì sao nhận cả luồng, không nhận từng bình luận lẻ
 
-QUY TAC:
-- Claim = phat bieu KIEM CHUNG DUOC ve noi dung phap luat.
-  "Uong 1 lon bia bi tuoc bang vinh vien"  -> claim
-  "Luat nay vo ly qua"                     -> KHONG phai claim (cam xuc)
-- Mot post co the chua nhieu claim, hoac khong claim nao.
-- Khong lien quan phap luat -> is_legal_claim = false, claims = [].
+Bình luận trả lời thường ăn theo ngữ cảnh của bình luận gốc. Đọc riêng thì vô nghĩa:
+
+    [GỐC]      "Cái vấn đề ở đây là không rõ ràng giữa doanh thu và thu nhập..."
+      [TRẢ LỜI] "Rất chính xác"        <- 74 lượt thích, nhưng đọc riêng là rỗng
+
+Dùng ngữ cảnh gốc để hiểu bình luận trả lời. Nhưng KHÔNG bịa thêm: nếu bình luận
+trả lời chỉ tán thành mà không tự nêu khẳng định nào, thì nó KHÔNG có claim —
+đừng chép claim của bình luận gốc sang cho nó.
+
+## Đầu ra
+
+JSON, mỗi bình luận trong luồng đúng một phần tử, GIỮ NGUYÊN thứ tự nhận vào:
+
+{
+  "posts": [
+    {
+      "post_id": "vne-...",
+      "topic": "<một giá trị trong danh sách chủ đề bên dưới>",
+      "is_legal_claim": true | false,
+      "claims": [{"text": "<khẳng định, viết lại thành câu đứng độc lập>"}]
+    }
+  ]
+}
+
+BẮT BUỘC trả về ĐỦ số bình luận đã nhận, kể cả bình luận không có claim nào.
+Thiếu một post_id là hỏng cả luồng.
+
+## Danh sách chủ đề (ĐÓNG — không được tự đặt tên khác)
+
+  nguong_doanh_thu   Ngưỡng doanh thu chịu thuế / miễn thuế (500 triệu, 200 triệu, 1 tỷ...)
+  cach_tinh_thue     Cách tính: doanh thu vs thu nhập, thuế suất, trừ chi phí
+  thue_khoan         Thuế khoán, bỏ khoán, chuyển sang kê khai
+  hoa_don_chung_tu   Hoá đơn điện tử, máy tính tiền, chứng từ
+  ke_khai_nop_thue   Thủ tục kê khai, nộp thuế, quyết toán, thời hạn
+  che_tai_thue       Chậm nộp, tiền chậm nộp, cưỡng chế, phạt, ngừng dùng hoá đơn
+  khac               Không thuộc các chủ đề trên (kể cả khi vẫn nói về thuế)
+
+Bình luận không liên quan pháp luật vẫn phải có `topic` — chọn chủ đề gần nhất,
+hoặc `khac`, và đặt `is_legal_claim: false`.
+
+## Claim là gì
+
+Claim = phát biểu KIỂM CHỨNG ĐƯỢC bằng cách đối chiếu văn bản luật.
+
+  CÓ claim:
+    "Doanh thu 505 triệu thì chỉ có 5 triệu bị tính thuế"      -> kiểm chứng được
+    "Hộ kinh doanh từ 1/1/2026 phải dùng hoá đơn điện tử"       -> kiểm chứng được
+    "Chậm nộp thuế là bị phạt"                                  -> kiểm chứng được
+
+  KHÔNG phải claim:
+    "Mức 500 triệu quá thấp, đề nghị tăng gấp đôi"   -> ý kiến / kiến nghị
+    "Ế ẩm quá"                                        -> cảm xúc
+    "Rất chính xác"                                   -> tán thành, không tự nêu gì
+    "Người tiêu dùng lại là người gánh thêm"          -> dự đoán kinh tế, luật không nói
+
+Phân biệt quan trọng: **ý kiến về việc luật NÊN thế nào** không phải claim.
+Chỉ **khẳng định luật ĐANG quy định thế nào** mới là claim.
+"500 triệu là quá thấp" (ý kiến) ≠ "Ngưỡng miễn thuế là 500 triệu" (claim).
+
+Một bình luận có thể chứa nhiều claim, hoặc không claim nào.
+Viết lại claim thành câu đứng độc lập, đọc không cần ngữ cảnh — nhưng KHÔNG thêm
+thông tin mà người viết không nói.
+
+## Ví dụ
+
+Nhận vào:
+
+    [GỐC] post_id=vne-61853489
+    Ngưỡng 500 triệu/năm có vẻ hơi thấp, nhiều hộ kinh doanh nhỏ lẻ có thể gặp khó
+    khăn khi phải nộp thuế dù lợi nhuận không đáng kể.
+
+      [TRẢ LỜI] post_id=vne-61853764
+      thuế sẽ tính từ 1 triệu của từ 500 trở đi chứ 500 triệu trở về k cần đóng
+      thuế. nghĩa là doanh thu của bạn 505 triệu thì chỉ có 5 triệu bị tính thuế
+      thôi. vậy cũng được rồi còn hơn 200 triệu như dự định ban đầu.
+
+      [TRẢ LỜI] post_id=vne-61855200
+      Quá thấp chứ không phải hơi thấp bạn ơi :D
+
+      [TRẢ LỜI] post_id=vne-61855731
+      1 tháng bán 40 triệu thì chưa đủ tuổi đóng thuế.
+
+Trả về:
+
+{
+  "posts": [
+    {
+      "post_id": "vne-61853489",
+      "topic": "nguong_doanh_thu",
+      "is_legal_claim": false,
+      "claims": []
+    },
+    {
+      "post_id": "vne-61853764",
+      "topic": "nguong_doanh_thu",
+      "is_legal_claim": true,
+      "claims": [
+        {"text": "Doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân"},
+        {"text": "Với doanh thu 505 triệu đồng, chỉ phần 5 triệu vượt trên 500 triệu bị tính thuế"}
+      ]
+    },
+    {
+      "post_id": "vne-61855200",
+      "topic": "nguong_doanh_thu",
+      "is_legal_claim": false,
+      "claims": []
+    },
+    {
+      "post_id": "vne-61855731",
+      "topic": "nguong_doanh_thu",
+      "is_legal_claim": true,
+      "claims": [
+        {"text": "Doanh thu 40 triệu đồng một tháng thì chưa phải nộp thuế"}
+      ]
+    }
+  ]
+}
+
+Chú ý trong ví dụ:
+- Bình luận gốc chỉ nêu ý kiến "hơi thấp" -> `is_legal_claim: false`, dù đúng chủ đề.
+- `vne-61853764` tách thành 2 claim: một về ngưỡng, một về cách tính phần vượt.
+  Claim thứ hai là chỗ dễ hiểu nhầm nhất — cứ trích ra, việc đúng/sai để bước sau xử.
+  "còn hơn 200 triệu như dự định ban đầu" nói về DỰ THẢO, không phải luật hiện hành
+  -> không tách thành claim.
+- `vne-61855200` tán thành + ý kiến -> không claim.
+- `vne-61855731` nói tháng, luật nói năm -> vẫn là claim (kiểm chứng được, và sẽ
+  được đối chiếu ở bước sau). Đừng tự sửa hộ người ta.

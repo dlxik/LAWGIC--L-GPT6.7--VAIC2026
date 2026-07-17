@@ -111,12 +111,29 @@ def _severity(text: str) -> dict[str, Any]:
 # Bước 1 — ghép cặp
 # ---------------------------------------------------------------------------
 
-_FETCH_POINTS = """
+# Lấy NODE LÁ, không phải chỉ Point — cùng quy tắc "node sâu nhất giữ sự thật"
+# như Q2. Bản đầu chỉ lấy Point nên diffing bỏ qua 775/988 Khoản không có Điểm
+# (luật Việt Nam thật thì text của Khoản chính là quy định), làm con số REMOVED
+# bị thổi phồng và mất hẳn phần diff của hơn nửa văn bản.
+#
+# CASE chọn tầng sâu nhất có mặt: có Điểm -> Điểm; không -> Khoản; không -> Điều.
+_FETCH_LEAVES = """
 MATCH (d:LegalDocument {doc_id: $doc_id})-[:HAS_ARTICLE]->(a:Article)
-      -[:HAS_CLAUSE]->(k:Clause)-[:HAS_POINT]->(p:Point)
-RETURN p.point_id AS point_id, p.letter AS letter, p.text AS text,
-       a.number AS article, k.number AS clause
-ORDER BY a.number, k.number, p.letter
+OPTIONAL MATCH (a)-[:HAS_CLAUSE]->(k:Clause)
+OPTIONAL MATCH (k)-[:HAS_POINT]->(p:Point)
+WITH a, k, p,
+     CASE WHEN p IS NOT NULL THEN p
+          WHEN k IS NOT NULL THEN k
+          ELSE a END AS n
+WHERE NOT (n)-[:HAS_CLAUSE|HAS_POINT]->()
+RETURN DISTINCT
+       coalesce(n.point_id, n.clause_id, n.article_id) AS node_id,
+       labels(n)[0] AS level,
+       n.text AS text,
+       a.number AS article,
+       k.number AS clause,
+       coalesce(p.letter, '') AS letter
+ORDER BY article, clause, letter
 """
 
 _FETCH_ARTICLES = """
@@ -126,8 +143,13 @@ ORDER BY a.number
 """
 
 
-def _fetch_points(doc_id: str) -> list[dict]:
-    return connection.run(_FETCH_POINTS, doc_id=doc_id)
+def _fetch_leaves(doc_id: str) -> list[dict]:
+    """Mọi node lá của văn bản: Điểm, hoặc Khoản-không-Điểm, hoặc Điều-không-Khoản."""
+    return connection.run(_FETCH_LEAVES, doc_id=doc_id)
+
+
+# Tên cũ, giữ cho code/test đang gọi. Giờ trả về node lá chứ không chỉ Point.
+_fetch_points = _fetch_leaves
 
 
 def _fetch_articles(doc_id: str) -> list[dict]:
@@ -216,22 +238,24 @@ def _pair_points(
         # Trùng vị trí là chưa đủ — text phải xác nhận đây là cùng một quy định
         if (
             match
-            and match["point_id"] not in used_new
+            and match["node_id"] not in used_new
             and _similarity(old["text"], match["text"]) >= STRUCTURAL_MIN_SIMILARITY
         ):
             pairs.append((old, match))
-            used_new.add(match["point_id"])
+            used_new.add(match["node_id"])
         else:
             unmatched_old.append(old)
 
-    leftover_new = [p for p in new_points if p["point_id"] not in used_new]
+    leftover_new = [p for p in new_points if p["node_id"] not in used_new]
 
-    # Ghép phần còn lại theo text — chọn cặp giống nhau nhất trước
+    # Ghép phần còn lại theo text — chọn cặp giống nhau nhất trước.
+    # Chỉ ghép node CÙNG TẦNG: một Điểm không thể là bản mới của cả một Khoản.
     candidates = sorted(
         (
             (_similarity(o["text"], n["text"]), o, n)
             for o in unmatched_old
             for n in leftover_new
+            if o.get("level") == n.get("level")
         ),
         key=lambda t: t[0],
         reverse=True,
@@ -241,15 +265,15 @@ def _pair_points(
     for score, o, n in candidates:
         if score < SIMILARITY_PAIR_THRESHOLD:
             break
-        if o["point_id"] in paired_old or n["point_id"] in paired_new:
+        if o["node_id"] in paired_old or n["node_id"] in paired_new:
             continue
         pairs.append((o, n))
-        paired_old.add(o["point_id"])
-        paired_new.add(n["point_id"])
+        paired_old.add(o["node_id"])
+        paired_new.add(n["node_id"])
 
     # Còn dư: cũ -> REMOVED, mới -> ADDED
-    pairs += [(o, None) for o in unmatched_old if o["point_id"] not in paired_old]
-    pairs += [(None, n) for n in leftover_new if n["point_id"] not in paired_new]
+    pairs += [(o, None) for o in unmatched_old if o["node_id"] not in paired_old]
+    pairs += [(None, n) for n in leftover_new if n["node_id"] not in paired_new]
     return pairs
 
 
@@ -313,18 +337,23 @@ def _classify(old: dict | None, new: dict | None) -> tuple[str, float, str]:
 # Bước 3 — ghi vào graph
 # ---------------------------------------------------------------------------
 
+# Khớp cả 3 tầng: node lá có thể là Point, Clause (không Điểm) hoặc Article
+# (không Khoản). Bản đầu chỉ MATCH (:Point) nên bỏ qua hơn nửa văn bản.
 _MERGE_SUPERSEDED = """
-MATCH (old:Point {point_id: $old_id})
-MATCH (new:Point {point_id: $new_id})
+MATCH (old) WHERE old.point_id = $old_id OR old.clause_id = $old_id
+                  OR old.article_id = $old_id
+MATCH (new) WHERE new.point_id = $new_id OR new.clause_id = $new_id
+                  OR new.article_id = $new_id
 MERGE (old)-[r:SUPERSEDED_BY]->(new)
 SET r.change_type = $change_type,
     r.similarity = $similarity,
     r.effective_from = date($effective_from)
 """
 
-_CLOSE_OLD_POINT = """
-MATCH (p:Point {point_id: $point_id})
-SET p.effective_to = date($effective_to)
+_CLOSE_OLD_NODE = """
+MATCH (n) WHERE n.point_id = $node_id OR n.clause_id = $node_id
+              OR n.article_id = $node_id
+SET n.effective_to = date($effective_to)
 """
 
 
@@ -345,11 +374,11 @@ def diff_documents(
         raise ValueError(f"không tìm thấy văn bản {new_doc_id}")
     cutover = new_doc[0]["eff"]
 
-    # Ghép Điều trước, rồi mới ghép Điểm trong phạm vi cặp Điều đã khớp.
-    # Bỏ bước này là ghép 442 Điểm với 332 Điểm giữa biển nhiễu.
+    # Ghép Điều trước, rồi mới ghép node lá trong phạm vi cặp Điều đã khớp.
+    # Bỏ bước này là ghép hàng trăm node giữa biển nhiễu.
     article_map = pair_articles(old_doc_id, new_doc_id)
     pairs = _pair_points(
-        _fetch_points(old_doc_id), _fetch_points(new_doc_id), article_map
+        _fetch_leaves(old_doc_id), _fetch_leaves(new_doc_id), article_map
     )
 
     diffs: list[dict] = []
@@ -359,8 +388,12 @@ def diff_documents(
         change_type, sim, summary = _classify(old, new)
         diffs.append(
             {
-                "old_point_id": old["point_id"] if old else None,
-                "new_point_id": new["point_id"] if new else None,
+                # Tên field giữ nguyên theo contract PointDiff (P4 đang đọc).
+                # Giá trị giờ có thể là point_id, clause_id hoặc article_id —
+                # tuỳ node lá nằm ở tầng nào.
+                "old_point_id": old["node_id"] if old else None,
+                "new_point_id": new["node_id"] if new else None,
+                "level": (old or new).get("level"),
                 "change_type": change_type,
                 "similarity": round(sim, 4),
                 "summary": summary,
@@ -373,8 +406,8 @@ def diff_documents(
                 (
                     _MERGE_SUPERSEDED,
                     {
-                        "old_id": old["point_id"],
-                        "new_id": new["point_id"],
+                        "old_id": old["node_id"],
+                        "new_id": new["node_id"],
                         "change_type": change_type,
                         "similarity": round(sim, 4),
                         "effective_from": cutover,
@@ -382,10 +415,10 @@ def diff_documents(
                 )
             )
         if old:
-            # Điểm cũ hết hiệu lực từ ngày văn bản mới có hiệu lực.
-            # Thiếu bước này thì Q2 trả cả Điểm cũ lẫn Điểm mới -> sai.
+            # Node cũ hết hiệu lực từ ngày văn bản mới có hiệu lực.
+            # Thiếu bước này thì Q2 trả cả node cũ lẫn node mới -> sai.
             stmts.append(
-                (_CLOSE_OLD_POINT, {"point_id": old["point_id"], "effective_to": cutover})
+                (_CLOSE_OLD_NODE, {"node_id": old["node_id"], "effective_to": cutover})
             )
 
     if stmts:
@@ -407,18 +440,26 @@ def law_as_of(topic: str | None, date: str) -> list[dict]:
     return connection.run(Q2_LAW_AS_OF, date=date, topic=topic)
 
 
-def point_history(point_id: str) -> list[dict]:
-    """Lần theo chuỗi SUPERSEDED_BY: một Điểm đã đổi qua những bản nào."""
+def point_history(node_id: str) -> list[dict]:
+    """Lần theo chuỗi SUPERSEDED_BY: một quy định đã đổi qua những bản nào.
+
+    Nhận point_id, clause_id hoặc article_id — SUPERSEDED_BY giờ nối node lá ở
+    bất kỳ tầng nào, không chỉ Điểm.
+    """
     return connection.run(
         """
-        MATCH path = (start:Point {point_id: $point_id})-[:SUPERSEDED_BY*0..]->(p:Point)
-        RETURN p.point_id AS point_id, p.text AS text,
-               toString(p.effective_from) AS effective_from,
-               toString(p.effective_to) AS effective_to,
+        MATCH (start) WHERE start.point_id = $node_id OR start.clause_id = $node_id
+                          OR start.article_id = $node_id
+        MATCH path = (start)-[:SUPERSEDED_BY*0..]->(n)
+        RETURN coalesce(n.point_id, n.clause_id, n.article_id) AS point_id,
+               labels(n)[0] AS level,
+               n.text AS text,
+               toString(n.effective_from) AS effective_from,
+               toString(n.effective_to) AS effective_to,
                length(path) AS step
         ORDER BY step
         """,
-        point_id=point_id,
+        node_id=node_id,
     )
 
 

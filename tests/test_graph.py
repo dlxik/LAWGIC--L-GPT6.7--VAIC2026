@@ -177,17 +177,19 @@ def test_structural_match_requires_text_corroboration():
     from backend.graph.diffing import _pair_points
 
     old = [{
-        "point_id": "qlt2019-d34-k1-c", "letter": "c", "article": 34, "clause": 1,
+        "node_id": "qlt2019-d34-k1-c", "level": "Point",
+        "letter": "c", "article": 34, "clause": 1,
         "text": "Số, ngày, tháng, năm của giấy chứng nhận đăng ký kinh doanh "
                 "hoặc giấy phép thành lập và hoạt động;",
     }]
     new = [{
-        "point_id": "qlt2025-d34-k1-c", "letter": "c", "article": 34, "clause": 1,
+        "node_id": "qlt2025-d34-k1-c", "level": "Point",
+        "letter": "c", "article": 34, "clause": 1,
         "text": "Áp dụng chế độ ưu tiên đối với người nộp thuế tuân thủ tốt "
                 "pháp luật về thuế, sẵn sàng kết nối;",
     }]
     pairs = _pair_points(old, new)
-    matched = {(o["point_id"] if o else None, n["point_id"] if n else None) for o, n in pairs}
+    matched = {(o["node_id"] if o else None, n["node_id"] if n else None) for o, n in pairs}
 
     assert ("qlt2019-d34-k1-c", "qlt2025-d34-k1-c") not in matched, (
         "trùng vị trí KHÔNG phải bằng chứng — text phải xác nhận"
@@ -206,20 +208,46 @@ def test_renumbered_point_still_found():
     from backend.graph.diffing import _pair_points
 
     old = [{
-        "point_id": "qlt2019-d52-k1-c", "letter": "c", "article": 52, "clause": 1,
+        "node_id": "qlt2019-d52-k1-c", "level": "Point",
+        "letter": "c", "article": 52, "clause": 1,
         "text": "Người khai thuế không chứng minh, giải trình hoặc quá thời hạn "
                 "quy định mà không giải trình được;",
     }]
     new = [{
-        "point_id": "qlt2025-d25-k1-c", "letter": "c", "article": 25, "clause": 1,
+        "node_id": "qlt2025-d25-k1-c", "level": "Point",
+        "letter": "c", "article": 25, "clause": 1,
         "text": "Người nộp thuế không chứng minh, giải trình hoặc quá thời hạn "
                 "quy định mà không giải trình được;",
     }]
     pairs = _pair_points(old, new)
-    matched = {(o["point_id"] if o else None, n["point_id"] if n else None) for o, n in pairs}
+    matched = {(o["node_id"] if o else None, n["node_id"] if n else None) for o, n in pairs}
     assert ("qlt2019-d52-k1-c", "qlt2025-d25-k1-c") in matched, (
         "đổi thuật ngữ hệ thống kéo sim xuống ~0.82 — ngưỡng fallback phải nhận"
     )
+
+
+def test_leaf_clause_and_point_never_paired_together():
+    """Không được ghép một Khoản với một Điểm — khác tầng, khác đơn vị nội dung.
+
+    Sau khi diffing chuyển sang node lá, pool ghép có lẫn cả Clause lẫn Point.
+    Text của một Khoản-không-Điểm có thể rất giống text của một Điểm ở văn bản
+    kia, nhưng ghép chúng là sai: chúng không phải cùng một đơn vị quy định.
+    """
+    from backend.graph.diffing import _pair_points
+
+    same_text = "Người nộp thuế có trách nhiệm nộp hồ sơ khai thuế đúng thời hạn."
+    old = [{
+        "node_id": "x-d1-k1", "level": "Clause",
+        "letter": "", "article": 1, "clause": 1, "text": same_text,
+    }]
+    new = [{
+        "node_id": "y-d1-k1-a", "level": "Point",
+        "letter": "a", "article": 1, "clause": 1, "text": same_text,
+    }]
+    pairs = _pair_points(old, new)
+    matched = {(o["node_id"] if o else None, n["node_id"] if n else None) for o, n in pairs}
+    assert ("x-d1-k1", "y-d1-k1-a") not in matched, "Khoản không thể ghép với Điểm"
+    assert ("x-d1-k1", None) in matched and (None, "y-d1-k1-a") in matched
 
 
 def test_diff_is_idempotent():

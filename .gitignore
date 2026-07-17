@@ -8,22 +8,28 @@ node_modules/
 .DS_Store
 
 # ---------------------------------------------------------------------------
-# Dữ liệu: mặc định KHÔNG vào git (nặng, sinh lại được), trừ 3 văn bản demo.
+# Dữ liệu: mặc định KHÔNG vào git (nặng, sinh lại được), trừ dữ liệu demo.
 #
 # BẪY GITIGNORE: không thể mở lại một file nằm trong thư mục đã bị loại — git
 # không buồn đi vào thư mục bị loại. Nên phải mở lại THƯ MỤC trước, rồi mới loại
-# nội dung, rồi mới mở lại đúng file cần. Thứ tự 4 dòng dưới là bắt buộc.
+# nội dung, rồi mới mở lại đúng file cần. Thứ tự các dòng dưới là bắt buộc.
 #
-# Vì sao 3 văn bản này phải vào git: văn bản QPPL là công khai, tổng ~950KB.
-# Không commit thì cả team pull về không có gì để chạy, hoặc mỗi người tự tải
-# một bản khác nhau -> node_id lệch -> graph của mỗi người một kiểu.
+# Vì sao dữ liệu demo phải vào git: văn bản QPPL và bình luận báo điện tử đều
+# công khai, tổng ~3 MB. Không commit thì cả team pull về không có gì để chạy,
+# hoặc mỗi người tự tải một bản khác nhau -> node_id lệch -> graph mỗi người
+# một kiểu -> mốc bàn giao vỡ.
 # ---------------------------------------------------------------------------
 
+# Văn bản pháp luật: .docx gốc (P1)
 data/raw/*
 !data/raw/legal_docs/
 data/raw/legal_docs/*
 !data/raw/legal_docs/*.docx
 
+# Bình luận công khai đã crawl (P3) — chỉ nội dung công khai, author đã hash
+!data/raw/social_posts.json
+
+# JSON đã cấu trúc hoá Điều-Khoản-Điểm (P1)
 data/processed/*
 !data/processed/legal_docs_structured/
 data/processed/legal_docs_structured/*

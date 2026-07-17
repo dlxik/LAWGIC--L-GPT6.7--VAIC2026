@@ -74,11 +74,37 @@ class LegalDocument(BaseModel):
 
 
 class PenaltyType(str, Enum):
-    FINE = "FINE"
+    """Loại chế tài. Enum này quyết định `Penalty.type` có dùng được hay không.
+
+    Lý do Penalty là NODE chứ không phải property (quyết định #5 trong
+    graph/schema.py) là để truy vấn theo `type`:
+        MATCH (p:Point)-[:PENALIZES]->(:Penalty {type: 'ENFORCEMENT'})
+    Nếu mọi chế tài đều rơi vào OTHER thì câu này trả về hổ lốn -> node Penalty
+    tồn tại nhưng vô dụng.
+
+    ĐO TRÊN 3 VĂN BẢN THUẾ THẬT (qlt2019 / qlt2025 / tncn2025):
+        tiền chậm nộp        127 node   <- nhiều nhất
+        cưỡng chế             85 node
+        truy cứu hình sự      10 node
+        phạt tiền              9 node
+        ngừng dùng hoá đơn     5 node
+        tước giấy phép lái xe  0 node   <- enum có, luật thuế KHÔNG có
+    """
+
+    # --- Chế tài thuế (đo được trong 3 văn bản demo) ---
+    FINE = "FINE"  # phạt tiền
+    LATE_PAYMENT_INTEREST = "LATE_PAYMENT_INTEREST"  # tiền chậm nộp - LÃI, không phải phạt
+    ENFORCEMENT = "ENFORCEMENT"  # cưỡng chế thi hành quyết định hành chính thuế
+    INVOICE_SUSPENSION = "INVOICE_SUSPENSION"  # ngừng sử dụng hoá đơn
+    CRIMINAL = "CRIMINAL"  # truy cứu trách nhiệm hình sự
+
+    # --- Giao thông. Không xuất hiện trong 3 văn bản thuế, GIỮ vì:
+    #     mock_legal_docs.json + tests/test_graph.py::test_no_permanent_penalty_anywhere
+    #     của P2 đang dùng. Xoá là gãy test của Linh.
     LICENSE_SUSPENSION = "LICENSE_SUSPENSION"
     LICENSE_REVOCATION = "LICENSE_REVOCATION"
-    CRIMINAL = "CRIMINAL"
-    OTHER = "OTHER"
+
+    OTHER = "OTHER"  # thật sự không thuộc loại nào - KHÔNG dùng làm chỗ chứa rác
 
 
 class Penalty(BaseModel):
@@ -107,6 +133,16 @@ class ExtractedEntities(BaseModel):
 
 
 class Post(BaseModel):
+    """Một bình luận công khai. Gốc hoặc trả lời.
+
+    THẢO LUẬN LÀ CẢ LUỒNG, không phải câu nói lẻ. Hiểu nhầm và đính chính nằm
+    cạnh nhau trong cùng luồng:
+        gốc:   "Doanh thu 200 triệu là phải đóng thuế rồi"
+        reply: "Bạn nhầm, từ 2026 là 500 triệu"
+    Không có parent_id thì hai câu đó rời nhau, và misinformation.py mất ngữ cảnh
+    quan trọng nhất — chính chỗ dư luận tự sửa nhau.
+    """
+
     post_id: str
     platform: str
     url: str
@@ -114,6 +150,7 @@ class Post(BaseModel):
     content: str
     created_at: datetime
     engagement: int = 0
+    parent_id: str | None = None  # post_id của comment gốc; None = chính nó là gốc
 
 
 class Verdict(str, Enum):

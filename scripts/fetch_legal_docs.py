@@ -31,8 +31,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from backend.ingestion.parser import parse_document, validate  # noqa: E402
 from backend.models.schemas import LegalDocument  # noqa: E402
 
-RAW_DIR = Path("data/raw")
-OUT_DIR = Path("data/processed")
+# Duong dan tuyet doi tu goc repo — chay pytest tu thu muc nao cung dung.
+# Truoc day la Path("data/raw") tuong doi theo cwd -> chay pytest tu tests/ la gay.
+_ROOT = Path(__file__).resolve().parents[1]
+RAW_DIR = _ROOT / "data" / "raw" / "legal_docs"
+OUT_DIR = _ROOT / "data" / "processed" / "legal_docs_structured"
 
 # ---------------------------------------------------------------------------
 # Ba van ban demo. doc_id slug TAY - khong tu sinh (tu sinh ra "nd1082025qh15").

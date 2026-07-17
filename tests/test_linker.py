@@ -45,12 +45,18 @@ def test_rumor_matches_old_law():
 # ---------- Bước 2: graph expansion (điểm ăn tiền) ----------
 
 
-def test_supersede_bridge_adds_new_law():
+def test_supersede_bridge_adds_new_law(monkeypatch):
     """Ứng viên ở luật cũ -> expansion kéo node luật mới vào. Đây là điểm khác biệt.
 
     Không có bước này thì linker chỉ trả luật cũ mà tin đồn đang bám — đúng chỗ
     vector store bó tay.
+
+    Ép ĐƯỜNG FALLBACK (doc-level) để test tái lập bất kể Neo4j có chạy hay không:
+    khi Neo4j sống, đường graph dùng SUPERSEDED_BY thật (chỉ có cho cặp điểm ghép
+    được, không có cho thuế khoán vốn bị XOÁ) — hành vi đó phụ thuộc dữ liệu graph,
+    không hợp để khoá trong unit test. Đường fallback là logic thuần, khoá được.
     """
+    monkeypatch.setattr("backend.graph.connection.healthcheck", lambda: False)
     _, _, _, nodes = linker._index()
     old = [n for n in linker._retrieve("thuế khoán hộ kinh doanh", linker.TOP_K)
            if nodes[n]["doc_id"] == "qlt2019"]

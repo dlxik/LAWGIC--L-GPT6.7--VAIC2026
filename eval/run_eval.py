@@ -54,9 +54,21 @@ def run_pipeline(claim_text: str, topic: str = "") -> dict:
 
     Điểm mấu chốt của eval: đo pipeline THẬT, không phải một hàm riêng chỉ dùng để
     chấm điểm. Nếu ở đây gọi khác lúc chạy production thì con số nói dối.
+
+    Một claim làm model trả JSON hỏng KHÔNG được làm sập cả eval (llm.py hiện ném
+    lỗi không retry). Bắt lỗi -> claim đó tính UNVERIFIABLE, đúng tinh thần 'không
+    xử được thì không kết luận', và eval vẫn ra số cho 47 claim còn lại.
     """
-    citations = linker.link_claim(claim_text, topic)
-    verdict = misinformation.verdict_for_claim(claim_text, citations)
+    try:
+        citations = linker.link_claim(claim_text, topic)
+    except Exception as exc:  # noqa: BLE001
+        print(f"    ! link lỗi: {exc}")
+        citations = []
+    try:
+        verdict = misinformation.verdict_for_claim(claim_text, citations)
+    except Exception as exc:  # noqa: BLE001
+        print(f"    ! verdict lỗi: {exc}")
+        verdict = {"verdict": "UNVERIFIABLE"}
     return {"verdict": verdict["verdict"], "citations": [c["node_id"] for c in citations]}
 
 

@@ -7,5 +7,29 @@ venv/
 data/raw/*
 data/processed/*
 !data/**/.gitkeep
+
+# Ngoại lệ: 3 văn bản demo + JSON parse ra PHẢI vào git.
+# Văn bản QPPL là công khai, không vướng bản quyền. Tổng ~1,4 MB.
+# Không commit thì P2 `git pull` về không thấy gì -> mốc bàn giao giờ 8 vỡ,
+# hoặc P2 phải tự tải lại -> dán khác P1 -> node_id lệch -> graph hỏng.
+!data/raw/qlt2019.docx
+!data/raw/qlt2025.docx
+!data/raw/tncn2025.docx
+!data/processed/qlt2019.json
+!data/processed/qlt2025.json
+!data/processed/tncn2025.json
+
+# Entity trích bằng LLM (output extractor.py). Dẫn xuất từ văn bản QPPL công khai
+# -> KHÔNG chứa dữ liệu cá nhân nào. Commit để P2 nạp graph mà không phải chạy lại
+# 38 phút LLM, và để mọi người nạp CÙNG một bộ entity (chạy lại LLM ra kết quả khác
+# -> graph mỗi máy một kiểu -> không ai debug được).
+!data/processed/entities_qlt2019.json
+!data/processed/entities_qlt2025.json
+!data/processed/entities_tncn2025.json
+
+# CẢNH BÁO: file này chứa 3.321 bình luận của NGƯỜI THẬT.
+# author_hash là GIẢ DANH, không phải ẩn danh — mở `url` rồi tìm `content` là ra
+# tên thật. Repo đang PUBLIC. Xem crawl_docs.md mục Quyền riêng tư.
+!data/raw/social_posts.json
 node_modules/
 .DS_Store

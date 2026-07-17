@@ -205,6 +205,30 @@ def test_law_as_of(date, expected):
     assert got == sorted(expected)
 
 
+def test_law_as_of_returns_each_point_once():
+    """LỖI ĐÃ XẢY RA: Điểm có 2 Penalty thì Q2 trả Điểm đó 2 lần.
+
+    OPTIONAL MATCH sang Penalty làm mỗi Penalty đẻ một dòng. Điểm a có FINE +
+    LICENSE_SUSPENSION -> xuất hiện 2 lần. Bug này ẩn khi chưa có entity (0
+    penalty = 1 dòng null) và chỉ nổ với dữ liệu thật của P1, nơi Điểm nào cũng
+    có vài mức phạt. Bỏ collect() trong Q2 là test này đỏ.
+    """
+    ids = [r["point_id"] for r in law_as_of(None, "2026-06-30")]
+    assert len(ids) == len(set(ids)), f"Điểm bị nhân bản: {ids}"
+
+
+def test_law_as_of_carries_penalties():
+    """Q2 vẫn phải kèm mức phạt — gộp thành list, không mất dữ liệu."""
+    rows = {r["point_id"]: r for r in law_as_of(None, "2026-07-01")}
+    pens = rows["mock-new-d5-k2-a"]["penalties"]
+    assert {p["type"] for p in pens} == {"FINE", "LICENSE_SUSPENSION"}
+    susp = next(p for p in pens if p["type"] == "LICENSE_SUSPENSION")
+    assert susp["duration_months"] == 12 and susp["is_permanent"] is False
+
+    # Điểm chưa có entity -> list rỗng, không phải [null]
+    assert rows["mock-new-d5-k2-d"]["penalties"] == []
+
+
 def test_no_gap_day_at_cutover():
     """LỖI ĐÃ XẢY RA: ngày 30/6 trả về rỗng — một ngày luật biến mất.
 

@@ -115,10 +115,14 @@ WHERE p.effective_from <= date($date)
             <-[:HAS_ARTICLE]-(doc:LegalDocument)
       WHERE doc.title CONTAINS $topic
   })
+// collect() BẮT BUỘC, không được trả pen.type thẳng. Một Điểm thường có nhiều
+// Penalty (phạt tiền + tước bằng) -> mỗi Penalty đẻ một dòng -> cùng một Điểm
+// trả về 2-3 lần. Lỗi này ẩn hoàn toàn khi chưa có entity (0 penalty = 1 dòng
+// null), và chỉ nổ khi P1 giao dữ liệu thật. collect() gộp về đúng 1 dòng/Điểm.
 OPTIONAL MATCH (p)-[:PENALIZES]->(pen:Penalty)
 RETURN p.point_id AS point_id, p.text AS text,
-       pen.type AS penalty_type, pen.duration_months AS months,
-       pen.is_permanent AS is_permanent
+       collect(DISTINCT pen{.type, .min_amount, .max_amount,
+                            .duration_months, .is_permanent}) AS penalties
 ORDER BY p.point_id
 """
 

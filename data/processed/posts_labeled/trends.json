@@ -1,0 +1,185 @@
+[
+  {
+    "misconception": {
+      "misconception_id": "misc-000",
+      "canonical_text": "Thu nhập 120 triệu đồng mỗi năm không phải nộp thuế",
+      "contradicts": [
+        "tncn2025-d10-k1-a",
+        "tncn2025-d7-k1",
+        "tncn2025-d7-k2",
+        "tncn2025-d7-k2-b",
+        "tncn2025-d7-k3",
+        "tncn2025-d9-k2"
+      ],
+      "first_seen": "2025-06-05T10:38:09+00:00",
+      "last_seen": "2025-12-11T01:16:44+00:00",
+      "count": 23,
+      "total_engagement": 354,
+      "member_claim_ids": [
+        "vne-59917441-c0",
+        "vne-61406451-c0",
+        "vne-61407504-c1",
+        "vne-61407897-c1",
+        "vne-61663562-c0",
+        "vne-61663608-c1",
+        "vne-61747724-c1",
+        "vne-61748820-c0",
+        "vne-61749329-c0",
+        "vne-61749592-c0",
+        "vne-61773697-c0",
+        "vne-61772497-c0",
+        "vne-61863750-c0",
+        "vne-61854819-c0",
+        "vne-61855511-c0",
+        "vne-61856688-c0",
+        "vne-61856688-c1",
+        "vne-59928193-c0",
+        "vne-59927616-c0",
+        "vne-61662281-c0",
+        "vne-61773929-c0",
+        "vne-61857695-c1",
+        "vne-61857716-c1"
+      ]
+    },
+    "velocity": 0.0032,
+    "severity": "MEDIUM",
+    "correction": "Thu nhập 120 triệu đồng mỗi năm không phải nộp thuế"
+  },
+  {
+    "misconception": {
+      "misconception_id": "misc-001",
+      "canonical_text": "Thuế thu nhập cá nhân được tính trên doanh thu, không tính lợi nhuận.",
+      "contradicts": [
+        "qlt2019-d50-k2-d",
+        "tncn2025-d14-k1",
+        "tncn2025-d20-k1",
+        "tncn2025-d20-k2",
+        "tncn2025-d24-k1",
+        "tncn2025-d7",
+        "tncn2025-d7-k2",
+        "tncn2025-d7-k2-a",
+        "tncn2025-d7-k2-b",
+        "tncn2025-d7-k3",
+        "tncn2025-d7-k3-a",
+        "tncn2025-d7-k3-c",
+        "tncn2025-d7-k4"
+      ],
+      "first_seen": "2025-06-05T03:58:57+00:00",
+      "last_seen": "2025-12-10T03:55:46+00:00",
+      "count": 22,
+      "total_engagement": 314,
+      "member_claim_ids": [
+        "vne-59912059-c0",
+        "vne-59915376-c0",
+        "vne-59929658-c0",
+        "vne-59935459-c0",
+        "vne-59958370-c0",
+        "vne-61406860-c0",
+        "vne-61407201-c0",
+        "vne-61408443-c0",
+        "vne-61689637-c0",
+        "vne-61715072-c0",
+        "vne-61771394-c0",
+        "vne-61854792-c0",
+        "vne-59959745-c2",
+        "vne-59927415-c0",
+        "vne-59927678-c0",
+        "vne-61670219-c0",
+        "vne-61689405-c0",
+        "vne-61722927-c0",
+        "vne-61725825-c0",
+        "vne-61746464-c0",
+        "vne-61667745-c1",
+        "vne-61773051-c0"
+      ]
+    },
+    "velocity": 0.0031,
+    "severity": "MEDIUM",
+    "correction": "Thuế thu nhập cá nhân được tính trên doanh thu, không tính lợi nhuận."
+  },
+  {
+    "misconception": {
+      "misconception_id": "misc-002",
+      "canonical_text": "Ngưỡng đóng thuế thu nhập hiện tại là 15.5 triệu đồng mỗi tháng",
+      "contradicts": [
+        "tncn2025-d10-k1-a",
+        "tncn2025-d19-k1",
+        "tncn2025-d27-k1",
+        "tncn2025-d7-k1"
+      ],
+      "first_seen": "2025-10-25T02:19:44+00:00",
+      "last_seen": "2025-11-22T13:27:25+00:00",
+      "count": 9,
+      "total_engagement": 85,
+      "member_claim_ids": [
+        "vne-61407693-c0",
+        "vne-61410207-c2",
+        "vne-61411882-c0",
+        "vne-61663212-c0",
+        "vne-61669916-c0",
+        "vne-61689132-c1",
+        "vne-61662354-c0",
+        "vne-61690690-c0",
+        "vne-61690690-c1"
+      ]
+    },
+    "velocity": 0.0013,
+    "severity": "LOW",
+    "correction": "Ngưỡng đóng thuế thu nhập hiện tại là 15.5 triệu đồng mỗi tháng"
+  },
+  {
+    "misconception": {
+      "misconception_id": "misc-004",
+      "canonical_text": "Thu nhập 75 triệu đồng mỗi năm phải chịu thuế thu nhập cá nhân",
+      "contradicts": [
+        "tncn2025-d19-k1",
+        "tncn2025-d7-k1"
+      ],
+      "first_seen": "2025-11-29T03:59:07+00:00",
+      "last_seen": "2025-12-10T06:25:48+00:00",
+      "count": 5,
+      "total_engagement": 21,
+      "member_claim_ids": [
+        "vne-61857126-c0",
+        "vne-61855896-c0",
+        "vne-61856261-c0",
+        "vne-61747740-c0",
+        "vne-61774779-c1"
+      ]
+    },
+    "velocity": 0.0007,
+    "severity": "LOW",
+    "correction": "Thu nhập 75 triệu đồng mỗi năm phải chịu thuế thu nhập cá nhân"
+  },
+  {
+    "misconception": {
+      "misconception_id": "misc-003",
+      "canonical_text": "Doanh thu trên 500 triệu đồng có thể được tính thuế theo doanh thu 1 triệu đồng.",
+      "contradicts": [
+        "tncn2025-d10-k1",
+        "tncn2025-d10-k1-a",
+        "tncn2025-d10-k1-b",
+        "tncn2025-d7-k1",
+        "tncn2025-d7-k2-a",
+        "tncn2025-d7-k2-b",
+        "tncn2025-d7-k3",
+        "tncn2025-d9-k2"
+      ],
+      "first_seen": "2025-10-25T03:11:46+00:00",
+      "last_seen": "2025-12-10T03:29:45+00:00",
+      "count": 6,
+      "total_engagement": 17,
+      "member_claim_ids": [
+        "vne-61410556-c0",
+        "vne-61408279-c0",
+        "vne-61751101-c0",
+        "vne-61747724-c2",
+        "vne-61854325-c0",
+        "vne-61716859-c1"
+      ]
+    },
+    "velocity": 0.0008,
+    "severity": "LOW",
+    "correction": "Doanh thu trên 500 triệu đồng có thể được tính thuế theo doanh thu 1 triệu đồng."
+  }
+]

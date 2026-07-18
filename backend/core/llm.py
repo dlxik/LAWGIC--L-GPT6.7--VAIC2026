@@ -71,6 +71,13 @@ RETRY_MULTIPLIER = 2.0  # exponential: 1s, 2s, 4s, 8s, 16s (roi cap 30s)
 # APITimeoutError la con cua no). 403 = PermissionDenied KHONG nam day -> khong retry.
 _RETRYABLE = (RateLimitError, APIConnectionError, APITimeoutError, InternalServerError)
 
+# GHEP them (tu nhanh hien): retry khi LLM tra tool-call JSON HONG (loi PARSE, khong
+# phai loi mang). ~1/48 claim trong eval mat diem vi arguments JSON vo le. temperature=0
+# retry y het se hong y het -> nhich temperature len de PHA chuoi token gay loi. Vong
+# parse-retry nay GOI QUA _create_with_retry nen VAN giu retry mang/429 o tren.
+PARSE_RETRIES = 2
+_RETRY_TEMPERATURE = 0.3
+
 
 def _client() -> OpenAI:
     settings = get_settings()
@@ -173,24 +180,74 @@ def _parse_tool_call(message, schema: type[T]) -> T:
         raise ValueError(f"LLM tra ve khong khop {schema.__name__}: {e}") from e
 
 
-def extract(prompt: str, schema: type[T], *, system: str | None = None) -> T:
-    """Goi LLM 1 lan, ep output theo schema Pydantic."""
+def extract(
+    prompt: str,
+    schema: type[T],
+    *,
+    system: str | None = None,
+    temperature: float | None = None,
+) -> T:
+    """Goi LLM, ep output theo schema Pydantic. Retry khi tool-call JSON hong.
+
+    temperature=None (mac dinh): luot 0 o temp=0 (on dinh), retry parse o temp cao
+    hon. Truyen temperature=x tuong minh (vd self-consistency): dung x cho MOI luot
+    -> moi mau khac nhau de bo phieu. Parse hong van retry (cung temperature do).
+    Het luot van hong -> nem loi cuoi (giu hop dong cu: caller/eval tu bat).
+    """
     messages: list[dict] = []
     if system:
         messages.append({"role": "system", "content": system})
     messages.append({"role": "user", "content": prompt})
 
-    # _parse_tool_call NAM NGOAI retry: loi schema/tra rong khong phai loi tam thoi,
-    # khong retry o day de khoi che giau bug that.
-    response = _create_with_retry(
-        model=get_settings().llm_model,
-        max_tokens=MAX_TOKENS,
-        temperature=0,  # trich xuat -> muon on dinh, khong muon sang tao
-        messages=messages,
-        tools=[_tool_for(schema)],
-        tool_choice={"type": "function", "function": {"name": _TOOL_NAME}},
-    )
-    return _parse_tool_call(response.choices[0].message, schema)
+    # GHEP 2 kieu retry: vong ngoai chong JSON PARSE hong (nhich temperature moi luot),
+    # _create_with_retry ben trong chong MANG/429 (backoff+jitter+Retry-After).
+    last_error: ValueError | None = None
+    for attempt in range(PARSE_RETRIES + 1):
+        if temperature is not None:
+            temp = temperature  # caller ep tuong minh (vd self-consistency) -> giu nguyen moi luot
+        else:
+            temp = 0 if attempt == 0 else _RETRY_TEMPERATURE  # luot 0 on dinh, retry temp cao hon
+        response = _create_with_retry(
+            model=get_settings().llm_model,
+            max_tokens=MAX_TOKENS,
+            temperature=temp,
+            messages=messages,
+            tools=[_tool_for(schema)],
+            tool_choice={"type": "function", "function": {"name": _TOOL_NAME}},
+        )
+        try:
+            return _parse_tool_call(response.choices[0].message, schema)
+        except ValueError as exc:  # loi PARSE (khong phai mang) -> retry temp cao hon
+            last_error = exc
+    raise last_error  # type: ignore[misc]
+
+
+def extract_samples(
+    prompt: str,
+    schema: type[T],
+    *,
+    n: int,
+    temperature: float,
+    system: str | None = None,
+) -> list[T]:
+    """Lay n mau doc lap cua cung prompt o temperature>0 (self-consistency).
+
+    Goi song song bang thread (FPT khong co batching). Mau nao hong sau retry thi
+    BO QUA -> tra ve <= n ket qua. Caller bo phieu tren cai con lai; rong thi caller
+    tu quyet (vd coi nhu UNVERIFIABLE).
+    """
+    out: list[T] = []
+    with ThreadPoolExecutor(max_workers=min(n, BATCH_WORKERS)) as pool:
+        futures = [
+            pool.submit(extract, prompt, schema, system=system, temperature=temperature)
+            for _ in range(n)
+        ]
+        for future in as_completed(futures):
+            try:
+                out.append(future.result())
+            except Exception as exc:  # noqa: BLE001 - 1 mau hong khong giet ca vote
+                print(f"[extract_samples] bo 1 mau: {type(exc).__name__}: {exc}")
+    return out
 
 
 def extract_cached(

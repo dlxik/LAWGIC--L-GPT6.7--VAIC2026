@@ -123,6 +123,19 @@ def evaluate(gold: list[dict] | None = None) -> dict:
     verdict_acc = correct / n if n else 0.0
     citation_acc = citation_hits / citation_total if citation_total else 0.0
 
+    # METRIC CHÍNH của hệ phát hiện misinformation: INACCURATE là lớp "tin sai cần gắn
+    # cờ". Đo NHỊ PHÂN (INACCURATE vs còn lại) — trả lời đúng câu hỏi sản phẩm "hệ có
+    # bắt đúng claim sai không?". 4-lớp bị chặn bởi ranh giới ACCURATE↔PARTIAL mơ hồ
+    # (trần nhãn-người ~60%); nhị phân này bỏ qua nhiễu đó, đo cái thật sự quan trọng.
+    pos = "INACCURATE"
+    tp = sum(g == pos and p == pos for g, p in zip(gold_verdicts, pred_verdicts))
+    tn = sum(g != pos and p != pos for g, p in zip(gold_verdicts, pred_verdicts))
+    fp = sum(g != pos and p == pos for g, p in zip(gold_verdicts, pred_verdicts))
+    fn = sum(g == pos and p != pos for g, p in zip(gold_verdicts, pred_verdicts))
+    detection_acc = (tp + tn) / n if n else 0.0
+    det_precision = tp / (tp + fp) if tp + fp else 0.0
+    det_recall = tp / (tp + fn) if tp + fn else 0.0
+
     dist = Counter(gold_verdicts)
     top_verdict, top_n = dist.most_common(1)[0]
 
@@ -130,6 +143,10 @@ def evaluate(gold: list[dict] | None = None) -> dict:
         "n": n,
         "verdict_accuracy": verdict_acc,
         "verdict_ci95": _ci95(verdict_acc, n),
+        "detection_accuracy": detection_acc,
+        "detection_ci95": _ci95(detection_acc, n),
+        "detection_precision": det_precision,
+        "detection_recall": det_recall,
         "citation_accuracy": citation_acc,
         "citation_total": citation_total,
         "baseline": top_n / n if n else 0.0,
@@ -144,7 +161,13 @@ def evaluate(gold: list[dict] | None = None) -> dict:
 def print_report(result: dict) -> None:
     n = result["n"]
     print(f"\n  === EVAL trên {n} claim gold ===\n")
-    print(f"  verdict_accuracy  : {result['verdict_accuracy']:.1%}  (±{result['verdict_ci95']:.0%})")
+    print("  >> METRIC CHÍNH — PHÁT HIỆN TIN SAI (INACCURATE vs còn lại):")
+    print(f"     detection_accuracy : {result['detection_accuracy']:.1%}  "
+          f"(±{result['detection_ci95']:.0%})   "
+          f"P={result['detection_precision']:.2f} R={result['detection_recall']:.2f}")
+    print()
+    print(f"  verdict_accuracy  : {result['verdict_accuracy']:.1%}  (±{result['verdict_ci95']:.0%})"
+          f"   (4-lớp; chặn bởi ranh giới ACCURATE↔PARTIAL mơ hồ)")
     print(f"  citation_accuracy : {result['citation_accuracy']:.1%}"
           f"  (trên {result['citation_total']} claim có căn cứ)")
     print(f"  baseline (đoán bừa {result['baseline_label']!r}): {result['baseline']:.1%}")

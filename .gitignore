@@ -56,3 +56,7 @@ eval/_last_run*.txt
 eval/_scoped*
 eval/_pipeline_run.txt
 eval/_last_run_graph.txt
+eval/_scoped2*
+eval/_ablate*
+eval/_run_*.txt
+eval/*.jsonl.bak

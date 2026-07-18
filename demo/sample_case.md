@@ -32,14 +32,17 @@ tương tác nhất trong cụm):
 
 | Chỉ số | Giá trị |
 |---|---|
-| Số lần lặp (cụm) | 6 |
-| Tổng tương tác | 98 |
-| Lần đầu xuất hiện | 09/06/2025 |
-| Gần nhất | 19/11/2025 |
+| Cụm tổng (toàn giai đoạn) | 6 lần, 98 tương tác |
+| **Đợt bùng (cửa sổ 48h quanh 19/11/2025)** | **4 claim** — cảnh báo trend |
+| Lần đầu → gần nhất | 09/06/2025 → 19/11/2025 |
 | Verdict | **INACCURATE** |
 
-*(Số trên là từ mẫu 5 luồng chạy demo — 374 post, 91 claim, 23 cụm. Quét toàn bộ
-3.321 post thì cụm này lớn hơn nhiều; ~70 post nhắc trực tiếp ngưỡng thấp.)*
+Cảnh báo trend (chạy `--as-of 2025-11-20 --window 48 --min-occ 3`): hệ thống bắt được
+**đợt lan 4 claim cùng một hiểu nhầm trong 48 giờ ngày 19/11/2025** (13:03, 15:53,
+23:37×2) — không phải đếm cả cụm trải 5 tháng, mà đếm THẬT số claim trong cửa sổ.
+
+*(Số trên từ mẫu 5 luồng demo — 374 post, 91 claim, 23 cụm. Quét toàn bộ 3.321 post
+thì cụm này lớn hơn nhiều; ~70 post nhắc trực tiếp ngưỡng thấp.)*
 
 Bản chất hiểu nhầm: người dân tưởng **ngưỡng chịu thuế thấp** (100–200 triệu) và
 tính **trên doanh thu**, trong khi luật mới miễn tới **500 triệu doanh thu/năm**.
@@ -71,21 +74,26 @@ Vector store thuần trả về `qlt2019-d51` (giống text tin đồn nhất) v
 
 ## Con số đo được (trả lời "làm sao biết phân loại đúng?")
 
-Chạy `python eval/run_eval.py` trên 48 claim gắn nhãn tay (`eval/gold_set.jsonl`),
-**có graph thật** (Neo4j + 119 cạnh `SUPERSEDED_BY`):
+Chạy `python eval/run_eval.py` trên 48 claim gắn nhãn tay (`eval/gold_set.jsonl`).
+Số dưới là **trung bình 3 lần chạy** (model FPT dao động ±8đ giữa các lần):
 
 | Chỉ số | Giá trị |
 |---|---|
-| Verdict accuracy (toàn bộ, 4 nhãn) | **60,4%** (±14%) |
-| Citation accuracy (trỏ đúng điều luật) | **54,3%** |
-| Trong phạm vi Điều 7, gộp 2 nhãn (khớp luật / hiểu sai) | **~82%** |
+| **PHÁT HIỆN TIN SAI** — bắt đúng claim INACCURATE (nhị phân) | **86,8%** (P=0,75 R=0,86) |
+| Citation accuracy (trỏ đúng điều luật) | **76,2%** |
+| Verdict 4 nhãn (ACCURATE/PARTIAL/INACCURATE/UNVERIFIABLE) | ~60% (±14%) |
 | Baseline (đoán bừa nhãn phổ biến nhất) | 29,2% |
-| Độ phủ (thảo luận về ngưỡng/cách tính) | ~40% |
 
-Con số vượt baseline hơn 30 điểm. Phần khó nhất (`PARTIALLY_INACCURATE` — đúng cấu
-trúc, sai con số/điều kiện) là ranh giới mờ mà cả người cũng cãi nhau.
+**Metric chính là "phát hiện tin sai" 86,8%** — đúng câu hỏi của một hệ chống
+misinformation: *hệ có gắn cờ đúng những claim sai không?* (recall 0,86). Verdict
+4-nhãn chỉ ~60% vì bị chặn bởi **ranh giới ACCURATE↔PARTIALLY mơ hồ bản chất** — sai
+số nhỏ tới mức nào thì tụt hạng, người gán nhãn cũng cãi nhau; đây là trần nhãn-người,
+không phải bug. ~25% claim nằm trên ranh giới đó.
 
-Cấu hình: FPT AI `gpt-oss-120b`; truy hồi điều luật LAI — TF-IDF + embedding tiếng
-Việt tìm ứng viên, rồi graph mở rộng theo `SUPERSEDED_BY` (chỉ cho điểm luật cũ) +
-bắc cầu doc-level sang luật mới. Bật graph nâng citation accuracy 43%→54% và verdict
-lên 60% — vì nó đưa đúng điều luật HIỆN HÀNH cho LLM đối chiếu.
+Cấu hình: FPT AI `gpt-oss-120b`; truy hồi điều luật LAI — TF-IDF từ vựng + neo cả Điều 7
+làm ứng viên (candidate recall 100%), LLM chọn khoản đúng nhờ bản đồ Điều 7 trong prompt.
+Graph `SUPERSEDED_BY` là điểm khác biệt cho nhóm claim **bám luật CŨ** (thuế khoán
+`qlt2019-d51`): bắc cầu sang luật mới để định chính đúng chỗ đã đổi. Trên bộ gold này
+graph ~ngang TF-IDF về accuracy tổng (34/35 đáp án nằm ở luật MỚI, không có tiền nhiệm
+để bắc cầu) — giá trị graph là ĐỊNH TÍNH ("dân đang nhớ luật cũ") + cho nhóm claim luật cũ,
+không phải cú nhảy accuracy. (Embedding tiếng Việt FPT đo yếu cho domain → dùng TF-IDF.)

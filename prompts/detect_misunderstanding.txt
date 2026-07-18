@@ -54,11 +54,54 @@ verdict: ACCURATE | PARTIALLY_INACCURATE | INACCURATE | UNVERIFIABLE
    - "Chỉ phần vượt 500 triệu bị tính thuế" -> ACCURATE (đúng k3-a).
    - Nói mức % cụ thể phải khớp đúng ngành trong k3-b..e, sai ngành -> PARTIALLY_INACCURATE.
 
-3. **VAT / thuế môn bài / thuế nhập khẩu KHÔNG có trong văn bản được cung cấp.**
-   Claim xoay quanh VAT chồng thuế, thuế môn bài, khấu trừ đầu vào -> UNVERIFIABLE
-   (trừ khi điều luật trích dẫn nói trực tiếp).
+3. **Nhiều chủ đề KHÔNG nằm trong Điều 7 (chỉ có ngưỡng + cách tính thuế TNCN hộ KD).**
+   Nếu LÕI claim xoay quanh một trong các thứ sau -> UNVERIFIABLE, KỂ CẢ khi ứng viên
+   có kèm text Điều 7 (hệ thống luôn đính Điều 7 vào — ĐỪNG để con số thuế suất/ngưỡng
+   trong đó dụ bạn đi chấm một claim thực chất nói về chuyện khác):
+   - VAT / thuế môn bài / thuế nhập khẩu / khấu trừ đầu vào / "thuế chồng thuế".
+   - Thuế KHOÁN (cách khai khoán, tự khai, nộp khoán "trước đây") — Điều 7 không quy định khoán.
+   - THỦ TỤC: kê khai, hoàn thuế, đăng ký, quyết toán, "mỗi quý phải chứng minh", lập công ty.
+   - Con số GỘP nhiều loại thuế ("VAT + TNCN tổng 4,5%") — không tách ra kiểm theo Điều 7 được.
+   - Khẳng định LỊCH SỬ/so sánh "trước giờ vẫn vậy", "tăng không đáng kể" — không kiểm bằng luật.
+   Ngược lại: claim nói THẲNG về ngưỡng 500tr / cách tính 15% / phần vượt / thuế suất ngành
+   thì VẪN kiểm được -> KHÔNG phải UNVERIFIABLE (xem Lỗi 2).
+
+## Hai lỗi phán SAI hay gặp nhất (đọc kỹ — đây là chỗ mất điểm)
+
+**Lỗi 1 — bới lỗi làm tụt ACCURATE.** Người dân mô tả ĐÚNG cơ chế bằng lời dân dã,
+thiếu thuật ngữ, nhưng ĐÚNG BẢN CHẤT -> vẫn là ACCURATE. Đừng hạ xuống PARTIAL/
+INACCURATE chỉ vì họ nói không "chuẩn văn bản", làm tròn số, hay bỏ chi tiết phụ.
+  - "doanh thu 500tr lãi có 100tr, đi làm công 15tr/tháng mới đóng thuế" — mô tả đúng
+    ngưỡng miễn 500tr doanh thu -> ACCURATE (dù có vế so sánh lương).
+  - "có chứng từ đầu vào thì nộp 15% trên lãi, không thì nộp theo % doanh thu vượt
+    ngưỡng" — mô tả đúng cả hai cách tính K2/K3 -> ACCURATE.
+
+**Lỗi 2 — rút lui về UNVERIFIABLE khi đáng ra là PARTIALLY_INACCURATE.** Claim có
+CẤU TRÚC đúng nhưng SAI CON SỐ / SAI THUẾ SUẤT / VƠ ĐŨA một cách tính thành quy tắc
+chung -> PARTIALLY_INACCURATE, KHÔNG phải UNVERIFIABLE. Kiểm được thì phải phán.
+  - "chỉ tính thuế phần vượt 500tr, mức 5%" — cấu trúc "phần vượt" đúng nhưng 5% sai
+    ngành (k3 có nhiều mức 0,5–5% tuỳ ngành) -> PARTIALLY_INACCURATE.
+  - "hộ kinh doanh thì đóng thuế theo lãi" (nói như quy tắc chung) -> PARTIALLY: chỉ
+    đúng nếu chọn K2 (có chứng từ); không chứng minh chi phí thì nộp theo K3 (doanh thu).
+  - "đóng thuế trên doanh thu bất kể lỗ lãi" (nói như quy tắc chung) -> PARTIALLY:
+    cách mặc định K2 tính trên THU NHẬP (đã trừ chi phí), lỗ thì không có thu nhập tính thuế.
 
 ## Ví dụ
+
+CLAIM: "Có chứng từ đầu vào thì đóng 15% trên lãi, không có thì nộp theo tỷ lệ trên phần doanh thu vượt 500 triệu"
+LUẬT: [tncn2025-d7-k2-b] ... doanh thu đến 3 tỷ: thuế suất 15% trên thu nhập tính thuế
+      [tncn2025-d7-k3-a] doanh thu tính thuế bằng phần doanh thu vượt trên mức khoản 1
+-> {"verdict":"ACCURATE","confidence":0.85,
+    "explanation":"Mô tả đúng cả hai cách tính: K2 (15% trên thu nhập khi có chứng từ) và K3 (tỷ lệ trên phần doanh thu vượt 500tr).",
+    "correct_statement":"Theo Điều 7 Khoản 2 và Khoản 3 Luật 109/2025/QH15, hộ có chứng từ nộp 15% trên thu nhập; không chứng minh được chi phí thì nộp theo tỷ lệ trên phần doanh thu vượt 500 triệu."}
+
+CLAIM: "Vượt ngưỡng thì lấy phần vượt nhân 5% ra tiền thuế"
+LUẬT: [tncn2025-d7-k3-a] doanh thu tính thuế bằng phần doanh thu vượt trên mức khoản 1
+      [tncn2025-d7-k3-b] Phân phối, cung cấp hàng hoá: thuế suất 0,5%
+      [tncn2025-d7-k3-c] Dịch vụ, xây dựng không bao thầu nguyên vật liệu: thuế suất 2% ...
+-> {"verdict":"PARTIALLY_INACCURATE","confidence":0.85,
+    "explanation":"Cấu trúc đúng (chỉ tính trên phần doanh thu vượt 500tr) nhưng thuế suất 5% không phải mức chung — k3 quy định 0,5%–5% tuỳ ngành.",
+    "correct_statement":"Theo Điều 7 Khoản 3 Luật 109/2025/QH15, thuế tính trên phần doanh thu vượt 500 triệu, thuế suất tuỳ ngành từ 0,5% đến 5% (không phải 5% cho mọi ngành)."}
 
 CLAIM: "Doanh thu 501 triệu thì chỉ đóng thuế trên 1 triệu vượt ngưỡng"
 LUẬT: [tncn2025-d7-k3-a] Doanh thu tính thuế được xác định bằng phần doanh thu

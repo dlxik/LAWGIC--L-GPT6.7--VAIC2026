@@ -45,7 +45,8 @@ def _select_posts(n_threads: int | None) -> list[dict]:
     return [p for _, thread in chosen for p in thread]
 
 
-def run(n_threads: int | None, as_of: str | None, window_hours: int | None = None) -> dict:
+def run(n_threads: int | None, as_of: str | None, window_hours: int | None = None,
+        min_occurrences: int | None = None) -> dict:
     posts = _select_posts(n_threads)
     print(f"  [1/5] Phân loại {len(posts)} post ({'toàn bộ' if n_threads is None else f'{n_threads} luồng'})...")
     classified = classifier.classify_posts(posts)
@@ -92,8 +93,12 @@ def run(n_threads: int | None, as_of: str | None, window_hours: int | None = Non
     print(f"  [4/5] Gom cụm hiểu nhầm...")
     misconceptions = misinformation.cluster_misconceptions(claims)
 
-    print(f"  [5/5] Phát hiện trend (as_of={as_of or 'tự động'}, window={window_hours or 'mặc định'}h)...")
-    trends = misinformation.detect_trends(misconceptions, as_of=as_of, window_hours=window_hours)
+    print(f"  [5/5] Phát hiện trend (as_of={as_of or 'tự động'}, window={window_hours or 'mặc định'}h, "
+          f"min_occ={min_occurrences or 'mặc định'})...")
+    trends = misinformation.detect_trends(
+        misconceptions, as_of=as_of, window_hours=window_hours,
+        min_occurrences=min_occurrences,
+    )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "claims_labeled.json").write_text(
@@ -122,7 +127,9 @@ def _print_summary(result: dict) -> None:
         print("    (không có trend vượt ngưỡng trong cửa sổ — thử --as-of khác)")
     for t in result["trends"][:5]:
         m = t["misconception"]
-        print(f"    [{t['severity']}] x{m['count']} lần, {m['total_engagement']} tương tác")
+        occ = t.get("occurrences_in_window", m["count"])
+        print(f"    [{t['severity']}] {occ} claim trong cửa sổ (cụm {m['count']} tổng), "
+              f"{m['total_engagement']} tương tác")
         print(f"          \"{m['canonical_text'][:80]}\"")
         if m.get("contradicts"):
             print(f"          trái với: {', '.join(m['contradicts'][:3])}")
@@ -137,10 +144,14 @@ def main() -> None:
     parser.add_argument("--window", type=int, default=None,
                         help="cửa sổ trend (giờ). Mặc định 48h thường TRỐNG vì post cũ (2025) "
                              "so với ngày demo — dùng ~720 (30 ngày) neo vào giai đoạn sôi động")
+    parser.add_argument("--min-occ", type=int, default=None,
+                        help="số lần lặp tối thiểu để coi là trend. Mặc định 5 (config). "
+                             "Dữ liệu demo: đợt bùng lớn nhất là 4 claim/ngày (19/11/2025) nên "
+                             "dùng 3. Demo bật trend: --as-of 2025-11-20 --window 48 --min-occ 3")
     args = parser.parse_args()
 
     n = None if args.all else args.threads
-    _print_summary(run(n, args.as_of, args.window))
+    _print_summary(run(n, args.as_of, args.window, args.min_occ))
 
 
 if __name__ == "__main__":

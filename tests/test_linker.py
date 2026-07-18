@@ -85,12 +85,14 @@ def test_family_expand_pulls_sibling_clause():
 
 
 def test_retrieval_recall_on_gold_stays_above_floor(monkeypatch):
-    """Recall mốc TF-IDF (chạy offline, không gọi embedding API): >=55% claim có căn cứ.
+    """CANDIDATE recall TF-IDF (offline, không gọi embedding API): >=55% claim có căn cứ.
 
     Đây là TRẦN TRÊN của citation_accuracy (LLM không chọn được node không có trong
-    ứng viên). TF-IDF + graph một mình ~63%; hybrid embedding nâng lên ~86% nhưng
-    cần API nên không đo trong unit test. Tụt dưới 55% nghĩa là có người vừa phá
-    retrieval từ vựng. Chốt chặn hồi quy, không phải mục tiêu chất lượng.
+    ứng viên). Đo thật (2026-07-18, TF-IDF thuần): candidate recall = 100% nhờ neo cả
+    Điều 7 vào ứng viên; embedding FPT KHÔNG nâng thêm (yếu cho domain, xem
+    linker.USE_EMBEDDINGS). Bước LLM-chọn-node sau đó mới là chỗ mất mát: single_recall
+    ~74% -> citation_accuracy ~76%. Assert 55% chỉ là CHỐT CHẶN HỒI QUY (báo động khi
+    ai đó phá retrieval từ vựng), không phải số đem khoe.
     """
     from eval.run_eval import load_gold
 

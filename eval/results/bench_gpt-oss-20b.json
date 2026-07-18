@@ -1,0 +1,93 @@
+{
+  "model": "gpt-oss-20b",
+  "n_gold": 100,
+  "seconds": 364.2,
+  "fields": {
+    "subjects": {
+      "precision": 0.7558,
+      "recall": 0.9848,
+      "f1": 0.8553,
+      "tp": 65,
+      "fp": 21,
+      "fn": 1
+    },
+    "obligations": {
+      "precision": 0.6111,
+      "recall": 0.8049,
+      "f1": 0.6947,
+      "tp": 33,
+      "fp": 21,
+      "fn": 8
+    },
+    "rights": {
+      "precision": 0.7,
+      "recall": 0.875,
+      "f1": 0.7778,
+      "tp": 21,
+      "fp": 9,
+      "fn": 3
+    },
+    "prohibitions": {
+      "precision": 0.4667,
+      "recall": 1.0,
+      "f1": 0.6364,
+      "tp": 7,
+      "fp": 8,
+      "fn": 0
+    },
+    "deadlines": {
+      "precision": 0.5333,
+      "recall": 1.0,
+      "f1": 0.6957,
+      "tp": 16,
+      "fp": 14,
+      "fn": 0
+    },
+    "references": {
+      "precision": 0.8936,
+      "recall": 0.9333,
+      "f1": 0.913,
+      "tp": 42,
+      "fp": 5,
+      "fn": 3
+    },
+    "tax_rates": {
+      "precision": 0.5556,
+      "recall": 1.0,
+      "f1": 0.7143,
+      "tp": 10,
+      "fp": 8,
+      "fn": 0
+    },
+    "tax_base": {
+      "precision": 0.7143,
+      "recall": 0.8333,
+      "f1": 0.7692,
+      "tp": 10,
+      "fp": 4,
+      "fn": 2
+    },
+    "exemptions": {
+      "precision": 0.2,
+      "recall": 0.2857,
+      "f1": 0.2353,
+      "tp": 2,
+      "fp": 8,
+      "fn": 5
+    }
+  },
+  "micro": {
+    "precision": 0.6776,
+    "recall": 0.9035,
+    "f1": 0.7744,
+    "tp": 206,
+    "fp": 98,
+    "fn": 22
+  },
+  "macro_f1": 0.6991,
+  "hallucination_rate": 0.3224,
+  "empty_correct_rate": 0.6667,
+  "empty_total": 12,
+  "penalty_type_accuracy": 0.7143,
+  "penalty_total": 7
+}

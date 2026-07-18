@@ -1,0 +1,1902 @@
+{
+  "qlt2019-d126-k1": {
+    "node_id": "qlt2019-d126-k1",
+    "subjects": [
+      "Thủ trưởng cơ quan quản lý thuế",
+      "Cục trưởng Cục Điều tra chống buôn lậu thuộc Tổng cục Hải quan",
+      "Cục trưởng Cục Kiểm tra sau thông quan"
+    ],
+    "obligations": [
+      "ra quyết định áp dụng biện pháp cưỡng chế thi hành quyết định hành chính về quản lý thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "Điều 125 của Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d130-k2": {
+    "node_id": "qlt2019-d130-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "10%",
+      "30%",
+      "50%"
+    ],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d133-k3": {
+    "node_id": "qlt2019-d133-k3",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "không được kê biên"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d134-k2-b": {
+    "node_id": "qlt2019-d134-k2-b",
+    "subjects": [],
+    "obligations": [
+      "việc thu tiền, tài sản khác từ bên thứ ba được thực hiện theo quy định của pháp luật"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d134-k2-c": {
+    "node_id": "qlt2019-d134-k2-c",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d134-k3-b": {
+    "node_id": "qlt2019-d134-k3-b",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "không được chuyển trả tiền, tài sản khác cho đối tượng bị cưỡng chế"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d135-k2": {
+    "node_id": "qlt2019-d135-k2",
+    "subjects": [
+      "cơ quan quản lý nhà nước có thẩm quyền"
+    ],
+    "obligations": [
+      "phải thông báo công khai trên phương tiện thông tin đại chúng"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d136-k4": {
+    "node_id": "qlt2019-d136-k4",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [
+      {
+        "type": "FINE",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "mức phạt tiền đối với tổ chức bằng 02 lần mức phạt tiền đối với cá nhân, trừ mức phạt tiền đối với hành vi khai sai dẫn đến thiếu số tiền thuế phải nộp hoặc tăng số tiền thuế được miễn, giảm, hoàn, không thu, hành vi trốn thuế."
+      }
+    ],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d40-k5-c": {
+    "node_id": "qlt2025-d40-k5-c",
+    "subjects": [
+      "đại lý thuế",
+      "hộ kinh doanh",
+      "cá nhân kinh doanh dịch vụ"
+    ],
+    "obligations": [
+      "cung cấp cho người nộp thuế theo hợp đồng bao gồm: thủ tục đăng ký thuế, khai thuế, nộp thuế, quyết toán thuế, lập hồ sơ đề nghị miễn thuế, giảm thuế, hoàn thuế và các thủ tục về thuế khác thay người nộp thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "quy định của pháp luật về kế toán"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d42-k1": {
+    "node_id": "qlt2025-d42-k1",
+    "subjects": [
+      "Cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [
+      "có quyền yêu cầu người khiếu nại cung cấp hồ sơ, tài liệu liên quan đến việc khiếu nại",
+      "có quyền từ chối xem xét giải quyết khiếu nại"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "pháp luật về thuế"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d44-k1": {
+    "node_id": "qlt2025-d44-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "pháp luật về quản lý thuế",
+      "pháp luật về xử lý vi phạm hành chính"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d48-k6": {
+    "node_id": "qlt2025-d48-k6",
+    "subjects": [
+      "cơ quan quản lý thuế",
+      "thủ trưởng cơ quan quản lý thuế",
+      "người nộp thuế",
+      "tổ chức tín dụng"
+    ],
+    "obligations": [
+      "nộp dần tiền thuế nợ trong thời hạn không quá 12 tháng kể từ ngày cơ quan có thẩm quyền ban hành văn bản chấp nhận nộp dần tiền thuế nợ",
+      "phải có bảo lãnh của tổ chức tín dụng"
+    ],
+    "rights": [
+      "được nộp dần tiền thuế nợ trong thời hạn không quá 12 tháng kể từ ngày cơ quan có thẩm quyền ban hành văn bản chấp nhận nộp dần tiền thuế nợ"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trong thời hạn không quá 12 tháng kể từ ngày cơ quan có thẩm quyền ban hành văn bản chấp nhận nộp dần tiền thuế nợ"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d53-k2": {
+    "node_id": "qlt2025-d53-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "đến hết ngày 30 tháng 6 năm 2026"
+    ],
+    "references": [
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d22": {
+    "node_id": "tncn2025-d22",
+    "subjects": [
+      "cá nhân không cư trú"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "tổng số thu nhập mà cá nhân không cư trú nhận được từ việc đầu tư vốn vào tổ chức, cá nhân tại Việt Nam nhân (x)"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d7-k1": {
+    "node_id": "tncn2025-d7-k1",
+    "subjects": [
+      "Cá nhân cư trú",
+      "Chính phủ",
+      "Ủy ban Thường vụ Quốc hội"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "mức doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân"
+    ]
+  },
+  "tncn2025-d7-k2-a": {
+    "node_id": "tncn2025-d7-k2-a",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "doanh thu của hàng hóa, dịch vụ bán ra trừ (-) đi chi phí liên quan đến hoạt động sản xuất, kinh doanh trong kỳ tính thuế"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d18-k3": {
+    "node_id": "tncn2025-d18-k3",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d19-k1": {
+    "node_id": "tncn2025-d19-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "khoản 10 Điều 3 của Luật này"
+    ],
+    "tax_rates": [
+      "thuế suất 5%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d20-k1": {
+    "node_id": "tncn2025-d20-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "khoản 2 Điều này",
+      "khoản 3 Điều này"
+    ],
+    "tax_rates": [
+      "thuế suất quy định tại khoản 3 Điều này"
+    ],
+    "tax_base": [
+      "doanh thu từ hoạt động kinh doanh quy định tại khoản 2 Điều này"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d20-k2": {
+    "node_id": "tncn2025-d20-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d20-k3-đ": {
+    "node_id": "tncn2025-d20-k3-đ",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "2%"
+    ],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d21": {
+    "node_id": "tncn2025-d21",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "thuế suất 20%"
+    ],
+    "tax_base": [
+      "tổng số tiền lương, tiền công mà cá nhân không cư trú nhận được do thực hiện công việc tại Việt Nam"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d24-k1": {
+    "node_id": "tncn2025-d24-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "thuế suất 2%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d4-k15": {
+    "node_id": "tncn2025-d4-k15",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d5-k2": {
+    "node_id": "tncn2025-d5-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trong thời hạn 05 năm"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Miễn thuế thu nhập cá nhân trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công của cá nhân là nhân lực công nghiệp công nghệ số chất lượng cao"
+    ]
+  },
+  "tncn2025-d7-k2": {
+    "node_id": "tncn2025-d7-k2",
+    "subjects": [
+      "cá nhân cư trú có doanh thu năm trên mức quy định tại khoản 1 Điều này"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "khoản 1 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d7-k3": {
+    "node_id": "tncn2025-d7-k3",
+    "subjects": [
+      "Cá nhân kinh doanh có doanh thu năm trên mức quy định tại khoản 1 Điều này đến 03 tỷ đồng"
+    ],
+    "obligations": [
+      "được lựa chọn nộp thuế theo quy định tại điểm a và điểm b khoản 2 Điều này hoặc nộp thuế theo thuế suất nhân (x) với doanh thu tính thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "điểm a và điểm b khoản 2 Điều này",
+      "khoản 1 Điều này"
+    ],
+    "tax_rates": [
+      "thuế suất nhân (x)"
+    ],
+    "tax_base": [
+      "doanh thu tính thuế"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d7-k3-e": {
+    "node_id": "tncn2025-d7-k3-e",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "1%"
+    ],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d104-k1-a": {
+    "node_id": "qlt2019-d104-k1-a",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d105-k4": {
+    "node_id": "qlt2019-d105-k4",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "không được làm nhân viên đại lý thuế"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d105-k4-b": {
+    "node_id": "qlt2019-d105-k4-b",
+    "subjects": [
+      "Người"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "cấm hành nghề dịch vụ làm thủ tục về thuế, kế toán, kiểm toán"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "bản án, quyết định của Tòa án"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d107-k1": {
+    "node_id": "qlt2019-d107-k1",
+    "subjects": [],
+    "obligations": [
+      "Áp dụng quản lý rủi ro trong quản lý thuế",
+      "ứng dụng công nghệ thông tin trong kiểm tra thuế, thanh tra thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d109-k2-b": {
+    "node_id": "qlt2019-d109-k2-b",
+    "subjects": [
+      "cơ quan quản lý thuế",
+      "người nộp thuế",
+      "thủ trưởng cơ quan quản lý thuế"
+    ],
+    "obligations": [
+      "thông báo yêu cầu người nộp thuế giải trình hoặc bổ sung thông tin, tài liệu",
+      "giải trình hoặc bổ sung thông tin, tài liệu",
+      "khai bổ sung"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "hết thời hạn theo thông báo của cơ quan quản lý thuế"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d116-k1-h": {
+    "node_id": "qlt2019-d116-k1-h",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d119-k1": {
+    "node_id": "qlt2019-d119-k1",
+    "subjects": [
+      "người ra quyết định thanh tra thuế"
+    ],
+    "obligations": [
+      "phải có văn bản kết luận thanh tra thuế",
+      "phải có các nội dung chính sau đây"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "15 ngày kể từ ngày nhận được báo cáo kết quả thanh tra thuế"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d119-k2": {
+    "node_id": "qlt2019-d119-k2",
+    "subjects": [
+      "người ra quyết định thanh tra"
+    ],
+    "obligations": [],
+    "rights": [
+      "có quyền yêu cầu trưởng đoàn thanh tra, thành viên đoàn thanh tra báo cáo, yêu cầu đối tượng thanh tra giải trình"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d121-k1": {
+    "node_id": "qlt2019-d121-k1",
+    "subjects": [
+      "Thủ trưởng cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [
+      "cơ quan, tổ chức, cá nhân có thông tin liên quan đến hành vi trốn thuế cung cấp thông tin bằng văn bản hoặc trả lời trực tiếp"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d122-k6": {
+    "node_id": "qlt2019-d122-k6",
+    "subjects": [
+      "người ra quyết định tạm giữ",
+      "người có thẩm quyền"
+    ],
+    "obligations": [
+      "phải xử lý tài liệu, tang vật bị tạm giữ theo những biện pháp trong quyết định xử lý hoặc trả lại cho cá nhân, tổ chức nếu không áp dụng hình thức phạt tịch thu đối với tài liệu, tang vật bị tạm giữ",
+      "phải do người có thẩm quyền quy định"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [
+      {
+        "type": "OTHER",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "hình thức phạt tịch thu đối với tài liệu, tang vật bị tạm giữ"
+      }
+    ],
+    "deadlines": [
+      "Trong thời hạn 10 ngày làm việc kể từ ngày tạm giữ",
+      "không quá 60 ngày kể từ ngày tạm giữ tài liệu, tang vật"
+    ],
+    "references": [
+      "tại khoản 1 Điều này quyết định"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d125-k3-a": {
+    "node_id": "qlt2019-d125-k3-a",
+    "subjects": [
+      "cơ quan quản lý thuế"
+    ],
+    "obligations": [
+      "áp dụng biện pháp cưỡng chế phù hợp"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "các điểm a, b và c khoản 1 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d136-k5": {
+    "node_id": "qlt2019-d136-k5",
+    "subjects": [
+      "người nộp thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [
+      {
+        "type": "FINE",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "xử phạt vi phạm hành chính về quản lý thuế"
+      }
+    ],
+    "deadlines": [],
+    "references": [
+      "Điều 50",
+      "Điều 52",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d137-k2": {
+    "node_id": "qlt2019-d137-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "05 năm kể từ ngày thực hiện hành vi vi phạm"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d138-k2-a": {
+    "node_id": "qlt2019-d138-k2-a",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [
+      {
+        "type": "FINE",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "Mức phạt tiền tối đa đối với hành vi quy định tại Điều 141 của Luật này thực hiện theo quy định của pháp luật về xử lý vi phạm hành chính"
+      }
+    ],
+    "deadlines": [],
+    "references": [
+      "Điều 141",
+      "Luật này",
+      "pháp luật về xử lý vi phạm hành chính"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d138-k4": {
+    "node_id": "qlt2019-d138-k4",
+    "subjects": [
+      "Chính phủ"
+    ],
+    "obligations": [
+      "quy định chi tiết"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d141-k1": {
+    "node_id": "qlt2019-d141-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d143-k1": {
+    "node_id": "qlt2019-d143-k1",
+    "subjects": [],
+    "obligations": [
+      "nộp hồ sơ khai thuế sau 90 ngày kể từ ngày hết thời hạn nộp hồ sơ khai thuế hoặc ngày hết thời hạn gia hạn nộp hồ sơ khai thuế theo quy định của Luật này"
+    ],
+    "rights": [],
+    "prohibitions": [
+      "Không nộp hồ sơ đăng ký thuế",
+      "không nộp hồ sơ khai thuế"
+    ],
+    "penalties": [],
+    "deadlines": [
+      "sau 90 ngày kể từ ngày hết thời hạn nộp hồ sơ khai thuế hoặc ngày hết thời hạn gia hạn nộp hồ sơ khai thuế"
+    ],
+    "references": [
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d145-k2": {
+    "node_id": "qlt2019-d145-k2",
+    "subjects": [
+      "Tổ chức, cá nhân khác có liên quan đến việc thực hiện pháp luật về thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "không thực hiện trách nhiệm của mình theo quy định của Luật này"
+    ],
+    "penalties": [
+      {
+        "type": "FINE",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "bị xử phạt vi phạm hành chính"
+      },
+      {
+        "type": "CRIMINAL",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "truy cứu trách nhiệm hình sự"
+      }
+    ],
+    "deadlines": [],
+    "references": [
+      "khoản 4 Điều 2 của Luật này",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d149-k1": {
+    "node_id": "qlt2019-d149-k1",
+    "subjects": [
+      "Cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [
+      "có quyền yêu cầu người khiếu nại cung cấp hồ sơ, tài liệu liên quan đến việc khiếu nại",
+      "có quyền từ chối xem xét giải quyết khiếu nại"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d149-k3": {
+    "node_id": "qlt2019-d149-k3",
+    "subjects": [
+      "thủ trưởng cơ quan quản lý thuế",
+      "Hội đồng tham vấn"
+    ],
+    "obligations": [
+      "ban hành quyết định thành lập Hội đồng tham vấn"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d15-k11": {
+    "node_id": "qlt2019-d15-k11",
+    "subjects": [
+      "Bộ",
+      "cơ quan ngang Bộ",
+      "cơ quan thuộc Chính phủ"
+    ],
+    "obligations": [
+      "phối hợp với Bộ Tài chính thực hiện nhiệm vụ quản lý nhà nước về quản lý thuế theo quy định của Chính phủ"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "quy định của Chính phủ"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d16-k5": {
+    "node_id": "qlt2019-d16-k5",
+    "subjects": [],
+    "obligations": [],
+    "rights": [
+      "Hưởng các ưu đãi về thuế, hoàn thuế theo quy định của pháp luật về thuế",
+      "được biết thời hạn giải quyết hoàn thuế, số tiền thuế không được hoàn và căn cứ pháp lý đối với số tiền thuế không được hoàn"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "thời hạn giải quyết hoàn thuế"
+    ],
+    "references": [
+      "quy định của pháp luật về thuế"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d17-k11": {
+    "node_id": "qlt2019-d17-k11",
+    "subjects": [
+      "Chính phủ",
+      "người nộp thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "không phải nộp các chứng từ trong hồ sơ khai, nộp thuế, hồ sơ hoàn thuế và các hồ sơ thuế khác mà cơ quan quản lý nhà nước đã có."
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d30-k1": {
+    "node_id": "qlt2019-d30-k1",
+    "subjects": [
+      "Người nộp thuế",
+      "cơ quan thuế"
+    ],
+    "obligations": [
+      "thực hiện đăng ký thuế"
+    ],
+    "rights": [
+      "được cơ quan thuế cấp mã số thuế"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trước khi bắt đầu hoạt động sản xuất, kinh doanh hoặc có phát sinh nghĩa vụ với ngân sách nhà nước"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d30-k1-a": {
+    "node_id": "qlt2019-d30-k1-a",
+    "subjects": [
+      "Doanh nghiệp",
+      "tổ chức",
+      "cá nhân"
+    ],
+    "obligations": [
+      "thực hiện đăng ký thuế theo cơ chế một cửa liên thông cùng với đăng ký doanh nghiệp, đăng ký hợp tác xã, đăng ký kinh doanh"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "Luật Doanh nghiệp"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d37-k2": {
+    "node_id": "qlt2019-d37-k2",
+    "subjects": [
+      "Tổ chức",
+      "Hộ kinh doanh",
+      "Cá nhân kinh doanh"
+    ],
+    "obligations": [
+      "thực hiện thông báo đến cơ quan thuế quản lý trực tiếp"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "chậm nhất là 01 ngày làm việc trước khi tạm ngừng hoạt động, kinh doanh hoặc tiếp tục hoạt động, kinh doanh trước thời hạn đã thông báo"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d37-k3": {
+    "node_id": "qlt2019-d37-k3",
+    "subjects": [
+      "Chính phủ"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trong thời hạn tạm ngừng hoạt động, kinh doanh hoặc tiếp tục hoạt động, kinh doanh",
+      "trước thời hạn"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d41-k3-b": {
+    "node_id": "qlt2019-d41-k3-b",
+    "subjects": [],
+    "obligations": [
+      "thông báo cho người nộp thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "chậm nhất là 02 ngày làm việc kể từ ngày tiếp nhận hồ sơ"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d42-k3": {
+    "node_id": "qlt2019-d42-k3",
+    "subjects": [
+      "Người nộp thuế",
+      "Bộ trưởng Bộ Tài chính"
+    ],
+    "obligations": [
+      "thực hiện khai thuế, tính thuế tại cơ quan thuế địa phương có thẩm quyền nơi có trụ sở",
+      "khai thuế tại trụ sở chính và tính thuế",
+      "phân bổ nghĩa vụ thuế phải nộp theo từng địa phương nơi được hưởng nguồn thu ngân sách nhà nước"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d42-k6-b": {
+    "node_id": "qlt2019-d42-k6-b",
+    "subjects": [],
+    "obligations": [
+      "phải dựa trên thông tin của người nộp thuế, cơ sở dữ liệu thương mại có sự kiểm chứng bảo đảm tính pháp lý"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d42-k6-c": {
+    "node_id": "qlt2019-d42-k6-c",
+    "subjects": [
+      "Bộ trưởng Bộ Tài chính"
+    ],
+    "obligations": [
+      "phải được Bộ trưởng Bộ Tài chính phê duyệt trước khi thực hiện",
+      "được thực hiện theo quy định của pháp luật về điều ước quốc tế, thỏa thuận quốc tế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trước khi thực hiện"
+    ],
+    "references": [
+      "pháp luật về điều ước quốc tế, thỏa thuận quốc tế",
+      "điều ước quốc tế",
+      "thỏa thuận quốc tế"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d43-k6-b": {
+    "node_id": "qlt2019-d43-k6-b",
+    "subjects": [],
+    "obligations": [
+      "Báo cáo tài chính đến thời điểm chấm dứt hoạt động hoặc chấm dứt hợp đồng hoặc chuyển đổi loại hình doanh nghiệp hoặc tổ chức lại doanh nghiệp"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "đến thời điểm chấm dứt hoạt động hoặc chấm dứt hợp đồng hoặc chuyển đổi loại hình doanh nghiệp hoặc tổ chức lại doanh nghiệp"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d54": {
+    "node_id": "qlt2019-d54",
+    "subjects": [
+      "Người nộp thuế"
+    ],
+    "obligations": [
+      "phải nộp số tiền thuế ấn định theo quyết định xử lý về thuế của cơ quan quản lý thuế",
+      "có trách nhiệm cung cấp các hồ sơ, tài liệu để chứng minh cho việc khiếu nại, khởi kiện"
+    ],
+    "rights": [
+      "có quyền đề nghị cơ quan quản lý thuế giải thích hoặc khiếu nại, khởi kiện về việc ấn định thuế"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "quyết định xử lý về thuế của cơ quan quản lý thuế"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d6-k3": {
+    "node_id": "qlt2019-d6-k3",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "Lợi dụng để chiếm đoạt hoặc sử dụng trái phép tiền thuế"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d61-k2": {
+    "node_id": "qlt2019-d61-k2",
+    "subjects": [
+      "Người nộp thuế"
+    ],
+    "obligations": [],
+    "rights": [
+      "được hoàn trả số tiền thuế, tiền chậm nộp, tiền phạt nộp thừa",
+      "có quyền yêu cầu cơ quan quản lý thuế trả tiền lãi theo mức 0,03%/ngày tính trên số tiền thuế, tiền chậm nộp, tiền phạt nộp thừa"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "quyết định giải quyết khiếu nại của cơ quan có thẩm quyền hoặc bản án, quyết định của Tòa án",
+      "quy định của pháp luật về ngân sách nhà nước"
+    ],
+    "tax_rates": [
+      "0,03%/ngày"
+    ],
+    "tax_base": [
+      "số tiền thuế, tiền chậm nộp, tiền phạt nộp thừa"
+    ],
+    "exemptions": []
+  },
+  "qlt2019-d62-k3-a": {
+    "node_id": "qlt2019-d62-k3-a",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "Không quá 02 năm kể từ ngày hết thời hạn nộp thuế"
+    ],
+    "references": [
+      "điểm a khoản 1 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d62-k3-b": {
+    "node_id": "qlt2019-d62-k3-b",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "Không quá 01 năm kể từ ngày hết thời hạn nộp thuế"
+    ],
+    "references": [
+      "điểm b khoản 1 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d65-k2": {
+    "node_id": "qlt2019-d65-k2",
+    "subjects": [
+      "Cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d66-k2": {
+    "node_id": "qlt2019-d66-k2",
+    "subjects": [
+      "Cơ quan quản lý thuế"
+    ],
+    "obligations": [
+      "thông báo cho cơ quan quản lý xuất cảnh, nhập cảnh"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "khoản 1 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d68-k3": {
+    "node_id": "qlt2019-d68-k3",
+    "subjects": [
+      "Doanh nghiệp"
+    ],
+    "obligations": [
+      "có trách nhiệm hoàn thành nghĩa vụ nộp thuế trước khi chuyển đổi",
+      "có trách nhiệm hoàn thành nghĩa vụ nộp thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trước khi chuyển đổi"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d7-k3": {
+    "node_id": "qlt2019-d7-k3",
+    "subjects": [],
+    "obligations": [
+      "đồng tiền nộp thuế là Đồng Việt Nam"
+    ],
+    "rights": [
+      "được phép khai thuế, nộp thuế bằng ngoại tệ tự do chuyển đổi"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "pháp luật về hải quan"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d71-k1": {
+    "node_id": "qlt2019-d71-k1",
+    "subjects": [
+      "Người nộp thuế"
+    ],
+    "obligations": [
+      "gửi hồ sơ hoàn thuế"
+    ],
+    "rights": [
+      "được hoàn thuế lập"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d8-k6": {
+    "node_id": "qlt2019-d8-k6",
+    "subjects": [
+      "Cơ quan, tổ chức"
+    ],
+    "obligations": [
+      "phải sử dụng chứng từ điện tử trong quá trình thực hiện giao dịch với cơ quan quản lý thuế",
+      "sử dụng chứng từ điện tử do cơ quan quản lý thuế cung cấp để giải quyết các thủ tục hành chính cho người nộp thuế"
+    ],
+    "rights": [],
+    "prohibitions": [
+      "không được yêu cầu người nộp thuế nộp chứng từ giấy"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d8-k7-e": {
+    "node_id": "qlt2019-d8-k7-e",
+    "subjects": [
+      "cơ quan quản lý thuế",
+      "công chức quản lý thuế"
+    ],
+    "obligations": [
+      "phải thực hiện khai thác, sử dụng dữ liệu trên hệ thống"
+    ],
+    "rights": [],
+    "prohibitions": [
+      "không được yêu cầu người nộp thuế cung cấp hồ sơ thuế, chứng từ nộp thuế bằng giấy"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d80-k3": {
+    "node_id": "qlt2019-d80-k3",
+    "subjects": [
+      "cơ quan thuế",
+      "người nộp thuế"
+    ],
+    "obligations": [
+      "căn cứ sổ thuế để thông báo danh sách hộ gia đình, cá nhân thuộc diện miễn thuế",
+      "tự xác định số tiền thuế được miễn trên cơ sở tờ khai quyết toán thuế thu nhập cá nhân"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "điểm a khoản 2 Điều 79 của Luật này",
+      "điểm b khoản 2 Điều 79 của Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d81-k3": {
+    "node_id": "qlt2019-d81-k3",
+    "subjects": [
+      "Người nộp thuế"
+    ],
+    "obligations": [
+      "nộp hồ sơ miễn thuế, giảm thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d82-k2": {
+    "node_id": "qlt2019-d82-k2",
+    "subjects": [
+      "cơ quan quản lý thuế"
+    ],
+    "obligations": [
+      "ban hành quyết định miễn thuế, giảm thuế",
+      "thông báo bằng văn bản cho người nộp thuế lý do không được miễn thuế, giảm thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trong thời hạn 40 ngày kể từ ngày nhận đủ hồ sơ"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2019-d9-k1": {
+    "node_id": "qlt2019-d9-k1",
+    "subjects": [
+      "Cơ quan thuế"
+    ],
+    "obligations": [
+      "áp dụng quản lý rủi ro trong đăng ký thuế, khai thuế, nộp thuế, nợ thuế, cưỡng chế thi hành quyết định hành chính về quản lý thuế, hoàn thuế, kiểm tra thuế, thanh tra thuế, quản l‎ý và sử dụng hóa đơn, chứng từ và các nghiệp vụ khác trong quản lý thuế"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d14-k1-a": {
+    "node_id": "qlt2025-d14-k1-a",
+    "subjects": [
+      "người nộp thuế"
+    ],
+    "obligations": [
+      "nộp thuế, khoản thu khác"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "ngày cuối cùng của thời hạn nộp hồ sơ khai thuế, khoản thu khác"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d17-k2-d": {
+    "node_id": "qlt2025-d17-k2-d",
+    "subjects": [
+      "doanh nghiệp, hợp tác xã, liên hiệp hợp tác xã",
+      "các doanh nghiệp, hợp tác xã, liên hiệp hợp tác xã"
+    ],
+    "obligations": [
+      "nộp thuế và khoản thu khác đầy đủ theo thời hạn nộp thuế và khoản thu khác đã quy định"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [
+      {
+        "type": "OTHER",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "bị xử phạt theo quy định của pháp luật"
+      }
+    ],
+    "deadlines": [
+      "theo thời hạn nộp thuế và khoản thu khác đã quy định"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d19-k3": {
+    "node_id": "qlt2025-d19-k3",
+    "subjects": [
+      "Cơ quan thuế"
+    ],
+    "obligations": [
+      "triển khai việc miễn thuế, giảm thuế tự động",
+      "có trách nhiệm triển khai việc miễn thuế, giảm thuế tự động theo từng giai đoạn, phù hợp với điều kiện thực tế, điều kiện về hạ tầng và ứng dụng công nghệ thông tin"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d19-k4-a": {
+    "node_id": "qlt2025-d19-k4-a",
+    "subjects": [
+      "Thủ trưởng cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "điểm b khoản này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "miễn thuế",
+      "giảm thuế",
+      "không thu thuế",
+      "không chịu thuế"
+    ]
+  },
+  "qlt2025-d19-k5": {
+    "node_id": "qlt2025-d19-k5",
+    "subjects": [
+      "Chính phủ"
+    ],
+    "obligations": [
+      "quy định chi tiết khoản 1 Điều này và các nội dung sau"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "thời hạn tiếp nhận"
+    ],
+    "references": [
+      "Điều này",
+      "khoản 1"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "giải quyết hồ sơ miễn thuế",
+      "giảm thuế",
+      "không thu thuế",
+      "không chịu thuế"
+    ]
+  },
+  "qlt2025-d22-k2-b": {
+    "node_id": "qlt2025-d22-k2-b",
+    "subjects": [
+      "Cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [
+      "yêu cầu người nộp thuế giải trình, bổ sung thông tin, tài liệu",
+      "ban hành quyết định ấn định thuế",
+      "xử lý vi phạm hành chính về quản lý thuế",
+      "chuyển sang kiểm tra tại trụ sở người nộp thuế"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d26-k5-a": {
+    "node_id": "qlt2025-d26-k5-a",
+    "subjects": [
+      "Tổ chức",
+      "Hộ kinh doanh",
+      "Cá nhân kinh doanh"
+    ],
+    "obligations": [
+      "lập hóa đơn điện tử khi bán hàng hóa, cung cấp dịch vụ để giao cho người mua theo định dạng chuẩn dữ liệu",
+      "ghi đầy đủ nội dung theo quy định của pháp luật về thuế và pháp luật về kế toán",
+      "bảo đảm phản ánh đầy đủ, trung thực nội dung nghiệp vụ kinh tế phát sinh",
+      "chịu trách nhiệm trước pháp luật về tính chính xác của hóa đơn đã lập"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "pháp luật về thuế",
+      "pháp luật về kế toán"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d26-k5-g": {
+    "node_id": "qlt2025-d26-k5-g",
+    "subjects": [
+      "Người mua"
+    ],
+    "obligations": [
+      "yêu cầu người bán cung cấp hóa đơn điện tử khi mua hàng hóa, dịch vụ"
+    ],
+    "rights": [
+      "có quyền yêu cầu người bán cung cấp hóa đơn điện tử khi mua hàng hóa, dịch vụ",
+      "được hưởng các biện pháp khuyến khích theo quy định của pháp luật"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d32-k5": {
+    "node_id": "qlt2025-d32-k5",
+    "subjects": [
+      "Cơ quan, tổ chức",
+      "cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "không được yêu cầu người nộp thuế xuất trình chứng từ bằng giấy"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d35-k2": {
+    "node_id": "qlt2025-d35-k2",
+    "subjects": [
+      "Cơ quan quản lý thuế"
+    ],
+    "obligations": [],
+    "rights": [
+      "được quyền thu thập, tiếp cận, sử dụng và mua sắm các cơ sở dữ liệu thương mại có sẵn trên thị trường theo quy định của pháp luật"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d36-k3": {
+    "node_id": "qlt2025-d36-k3",
+    "subjects": [
+      "người nộp thuế",
+      "cơ quan thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d37-k1-g": {
+    "node_id": "qlt2025-d37-k1-g",
+    "subjects": [],
+    "obligations": [],
+    "rights": [
+      "giải thích về việc tính thuế, khoản thu khác, ấn định thuế, nội dung xử lý về thuế, khoản thu khác",
+      "bảo lưu ý kiến, giải trình",
+      "biết thời hạn giải quyết hoàn thuế, số tiền thuế không được hoàn và căn cứ pháp lý đối với số tiền thuế không được hoàn"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d41-k2": {
+    "node_id": "qlt2025-d41-k2",
+    "subjects": [
+      "Cá nhân"
+    ],
+    "obligations": [],
+    "rights": [
+      "có quyền tố cáo hành vi vi phạm pháp luật về thuế của người nộp thuế, công chức quản lý thuế hoặc tổ chức, cá nhân khác"
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d44-k8": {
+    "node_id": "qlt2025-d44-k8",
+    "subjects": [
+      "người nộp thuế"
+    ],
+    "obligations": [
+      "phải nộp đủ số tiền thuế thiếu, số tiền thuế trốn, số tiền thuế được miễn, giảm, hoàn, không thu không đúng, tiền chậm nộp vào ngân sách nhà nước trong thời hạn 10 năm trở về trước kể từ ngày phát hiện hành vi vi phạm",
+      "phải nộp đủ số tiền thuế thiếu, số tiền thuế trốn, tiền chậm nộp cho toàn bộ thời gian trở về trước kể từ ngày phát hiện hành vi vi phạm"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trong thời hạn 10 năm trở về trước kể từ ngày phát hiện hành vi vi phạm",
+      "cho toàn bộ thời gian trở về trước kể từ ngày phát hiện hành vi vi phạm"
+    ],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d44-k9": {
+    "node_id": "qlt2025-d44-k9",
+    "subjects": [
+      "Người nộp thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [
+      {
+        "type": "FINE",
+        "min_amount": null,
+        "max_amount": null,
+        "duration_months": null,
+        "is_permanent": false,
+        "text": "phạt tiền do vi phạm hành chính về quản lý thuế"
+      }
+    ],
+    "deadlines": [],
+    "references": [
+      "khoản 21 Điều 4 của Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "được miễn tiền phạt",
+      "Tổng số tiền miễn phạt tối đa không quá giá trị tài sản, hàng hóa bị thiệt hại"
+    ]
+  },
+  "qlt2025-d45-k2": {
+    "node_id": "qlt2025-d45-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [
+      "Hành vi khai sai căn cứ tính thuế hoặc xác định sai trường hợp được miễn, giảm, hoàn thuế hoặc sử dụng hóa đơn, chứng từ không hợp pháp"
+    ],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d49-k1-đ": {
+    "node_id": "qlt2025-d49-k1-đ",
+    "subjects": [],
+    "obligations": [
+      "Thu tiền, tài sản khác của đối tượng bị cưỡng chế thi hành quyết định hành chính"
+    ],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "qlt2025-d5-k2-a": {
+    "node_id": "qlt2025-d5-k2-a",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d13-k1": {
+    "node_id": "tncn2025-d13-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "20%",
+      "2%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)",
+      "giá chuyển nhượng trừ (-) đi giá mua và các khoản chi phí hợp lý liên quan đến việc tạo ra thu nhập từ chuyển nhượng vốn"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d16-k1": {
+    "node_id": "tncn2025-d16-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)"
+    ],
+    "exemptions": []
+  },
+  "tncn2025-d5-k1": {
+    "node_id": "tncn2025-d5-k1",
+    "subjects": [
+      "Người nộp thuế"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "được giảm thuế tương ứng với mức độ thiệt hại nhưng không vượt quá số thuế phải nộp"
+    ]
+  },
+  "tncn2025-d5-k5": {
+    "node_id": "tncn2025-d5-k5",
+    "subjects": [],
+    "obligations": [],
+    "rights": [
+      "Giảm 50% thuế thu nhập cá nhân đối với lợi tức của nhà đầu tư cá nhân được chia từ quỹ đầu tư chứng khoán, quỹ đầu tư bất động sản thành lập theo quy định của Luật Chứng khoán trong thời hạn do Chính phủ quy định."
+    ],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [
+      "trong thời hạn do Chính phủ quy định."
+    ],
+    "references": [
+      "Luật Chứng khoán"
+    ],
+    "tax_rates": [
+      "50%"
+    ],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d7-k2-b": {
+    "node_id": "tncn2025-d7-k2-b",
+    "subjects": [
+      "Cá nhân kinh doanh"
+    ],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "tại khoản 1 Điều này"
+    ],
+    "tax_rates": [
+      "15%"
+    ],
+    "tax_base": [],
+    "exemptions": []
+  },
+  "tncn2025-d8-k1": {
+    "node_id": "tncn2025-d8-k1",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [
+      "khoản 2 Điều này",
+      "Biểu thuế lũy tiến từng phần",
+      "Điều 9 của Luật này"
+    ],
+    "tax_rates": [
+      "thuế suất tại Biểu thuế lũy tiến từng phần"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế quy định tại khoản 2 Điều này"
+    ],
+    "exemptions": []
+  }
+}

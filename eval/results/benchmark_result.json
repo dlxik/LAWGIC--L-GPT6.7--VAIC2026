@@ -1,0 +1,124 @@
+{
+  "parser": {
+    "documents": {
+      "qlt2019": {
+        "nodes": 1194,
+        "articles": 152,
+        "article_recall": 1.0,
+        "invariant_errors": 0,
+        "errors": []
+      },
+      "qlt2025": {
+        "nodes": 662,
+        "articles": 53,
+        "article_recall": 1.0,
+        "invariant_errors": 0,
+        "errors": []
+      },
+      "tncn2025": {
+        "nodes": 199,
+        "articles": 29,
+        "article_recall": 1.0,
+        "invariant_errors": 0,
+        "errors": []
+      }
+    },
+    "totals": {
+      "nodes": 2055,
+      "invariant_errors": 0,
+      "article_recall": 1.0
+    }
+  },
+  "extractor": {
+    "n_gold": 100,
+    "missing_from_pred": 0,
+    "fields": {
+      "subjects": {
+        "precision": 0.8793,
+        "recall": 0.7727,
+        "f1": 0.8226,
+        "tp": 51,
+        "fp": 7,
+        "fn": 15
+      },
+      "obligations": {
+        "precision": 0.8333,
+        "recall": 0.8537,
+        "f1": 0.8434,
+        "tp": 35,
+        "fp": 7,
+        "fn": 6
+      },
+      "rights": {
+        "precision": 0.8696,
+        "recall": 0.8333,
+        "f1": 0.8511,
+        "tp": 20,
+        "fp": 3,
+        "fn": 4
+      },
+      "prohibitions": {
+        "precision": 0.75,
+        "recall": 0.8571,
+        "f1": 0.8,
+        "tp": 6,
+        "fp": 2,
+        "fn": 1
+      },
+      "deadlines": {
+        "precision": 0.8333,
+        "recall": 0.9375,
+        "f1": 0.8824,
+        "tp": 15,
+        "fp": 3,
+        "fn": 1
+      },
+      "references": {
+        "precision": 0.9189,
+        "recall": 0.7556,
+        "f1": 0.8293,
+        "tp": 34,
+        "fp": 3,
+        "fn": 11
+      },
+      "tax_rates": {
+        "precision": 0.7692,
+        "recall": 1.0,
+        "f1": 0.8696,
+        "tp": 10,
+        "fp": 3,
+        "fn": 0
+      },
+      "tax_base": {
+        "precision": 0.5714,
+        "recall": 0.6667,
+        "f1": 0.6154,
+        "tp": 8,
+        "fp": 6,
+        "fn": 4
+      },
+      "exemptions": {
+        "precision": 0.3333,
+        "recall": 0.2857,
+        "f1": 0.3077,
+        "tp": 2,
+        "fp": 4,
+        "fn": 5
+      }
+    },
+    "micro": {
+      "precision": 0.8265,
+      "recall": 0.7939,
+      "f1": 0.8098,
+      "tp": 181,
+      "fp": 38,
+      "fn": 47
+    },
+    "macro_f1": 0.7579,
+    "hallucination_rate": 0.1735,
+    "empty_correct_rate": 0.9167,
+    "empty_total": 12,
+    "penalty_type_accuracy": 0.7143,
+    "penalty_total": 7
+  }
+}

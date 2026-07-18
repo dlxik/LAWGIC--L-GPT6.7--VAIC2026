@@ -7,7 +7,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d2-k1",
@@ -19,7 +24,10 @@
     "deadlines": [],
     "references": [
       "Điều 3 của Luật này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d2-k2",
@@ -29,7 +37,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d2-k2-a",
@@ -39,7 +50,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d2-k2-b",
@@ -49,21 +63,23 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d2-k3",
-    "subjects": [
-      "Cá nhân không cư trú"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "khoản 2 Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d2-k4",
@@ -75,9 +91,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3",
@@ -89,7 +106,10 @@
     "deadlines": [],
     "references": [
       "Điều 4 của Luật này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k1",
@@ -99,7 +119,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k1-a",
@@ -109,7 +132,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k1-b",
@@ -119,7 +145,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k1-c",
@@ -129,7 +158,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k1-d",
@@ -139,7 +171,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k2",
@@ -149,7 +184,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k2-a",
@@ -159,7 +197,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k2-b",
@@ -169,7 +210,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k2-c",
@@ -179,7 +223,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "phụ cấp, trợ cấp theo quy định của pháp luật về ưu đãi người có công; phụ cấp quốc phòng, an ninh; phụ cấp độc hại, nguy hiểm đối với ngành, nghề hoặc công việc ở nơi làm việc có yếu tố độc hại, nguy hiểm; phụ cấp thu hút, phụ cấp khu vực theo quy định của pháp luật; phụ cấp, trợ cấp, sinh hoạt phí do cơ quan Việt Nam ở nước ngoài chi trả; trợ cấp khó khăn đột xuất, trợ cấp tai nạn lao động, bệnh nghề nghiệp, trợ cấp một lần khi sinh con hoặc nhận nuôi con nuôi, trợ cấp do suy giảm khả năng lao động, trợ cấp hưu trí một lần, trợ cấp tuất hàng tháng và các khoản trợ cấp khác theo quy định của pháp luật về bảo hiểm xã hội; trợ cấp thôi việc, trợ cấp mất việc làm; trợ cấp mang tính chất bảo trợ xã hội và các khoản phụ cấp, trợ cấp, thu nhập khác không mang tính chất tiền lương, tiền công do Chính phủ quy định"
+    ]
   },
   {
     "node_id": "tncn2025-d3-k3",
@@ -189,7 +238,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k3-a",
@@ -199,7 +251,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k3-b",
@@ -209,7 +264,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k3-c",
@@ -219,7 +277,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k4",
@@ -229,7 +290,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k4-a",
@@ -239,7 +303,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k4-b",
@@ -249,7 +316,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k4-c",
@@ -259,7 +329,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k5",
@@ -269,7 +342,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k5-a",
@@ -279,7 +355,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k5-b",
@@ -289,7 +368,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k5-c",
@@ -299,7 +381,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k5-d",
@@ -309,7 +394,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k6",
@@ -319,7 +407,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k6-a",
@@ -329,7 +420,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k6-b",
@@ -339,7 +433,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k6-c",
@@ -349,7 +446,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k6-d",
@@ -359,7 +459,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k7",
@@ -369,7 +472,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k7-a",
@@ -379,7 +485,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k7-b",
@@ -389,7 +498,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k8",
@@ -399,19 +511,23 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k9",
     "subjects": [],
-    "obligations": [
-      "phải đăng ký sở hữu hoặc đăng ký sử dụng"
-    ],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k10",
@@ -421,7 +537,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k10-a",
@@ -431,7 +550,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k10-b",
@@ -441,7 +563,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k10-c",
@@ -451,7 +576,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k10-d",
@@ -461,7 +589,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k10-đ",
@@ -475,21 +606,27 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d3-k11",
     "subjects": [
       "Chính phủ"
     ],
-    "obligations": [],
+    "obligations": [
+      "quy định chi tiết Điều này và việc quy đổi thu nhập chịu thuế nhận được không bằng tiền, không bằng Đồng Việt Nam"
+    ],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k1",
@@ -499,7 +636,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k2",
@@ -509,7 +649,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k3",
@@ -519,7 +662,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k4",
@@ -529,7 +675,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k5",
@@ -539,7 +688,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k6",
@@ -549,7 +701,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k7",
@@ -559,7 +714,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k8",
@@ -569,7 +727,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k9",
@@ -579,7 +740,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k10",
@@ -589,7 +753,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k10-a",
@@ -599,7 +766,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k10-b",
@@ -609,7 +779,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k11",
@@ -619,7 +792,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k12",
@@ -629,7 +805,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k13",
@@ -639,7 +818,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k14",
@@ -649,21 +831,23 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k15",
-    "subjects": [
-      "cá nhân"
-    ],
+    "subjects": [],
     "obligations": [],
-    "rights": [
-      "có quyền sử dụng tàu"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k16",
@@ -673,7 +857,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k17",
@@ -683,7 +870,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k18",
@@ -693,10 +883,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "pháp luật về khoa học, công nghệ và đổi mới sáng tạo",
-      "pháp luật về sở hữu trí tuệ"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k19",
@@ -706,21 +896,23 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k20",
-    "subjects": [
-      "chuyên gia nước ngoài làm việc tại chương trình, dự án tài trợ bằng nguồn vốn ODA không hoàn lại, chương trình, dự án phi chính phủ nước ngoài tại Việt Nam",
-      "cá nhân là người Việt Nam làm việc tại cơ quan đại diện của tổ chức quốc tế thuộc Hệ thống Liên hợp quốc tại Việt Nam",
-      "cá nhân tham gia lực lượng gìn giữ hòa bình của Liên hợp quốc"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k21",
@@ -730,53 +922,53 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d4-k22",
-    "subjects": [
-      "Chính phủ"
-    ],
-    "obligations": [
-      "quy định chi tiết"
-    ],
+    "subjects": [],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
-      "Điều này"
-    ]
+      "Chính phủ quy định chi tiết Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d5-k1",
-    "subjects": [
-      "Người nộp thuế"
-    ],
+    "subjects": [],
     "obligations": [],
-    "rights": [
-      "được giảm thuế tương ứng với mức độ thiệt hại nhưng không vượt quá số thuế phải nộp"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d5-k2",
-    "subjects": [
-      "cá nhân là nhân lực công nghiệp công nghệ số chất lượng cao"
-    ],
+    "subjects": [],
     "obligations": [],
-    "rights": [
-      "Miễn thuế thu nhập cá nhân trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
-    "deadlines": [
-      "trong thời hạn 05 năm"
-    ],
-    "references": []
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Miễn thuế thu nhập cá nhân trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công của cá nhân là nhân lực công nghiệp công nghệ số chất lượng cao"
+    ]
   },
   {
     "node_id": "tncn2025-d5-k2-a",
@@ -786,7 +978,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d5-k2-b",
@@ -796,7 +991,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d5-k2-c",
@@ -806,86 +1004,80 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d5-k3",
-    "subjects": [
-      "cá nhân là nhân lực công nghệ cao thực hiện hoạt động nghiên cứu và phát triển công nghệ cao hoặc công nghệ chiến lược thuộc Danh mục công nghệ cao được ưu tiên đầu tư phát triển hoặc Danh mục công nghệ chiến lược và sản phẩm công nghệ chiến lược"
-    ],
+    "subjects": [],
     "obligations": [],
-    "rights": [
-      "Miễn thuế thu nhập cá nhân"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
-    "deadlines": [
-      "05 năm"
-    ],
-    "references": [
-      "quy định của pháp luật về công nghệ cao"
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Miễn thuế thu nhập cá nhân trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công của cá nhân là nhân lực công nghệ cao thực hiện hoạt động nghiên cứu và phát triển công nghệ cao hoặc công nghệ chiến lược thuộc Danh mục công nghệ cao được ưu tiên đầu tư phát triển hoặc Danh mục công nghệ chiến lược và sản phẩm công nghệ chiến lược theo quy định của pháp luật về công nghệ cao"
     ]
   },
   {
     "node_id": "tncn2025-d5-k4",
     "subjects": [],
     "obligations": [],
-    "rights": [
-      "Miễn thuế thu nhập cá nhân"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "quy định của pháp luật về chứng khoán"
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Miễn thuế thu nhập cá nhân đối với chuyển nhượng chứng chỉ quỹ mở thành lập theo quy định của pháp luật về chứng khoán được nắm giữ từ 02 năm trở lên kể từ ngày mua."
     ]
   },
   {
     "node_id": "tncn2025-d5-k5",
-    "subjects": [
-      "nhà đầu tư cá nhân"
-    ],
+    "subjects": [],
     "obligations": [],
-    "rights": [
-      "giảm 50% thuế thu nhập cá nhân đối với lợi tức của nhà đầu tư cá nhân được chia từ quỹ đầu tư chứng khoán, quỹ đầu tư bất động sản thành lập theo quy định của Luật Chứng khoán"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
-    "deadlines": [
-      "trong thời hạn do Chính phủ quy định"
-    ],
+    "deadlines": [],
     "references": [
       "Luật Chứng khoán"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d5-k6",
     "subjects": [
       "Chính phủ"
     ],
-    "obligations": [
-      "quy định chi tiết"
-    ],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
       "Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d6",
     "subjects": [
-      "Chính phủ",
-      "người nộp thuế"
+      "Chính phủ"
     ],
     "obligations": [
-      "quy định về kỳ tính thuế theo năm đối với thu nhập từ kinh doanh, thu nhập từ tiền lương, tiền công của cá nhân cư trú, kỳ tính thuế theo từng lần phát sinh đối với các khoản thu nhập khác của cá nhân cư trú và cá nhân không cư trú",
-      "thời điểm xác định thu nhập tính thuế",
-      "quyết toán thuế",
-      "hoàn thuế đối với trường hợp cá nhân có số thuế đã nộp lớn hơn số thuế phải nộp hoặc chưa đến mức phải nộp",
-      "trách nhiệm khấu trừ, khai thay, nộp thay cho người nộp thuế phù hợp với quy định của Luật Quản lý thuế"
+      "quy định về kỳ tính thuế theo năm đối với thu nhập từ kinh doanh, thu nhập từ tiền lương, tiền công của cá nhân cư trú"
     ],
     "rights": [],
     "prohibitions": [],
@@ -894,19 +1086,25 @@
     "references": [
       "Luật này",
       "Luật Quản lý thuế"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k1",
-    "subjects": [
-      "Cá nhân cư trú có hoạt động sản xuất, kinh doanh"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "mức doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân"
+    ]
   },
   {
     "node_id": "tncn2025-d7-k2",
@@ -916,7 +1114,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [
+      "khoản 1 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k2-a",
@@ -926,7 +1131,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "doanh thu của hàng hóa, dịch vụ bán ra trừ (-) đi chi phí liên quan đến hoạt động sản xuất, kinh doanh trong kỳ tính thuế"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k2-b",
@@ -938,7 +1148,12 @@
     "deadlines": [],
     "references": [
       "khoản 1 Điều này"
-    ]
+    ],
+    "tax_rates": [
+      "15%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k2-c",
@@ -948,47 +1163,47 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "thuế suất 17%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k2-d",
-    "subjects": [
-      "Cá nhân kinh doanh có doanh thu năm trên 50 tỷ đồng"
-    ],
-    "obligations": [
-      "thuế suất 20%"
-    ],
+    "subjects": [],
+    "obligations": [],
     "rights": [],
-    "prohibitions": [
-      "không áp dụng cách tính thuế quy định tại khoản này"
-    ],
+    "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "khoản 4",
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [
+      "thuế suất 20%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3",
     "subjects": [
       "Cá nhân kinh doanh"
     ],
-    "obligations": [
-      "nộp thuế theo quy định tại điểm a và điểm b khoản 2 Điều này hoặc nộp thuế theo thuế suất nhân (x) với doanh thu tính thuế."
-    ],
-    "rights": [
-      "được lựa chọn nộp thuế theo quy định tại điểm a và điểm b khoản 2 Điều này hoặc nộp thuế theo thuế suất nhân (x) với doanh thu tính thuế."
-    ],
+    "obligations": [],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
       "khoản 1 Điều này",
-      "điểm a",
-      "điểm b",
-      "khoản 2 Điều này"
-    ]
+      "điểm a và điểm b khoản 2 Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "Doanh thu tính thuế"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3-a",
@@ -998,9 +1213,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "khoản 1 Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "phần doanh thu vượt trên mức quy định tại khoản 1 Điều này"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3-b",
@@ -1010,7 +1228,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "0,5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3-c",
@@ -1020,7 +1243,13 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "2%",
+      "5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3-d",
@@ -1030,7 +1259,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "1,5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3-đ",
@@ -1040,7 +1274,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k3-e",
@@ -1050,37 +1289,48 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "1%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k4",
     "subjects": [
       "Cá nhân cho thuê bất động sản, trừ hoạt động kinh doanh lưu trú"
     ],
-    "obligations": [
-      "nộp thuế thu nhập cá nhân được xác định bằng phần doanh thu vượt trên mức quy định tại khoản 1 Điều này nhân (x) với thuế suất 5%"
-    ],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "khoản 1 Điều này"
-    ]
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "phần doanh thu vượt trên mức quy định tại khoản 1 Điều này nhân (x) với thuế suất 5%"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d7-k5",
     "subjects": [
       "Chính phủ"
     ],
-    "obligations": [
-      "quy định chi tiết"
-    ],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [
+      "Chính phủ quy định chi tiết Điều này."
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d8-k1",
@@ -1094,13 +1344,16 @@
       "khoản 2 Điều này",
       "Biểu thuế lũy tiến từng phần",
       "Điều 9 của Luật này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "thu nhập tính thuế quy định tại khoản 2 Điều này"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d8-k2",
-    "subjects": [
-      "người nộp thuế"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
@@ -1110,7 +1363,12 @@
       "khoản 2 Điều 3 của Luật này",
       "Điều 10 và Điều 11 của Luật này",
       "Luật Bảo hiểm xã hội"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "tổng thu nhập chịu thuế quy định tại khoản 2 Điều 3 của Luật này"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d8-k3",
@@ -1120,7 +1378,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d9-k1",
@@ -1131,8 +1392,12 @@
     "penalties": [],
     "deadlines": [],
     "references": [
-      "khoản 2 Điều 8 của Luật này"
-    ]
+      "khoản 2 Điều 8 của Luật này",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d9-k2",
@@ -1142,7 +1407,16 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5",
+      "10",
+      "20",
+      "30",
+      "35"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d10-k1",
@@ -1152,7 +1426,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d10-k1-a",
@@ -1162,7 +1439,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Mức giảm trừ đối với người nộp thuế là 15,5 triệu đồng/tháng (186 triệu đồng/năm)"
+    ]
   },
   {
     "node_id": "tncn2025-d10-k1-b",
@@ -1172,37 +1454,40 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Mức giảm trừ đối với mỗi người phụ thuộc là 6,2 triệu đồng/tháng"
+    ]
   },
   {
     "node_id": "tncn2025-d10-k2",
-    "subjects": [
-      "Chính phủ"
-    ],
-    "obligations": [
-      "trình Ủy ban Thường vụ Quốc hội quy định mức giảm trừ gia cảnh"
-    ],
+    "subjects": [],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
       "khoản 1 Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d10-k3",
-    "subjects": [
-      "người nộp thuế"
-    ],
-    "obligations": [
-      "mỗi người phụ thuộc chỉ được tính giảm trừ một lần vào một người nộp thuế"
-    ],
+    "subjects": [],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d10-k4",
@@ -1216,7 +1501,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d10-k4-a",
@@ -1226,12 +1514,15 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d10-k4-b",
     "subjects": [
-      "Người nộp thuế"
+      "người nộp thuế"
     ],
     "obligations": [
       "phải trực tiếp nuôi dưỡng"
@@ -1240,21 +1531,25 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": [
+      "Các cá nhân không có thu nhập hoặc có thu nhập không vượt quá mức do Bộ trưởng Bộ Tài chính quy định, bao gồm con thành niên đang học đại học, cao đẳng, trung học chuyên nghiệp hoặc học nghề; vợ hoặc chồng không có khả năng lao động; bố, mẹ đã hết tuổi lao động hoặc không có khả năng lao động; những người khác không nơi nương tựa"
+    ]
   },
   {
     "node_id": "tncn2025-d11",
-    "subjects": [
-      "Cá nhân cư trú"
-    ],
+    "subjects": [],
     "obligations": [],
-    "rights": [
-      "được giảm trừ vào thu nhập chịu thuế trước khi tính thuế đối với thu nhập từ tiền lương, tiền công"
-    ],
+    "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d11-k1",
@@ -1264,7 +1559,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d11-k1-a",
@@ -1274,7 +1572,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d11-k1-b",
@@ -1284,51 +1585,53 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d11-k1-c",
-    "subjects": [
-      "Tổ chức, cơ sở và các quỹ quy định tại khoản này"
-    ],
-    "obligations": [
-      "được cơ quan nhà nước có thẩm quyền cho phép thành lập hoặc công nhận, hoạt động vì mục đích từ thiện, nhân đạo, khuyến học, không vì mục tiêu lợi nhuận"
-    ],
-    "rights": [],
-    "prohibitions": [],
-    "penalties": [],
-    "deadlines": [],
-    "references": []
-  },
-  {
-    "node_id": "tncn2025-d11-k2",
-    "subjects": [
-      "Người nộp thuế"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
+  },
+  {
+    "node_id": "tncn2025-d11-k2",
+    "subjects": [],
+    "obligations": [],
+    "rights": [],
+    "prohibitions": [],
+    "penalties": [],
+    "deadlines": [],
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d11-k3",
-    "subjects": [
-      "Các khoản chi"
-    ],
+    "subjects": [],
     "obligations": [
-      "đáp ứng các điều kiện về hóa đơn, chứng từ theo quy định của pháp luật"
+      "phải đáp ứng các điều kiện về hóa đơn, chứng từ theo quy định của pháp luật"
     ],
     "rights": [],
     "prohibitions": [
-      "chi trả từ các nguồn khác"
+      "không được chi trả từ các nguồn khác"
     ],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d11-k4",
@@ -1342,9 +1645,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d12-k1",
@@ -1354,7 +1658,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d12-k2",
@@ -1366,7 +1677,12 @@
     "deadlines": [],
     "references": [
       "khoản 3 Điều 3 của Luật này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "tổng số các khoản thu nhập chịu thuế từ đầu tư vốn quy định tại khoản 3 Điều 3 của Luật này"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d12-k3",
@@ -1376,7 +1692,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d12-k4",
@@ -1388,9 +1707,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d13-k1",
@@ -1400,7 +1720,16 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "thuế suất 20%",
+      "thuế suất 2%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)",
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d13-k2",
@@ -1410,7 +1739,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "thuế suất 0,1%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d13-k3",
@@ -1420,7 +1756,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d13-k4",
@@ -1432,9 +1771,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": [
-      "Điều này"
-    ]
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d14-k1",
@@ -1444,7 +1784,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "thuế suất 2%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d14-k2",
@@ -1454,21 +1801,25 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d14-k3",
     "subjects": [
       "Chính phủ"
     ],
-    "obligations": [
-      "quy định chi tiết"
-    ],
+    "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d15-k1",
@@ -1478,7 +1829,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "10%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d15-k2",
@@ -1488,7 +1844,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "phần giá trị giải thưởng vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần trúng thưởng"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d15-k3",
@@ -1498,7 +1859,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d16-k1",
@@ -1508,7 +1872,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d16-k2",
@@ -1518,7 +1887,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được khi chuyển giao, chuyển quyền sử dụng các đối tượng của quyền sở hữu trí tuệ, chuyển giao công nghệ theo từng hợp đồng"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d16-k3",
@@ -1528,7 +1902,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d17-k1",
@@ -1538,7 +1915,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d17-k2",
@@ -1548,7 +1930,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng hợp đồng nhượng quyền thương mại"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d17-k3",
@@ -1558,7 +1945,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d18-k1",
@@ -1568,7 +1958,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "10%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d18-k2",
@@ -1578,7 +1975,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "phần giá trị tài sản thừa kế, quà tặng vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần phát sinh"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d18-k3",
@@ -1588,19 +1990,23 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d18-k3-a",
-    "subjects": [
-      "Người nộp thuế"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d18-k3-b",
@@ -1610,21 +2016,25 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d18-k4",
-    "subjects": [
-      "Chính phủ"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
-      "Điều này"
-    ]
+      "Chính phủ quy định chi tiết Điều này."
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d19-k1",
@@ -1636,7 +2046,14 @@
     "deadlines": [],
     "references": [
       "các điểm a, b và c khoản 10 Điều 3 của Luật này"
-    ]
+    ],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d19-k2",
@@ -1647,8 +2064,15 @@
     "penalties": [],
     "deadlines": [],
     "references": [
-      "điểm d và điểm đ khoản 10 Điều 3 của Luật này"
-    ]
+      "Điểm d và điểm đ khoản 10 Điều 3 của Luật này"
+    ],
+    "tax_rates": [
+      "0,1%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d19-k3",
@@ -1658,21 +2082,29 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d19-k4",
     "subjects": [
       "Chính phủ"
     ],
-    "obligations": [],
+    "obligations": [
+      "quy định chi tiết Điều này"
+    ],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
       "Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k1",
@@ -1685,7 +2117,12 @@
     "references": [
       "khoản 2 Điều này",
       "khoản 3 Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [
+      "doanh thu từ hoạt động kinh doanh quy định tại khoản 2 Điều này nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k2",
@@ -1695,7 +2132,13 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [
+      "toàn bộ tiền bán hàng, tiền gia công, tiền cung ứng dịch vụ kể cả trợ giá, phụ thu, phụ trội mà cá nhân được hưởng, không phân biệt đã thu được tiền hay chưa thu được tiền, bao gồm cả chi phí do bên mua hàng hoá, dịch vụ trả thay cho cá nhân không cư trú mà không được hoàn trả",
+      "toàn bộ số tiền mà cá nhân không cư trú nhận được dưới bất kỳ hình thức nào từ việc cung cấp hàng hoá, dịch vụ tại Việt Nam không phụ thuộc vào địa điểm tiến hành các hoạt động kinh doanh"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k3",
@@ -1705,7 +2148,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k3-a",
@@ -1713,18 +2159,14 @@
     "obligations": [],
     "rights": [],
     "prohibitions": [],
-    "penalties": [
-      {
-        "type": "FINE",
-        "min_amount": null,
-        "max_amount": null,
-        "duration_months": null,
-        "is_permanent": false,
-        "text": "Phân phối, cung cấp hàng hoá: 1%"
-      }
-    ],
+    "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "1%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k3-b",
@@ -1734,7 +2176,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k3-c",
@@ -1744,7 +2191,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "2%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k3-d",
@@ -1754,7 +2206,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d20-k3-đ",
@@ -1764,19 +2221,29 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "2%"
+    ],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d21",
-    "subjects": [
-      "cá nhân không cư trú"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "20%"
+    ],
+    "tax_base": [
+      "tổng số tiền lương, tiền công mà cá nhân không cư trú nhận được do thực hiện công việc tại Việt Nam nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d22",
@@ -1786,19 +2253,33 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "tổng số thu nhập mà cá nhân không cư trú nhận được từ việc đầu tư vốn vào tổ chức, cá nhân tại Việt Nam nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d23-k1",
-    "subjects": [
-      "cá nhân không cư trú"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "20%",
+      "2%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)",
+      "giá chuyển nhượng trừ (-) đi giá mua và các khoản chi phí hợp lý liên quan đến việc tạo ra thu nhập từ chuyển nhượng phần vốn tại tổ chức, cá nhân Việt Nam"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d23-k2",
@@ -1808,19 +2289,29 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "0,1%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d23-k3",
-    "subjects": [
-      "Chính phủ"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [
+      "Chính phủ quy định chi tiết Điều này."
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d24-k1",
@@ -1830,7 +2321,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "2%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d24-k2",
@@ -1844,7 +2342,10 @@
     "deadlines": [],
     "references": [
       "Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d25-k1",
@@ -1854,7 +2355,14 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "phần thu nhập vượt trên 20 triệu đồng theo từng hợp đồng chuyển giao, chuyển quyền sử dụng các đối tượng của quyền sở hữu trí tuệ, chuyển giao công nghệ tại Việt Nam nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d25-k2",
@@ -1864,33 +2372,51 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "phần thu nhập vượt trên 20 triệu đồng theo từng hợp đồng nhượng quyền thương mại tại Việt Nam nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d26",
-    "subjects": [
-      "cá nhân không cư trú"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [
+      "10%"
+    ],
+    "tax_base": [
+      "phần giá trị vượt trên 20 triệu đồng theo từng lần trúng thưởng, nhận thừa kế, quà tặng tại Việt Nam nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d27-k1",
-    "subjects": [
-      "người nộp thuế"
-    ],
+    "subjects": [],
     "obligations": [],
     "rights": [],
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
     "references": [
-      "khoản 10 Điều 3 của Luật này"
-    ]
+      "các điểm a, b và c khoản 10 Điều 3 của Luật này"
+    ],
+    "tax_rates": [
+      "5%"
+    ],
+    "tax_base": [
+      "thu nhập tính thuế nhân (x)",
+      "phần thu nhập vượt trên 20 triệu đồng mà người nộp thuế nhận được theo từng lần phát sinh"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d27-k2",
@@ -1902,7 +2428,14 @@
     "deadlines": [],
     "references": [
       "điểm d và điểm đ khoản 10 Điều 3 của Luật này"
-    ]
+    ],
+    "tax_rates": [
+      "0,1%"
+    ],
+    "tax_base": [
+      "giá chuyển nhượng nhân (x)"
+    ],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d27-k3",
@@ -1914,7 +2447,12 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [
+      "Điều này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d28-k1",
@@ -1925,8 +2463,12 @@
     "penalties": [],
     "deadlines": [],
     "references": [
-      "Điều 20 của Luật này"
-    ]
+      "Điều 20",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d28-k2",
@@ -1937,8 +2479,12 @@
     "penalties": [],
     "deadlines": [],
     "references": [
-      "điều 21, 22, 25, 26 và 27 của Luật này"
-    ]
+      "điều 21, 22, 25, 26 và 27",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d28-k3",
@@ -1949,8 +2495,12 @@
     "penalties": [],
     "deadlines": [],
     "references": [
-      "Điều 23 của Luật này"
-    ]
+      "Điều 23",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d28-k4",
@@ -1961,8 +2511,12 @@
     "penalties": [],
     "deadlines": [],
     "references": [
-      "Điều 24 của Luật này"
-    ]
+      "Điều 24",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d28-k5",
@@ -1976,7 +2530,10 @@
     "deadlines": [],
     "references": [
       "Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d29-k1",
@@ -1987,8 +2544,12 @@
     "penalties": [],
     "deadlines": [],
     "references": [
+      "Luật này",
       "khoản 2 Điều này"
-    ]
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d29-k2",
@@ -1998,7 +2559,10 @@
     "prohibitions": [],
     "penalties": [],
     "deadlines": [],
-    "references": []
+    "references": [],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d29-k3",
@@ -2009,21 +2573,28 @@
     "penalties": [],
     "deadlines": [],
     "references": [
+      "Luật Thuế thu nhập cá nhân số 04/2007/QH12",
       "Luật số 26/2012/QH13",
       "Luật số 71/2014/QH13",
       "Luật số 31/2024/QH15",
       "Luật số 48/2024/QH15",
       "Luật số 56/2025/QH15",
       "Luật số 71/2025/QH15",
-      "Luật số 93/2025/QH15"
-    ]
+      "Luật số 93/2025/QH15",
+      "Luật này"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   },
   {
     "node_id": "tncn2025-d29-k4",
-    "subjects": [],
+    "subjects": [
+      "người nộp thuế"
+    ],
     "obligations": [],
     "rights": [
-      "được lựa chọn áp dụng mức ưu đãi có lợi nhất"
+      "người nộp thuế được lựa chọn áp dụng mức ưu đãi có lợi nhất"
     ],
     "prohibitions": [],
     "penalties": [],
@@ -2031,8 +2602,11 @@
     "references": [
       "Luật này",
       "Luật Thủ đô",
-      "nghị quyết của Quốc hội",
-      "điểm h khoản 8 Điều 10 của Luật Tổ chức Chính phủ"
-    ]
+      "nghi quyết của Quốc hội",
+      "giải pháp quy định tại điểm h khoản 8 Điều 10 của Luật Tổ chức Chính phủ"
+    ],
+    "tax_rates": [],
+    "tax_base": [],
+    "exemptions": []
   }
 ]

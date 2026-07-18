@@ -1,0 +1,93 @@
+{
+  "model": "Llama-3.3-70B-Instruct",
+  "n_gold": 100,
+  "seconds": 33.9,
+  "fields": {
+    "subjects": {
+      "precision": 0.8116,
+      "recall": 0.8485,
+      "f1": 0.8296,
+      "tp": 56,
+      "fp": 13,
+      "fn": 10
+    },
+    "obligations": {
+      "precision": 0.3418,
+      "recall": 0.6585,
+      "f1": 0.45,
+      "tp": 27,
+      "fp": 52,
+      "fn": 14
+    },
+    "rights": {
+      "precision": 0.5,
+      "recall": 0.375,
+      "f1": 0.4286,
+      "tp": 9,
+      "fp": 9,
+      "fn": 15
+    },
+    "prohibitions": {
+      "precision": 0.5455,
+      "recall": 0.8571,
+      "f1": 0.6667,
+      "tp": 6,
+      "fp": 5,
+      "fn": 1
+    },
+    "deadlines": {
+      "precision": 0.8125,
+      "recall": 0.8125,
+      "f1": 0.8125,
+      "tp": 13,
+      "fp": 3,
+      "fn": 3
+    },
+    "references": {
+      "precision": 0.9231,
+      "recall": 0.2667,
+      "f1": 0.4138,
+      "tp": 12,
+      "fp": 1,
+      "fn": 33
+    },
+    "tax_rates": {
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1": 0.9474,
+      "tp": 9,
+      "fp": 0,
+      "fn": 1
+    },
+    "tax_base": {
+      "precision": 0.8462,
+      "recall": 0.9167,
+      "f1": 0.88,
+      "tp": 11,
+      "fp": 2,
+      "fn": 1
+    },
+    "exemptions": {
+      "precision": 0.6667,
+      "recall": 0.5714,
+      "f1": 0.6154,
+      "tp": 4,
+      "fp": 2,
+      "fn": 3
+    }
+  },
+  "micro": {
+    "precision": 0.6282,
+    "recall": 0.6447,
+    "f1": 0.6364,
+    "tp": 147,
+    "fp": 87,
+    "fn": 81
+  },
+  "macro_f1": 0.6716,
+  "hallucination_rate": 0.3718,
+  "empty_correct_rate": 0.5,
+  "empty_total": 12,
+  "penalty_type_accuracy": 0.2857,
+  "penalty_total": 7
+}

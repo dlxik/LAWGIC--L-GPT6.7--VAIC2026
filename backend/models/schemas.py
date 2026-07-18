@@ -117,7 +117,13 @@ class Penalty(BaseModel):
 
 
 class ExtractedEntities(BaseModel):
-    """Output của backend/ingestion/extractor.py cho MỘT node Điều/Khoản/Điểm."""
+    """Output của backend/ingestion/extractor.py cho MỘT node Điều/Khoản/Điểm.
+
+    7 trường đầu = cấu trúc pháp lý PHỔ QUÁT (đúng ở mọi luật).
+    3 trường cuối = ĐẶC THÙ LUẬT THUẾ, thêm vì 7 trường gốc thiết kế cho nghị định
+    xử phạt, không chứa được thuế suất / căn cứ tính thuế / miễn giảm — vốn là
+    phần lớn nội dung luật thuế (đo out-of-sample trên GTGT/TNDN/TTĐB đều rơi rụng).
+    """
 
     node_id: str
     subjects: list[str] = Field(default_factory=list)
@@ -127,6 +133,11 @@ class ExtractedEntities(BaseModel):
     penalties: list[Penalty] = Field(default_factory=list)
     deadlines: list[str] = Field(default_factory=list)
     references: list[str] = Field(default_factory=list)
+
+    # --- Đặc thù luật thuế ---
+    tax_rates: list[str] = Field(default_factory=list)  # "0%", "10%", "15% trên thu nhập"
+    tax_base: list[str] = Field(default_factory=list)  # "doanh thu - chi phí", "giá tính thuế × thuế suất"
+    exemptions: list[str] = Field(default_factory=list)  # "miễn thuế 04 năm", "500 triệu trở xuống không phải nộp"
 
 
 # ---------- Phía dư luận (P3 sinh ra, P2 nạp vào graph) ----------

@@ -71,16 +71,21 @@ Vector store thuần trả về `qlt2019-d51` (giống text tin đồn nhất) v
 
 ## Con số đo được (trả lời "làm sao biết phân loại đúng?")
 
-Chạy `python eval/run_eval.py` trên 48 claim gắn nhãn tay (`eval/gold_set.jsonl`):
+Chạy `python eval/run_eval.py` trên 48 claim gắn nhãn tay (`eval/gold_set.jsonl`),
+**có graph thật** (Neo4j + 119 cạnh `SUPERSEDED_BY`):
 
 | Chỉ số | Giá trị |
 |---|---|
-| Verdict accuracy (toàn bộ, 4 nhãn) | **58,3%** (±14%) |
-| Trong phạm vi Điều 7 (ngưỡng + cách tính), 3 nhãn | **64,7%** |
-| Trong phạm vi, gộp 2 nhãn (khớp luật / hiểu sai) | **82,4%** |
+| Verdict accuracy (toàn bộ, 4 nhãn) | **60,4%** (±14%) |
+| Citation accuracy (trỏ đúng điều luật) | **54,3%** |
+| Trong phạm vi Điều 7, gộp 2 nhãn (khớp luật / hiểu sai) | **~82%** |
 | Baseline (đoán bừa nhãn phổ biến nhất) | 29,2% |
 | Độ phủ (thảo luận về ngưỡng/cách tính) | ~40% |
 
-Con số vượt xa baseline. Phần khó nhất (`PARTIALLY_INACCURATE` — đúng cấu trúc, sai
-con số/điều kiện) là ranh giới mờ mà cả người cũng cãi nhau. Mô hình dùng: FPT AI
-`gpt-oss-120b`, truy hồi điều luật lai TF-IDF + embedding tiếng Việt.
+Con số vượt baseline hơn 30 điểm. Phần khó nhất (`PARTIALLY_INACCURATE` — đúng cấu
+trúc, sai con số/điều kiện) là ranh giới mờ mà cả người cũng cãi nhau.
+
+Cấu hình: FPT AI `gpt-oss-120b`; truy hồi điều luật LAI — TF-IDF + embedding tiếng
+Việt tìm ứng viên, rồi graph mở rộng theo `SUPERSEDED_BY` (chỉ cho điểm luật cũ) +
+bắc cầu doc-level sang luật mới. Bật graph nâng citation accuracy 43%→54% và verdict
+lên 60% — vì nó đưa đúng điều luật HIỆN HÀNH cho LLM đối chiếu.

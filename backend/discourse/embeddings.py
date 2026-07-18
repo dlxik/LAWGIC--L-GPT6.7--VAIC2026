@@ -43,17 +43,54 @@ def _embed(texts: list[str]) -> np.ndarray:
     return matrix / np.clip(norms, 1e-9, None)
 
 
+def _context_text(nid: str, nodes: dict) -> str:
+    """Text GIÀU NGỮ CẢNH để embed: tiêu đề Điều + text Khoản cha + text Điểm.
+
+    Thay vì chỉ embed text của Điểm (thiếu ngữ cảnh -> câu 'thuế suất dưới 3 tỷ'
+    không khớp được vì không biết nó thuộc Điều 7). Ghép ngữ cảnh cha vào giúp
+    embedding hiểu Điểm nằm trong bối cảnh nào -> retrieval chính xác hơn.
+
+    Suy cha từ node_id: tncn2025-d7-k2-a -> Điều tncn2025-d7, Khoản tncn2025-d7-k2.
+    """
+    parts = nid.split("-")
+    ctx: list[str] = []
+    article = nodes.get("-".join(parts[:2]))  # Điều
+    if article and article.get("heading"):
+        ctx.append(article["heading"])
+    if len(parts) >= 4:  # là Điểm -> thêm text Khoản cha
+        clause = nodes.get("-".join(parts[:3]))
+        if clause and clause.get("text"):
+            ctx.append(clause["text"])
+    own = nodes[nid].get("text", "")
+    ctx.append(own)
+
+    # Bơm KHÁI NIỆM đồng nghĩa: luật viết "không phải nộp thuế" nhưng dân hỏi "miễn
+    # thuế / ngưỡng miễn" -> embedding không nối được. Thêm cụm khái niệm để khớp.
+    low = own.lower()
+    if "không phải nộp" in low or "được miễn" in low or ("miễn" in low and "thuế" in low):
+        ctx.append("ngưỡng miễn thuế; được miễn thuế; không phải nộp thuế")
+    if "trở xuống" in low or "vượt trên" in low or "vượt quá" in low:
+        ctx.append("ngưỡng doanh thu chịu thuế")
+
+    # dedupe giữ thứ tự (node là Điều thì heading + text điều có thể trùng ý)
+    return " — ".join(dict.fromkeys(t for t in ctx if t))
+
+
 def build_cache(force: bool = False) -> None:
-    """Embed toàn corpus luật -> cache. Idempotent trừ khi force."""
+    """Embed toàn corpus luật -> cache. Idempotent trừ khi force.
+
+    Embed text GIÀU NGỮ CẢNH (xem _context_text): đổi cách embed -> PHẢI force
+    rebuild, không gian vector cũ không dùng lại được.
+    """
     if CACHE_FILE.exists() and not force:
         return
     nodes = load_nodes()
     items = [(nid, n) for nid, n in nodes.items() if n["text"].strip()]
     node_ids = [nid for nid, _ in items]
-    matrix = _embed([n["text"] for _, n in items])
+    matrix = _embed([_context_text(nid, nodes) for nid in node_ids])
     CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
     np.savez(CACHE_FILE, node_ids=np.array(node_ids), matrix=matrix)
-    print(f"  embed {len(node_ids)} node -> {CACHE_FILE.name}")
+    print(f"  embed {len(node_ids)} node (giàu ngữ cảnh) -> {CACHE_FILE.name}")
 
 
 def _load_cache() -> tuple[list[str], np.ndarray]:

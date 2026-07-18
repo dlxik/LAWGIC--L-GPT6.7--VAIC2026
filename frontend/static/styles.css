@@ -1262,3 +1262,119 @@ body:not([data-role="admin"]) .admin-only { display: none !important; }
   .card { grid-template-columns: 1fr; gap: 6px; }
   .card .meta { flex-wrap: wrap; }
 }
+
+/* ---------- Đồ thị quan hệ (cytoscape) ---------- */
+.qa-graph {
+  margin-top: 16px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface, #fff);
+}
+.qa-graph-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-bottom: 1px solid var(--border, #e2e8f0);
+  font-size: 13px; font-weight: 600;
+}
+.qa-graph-hint { font-weight: 400; color: var(--ink-dim, #64748b); font-size: 12px; }
+#cy {
+  width: 100%; height: 440px;
+  /* nền lưới chấm mờ: khung graph trông như 1 canvas có chủ đích, không trống trơn */
+  background-color: var(--surface, #fff);
+  background-image: radial-gradient(var(--border, #e2e8f0) 0.8px, transparent 0.8px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+.cy-legend {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  padding: 10px 14px; border-top: 1px solid var(--border, #e2e8f0);
+  font-size: 12px; color: var(--ink-dim, #64748b);
+}
+.cy-leg { display: inline-flex; align-items: center; gap: 6px; }
+.cy-leg i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+/* panel chi tiết node/cạnh (click để đọc) */
+.cy-detail {
+  padding: 12px 14px; border-top: 1px solid var(--border, #e2e8f0);
+  font-size: 13px; min-height: 48px;
+  max-height: 150px; overflow-y: auto; flex-shrink: 0;   /* panel đọc cuộn riêng, không đẩy graph */
+}
+.cy-legend { flex-shrink: 0; }
+.cy-detail-empty { color: var(--ink-dim, #64748b); font-size: 12px; }
+.cy-detail-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.cy-detail-title { font-weight: 700; }
+.cy-detail-badge { color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+.cy-expand-btn {
+  margin-left: auto; font-size: 12px; padding: 4px 10px; border-radius: 8px;
+  border: 1px solid var(--border, #cbd5e1); background: var(--surface, #fff);
+  color: var(--ink, #0f172a); cursor: pointer;
+}
+.cy-expand-btn:hover { background: var(--surface-2, #f1f5f9); }
+.cy-detail-text { line-height: 1.55; color: var(--ink, #0f172a); }
+.cy-detail-id { margin-top: 6px; font-family: monospace; font-size: 11px; color: var(--ink-dim, #94a3b8); }
+.cy-detail-edge { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cy-detail-rel { color: var(--accent, #2563eb); font-style: italic; font-size: 12px; }
+
+/* Q&A: answer + graph cạnh nhau, GỌN trong 1 màn hình, mỗi khung cuộn riêng */
+.qa-result.has-graph { margin-top: 24px; }
+@media (min-width: 1040px) {
+  .qa-result.has-graph {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);   /* graph rộng hơn để đọc dễ */
+    gap: 20px;
+    align-items: stretch;
+    height: calc(100vh - 300px);   /* cả khối vừa 1 màn hình, không đẩy page */
+    min-height: 460px;
+    max-height: 600px;
+  }
+  .qa-result.has-graph .answer {
+    margin-top: 0; max-width: none;
+    height: 100%; overflow-y: auto;   /* câu trả lời CUỘN trong khung riêng */
+  }
+  .qa-result.has-graph .qa-graph {
+    margin-top: 0; height: 100%;
+    display: flex; flex-direction: column;
+  }
+  /* graph chiếm hết chiều cao còn lại; JS layout theo boundingBox VUÔNG rồi giãn lấp kín ô này */
+  .qa-result.has-graph #cy { flex: 1 1 auto; min-height: 0; height: auto; }
+  .qa-result.has-graph .cy-detail { max-height: 168px; }
+}
+
+/* ---------- Tra cứu: kết quả nhấn được + tô đậm từ khóa ---------- */
+.result.clickable { cursor: pointer; transition: border-color .12s, box-shadow .12s, transform .06s; }
+.result.clickable:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+.result.clickable:active { transform: translateY(1px); }
+.result.clickable:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+.result-open { color: var(--accent); font-size: 12px; font-weight: 600; margin-left: auto; }
+.result-foot { display: flex; align-items: center; gap: 12px; }
+.search-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-mute); cursor: pointer; }
+.search-toggle input { accent-color: var(--accent); }
+mark { background: #fff2a8; color: inherit; border-radius: 2px; padding: 0 1px; }
+:root[data-theme="dark"] mark { background: rgba(226, 168, 59, .38); color: #fff; }
+
+/* ---------- Modal đọc nguyên Điều luật ---------- */
+.law-card {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.law-modal-head { padding: 26px 30px 16px; border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.law-doc { font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); }
+.law-title { margin: 4px 0 10px; font-size: 18px; color: var(--ink); line-height: 1.35; }
+.law-badges { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.law-eff { font-size: 12px; color: var(--ink-mute); }
+.law-modal-body { padding: 18px 30px 28px; overflow-y: auto; }
+.law-item { padding: 7px 0; line-height: 1.6; color: var(--ink); border-left: 2px solid transparent; }
+.law-item.depth-1 { padding-left: 4px; }
+.law-item.depth-2 { padding-left: 26px; color: var(--ink-mute); }
+.law-num { font-weight: 600; color: var(--ink); margin-right: 4px; }
+.law-item.target {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  padding-left: 12px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.law-item.target.depth-2 { padding-left: 26px; }

@@ -219,7 +219,10 @@ def _hybrid_retrieve(claim_text: str, k: int) -> list[str]:
 
 def _candidate_set(claim_text: str) -> tuple[list[str], dict]:
     _, _, _, nodes = _index()
-    retrieved = _hybrid_retrieve(claim_text, TOP_K)
+    # Chuẩn hoá query đời thường -> gần văn bản luật (bung viết tắt, "miễn thuế" ->
+    # "không phải nộp thuế"...) để retrieval khớp đúng điều luật. Xem query_norm.py.
+    from backend.discourse.query_norm import normalize_query  # noqa: WPS433
+    retrieved = _hybrid_retrieve(normalize_query(claim_text), TOP_K)
     family = _family_expand(retrieved, nodes)  # anh em cùng Điều
     expanded = _graph_expand(family, nodes)    # bắc cầu SUPERSEDED_BY sang luật mới
     return expanded[:MAX_CANDIDATES], nodes

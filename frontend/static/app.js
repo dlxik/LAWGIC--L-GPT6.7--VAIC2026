@@ -58,7 +58,6 @@ function activateTab(btn) {
     b.setAttribute("tabindex", on ? "0" : "-1");
   });
   $$("main > section").forEach((s) => { s.hidden = s.id !== tab; });
-  if (tab === "diff" && !diffLoaded && role() !== "guest") loadDiff("qlt2025");
 }
 
 $$(".sidebar-nav button").forEach((btn) => {
@@ -315,6 +314,182 @@ function renderAnswer(r) {
     </h4>
     ${cites}
   `;
+  // Vẽ đồ thị quan hệ quanh điều luật được trích dẫn đầu tiên
+  const top = (r.citations || [])[0];
+  renderSubgraph(top ? top.node_id : null);
+}
+
+// ---------- Đồ thị quan hệ (cytoscape) ----------
+
+const NODE_COLORS = {
+  Article: "#2563eb", Clause: "#0891b2", Point: "#0d9488", Penalty: "#dc2626",
+  Obligation: "#d97706", Right: "#16a34a", Prohibition: "#b91c1c",
+  Subject: "#7c3aed", Deadline: "#db2777", Exemption: "#059669",
+  TaxRate: "#ca8a04", TaxBase: "#0284c7", LegalDocument: "#475569",
+};
+let cy = null;
+
+function cyElements(data) {
+  const els = [];
+  const seen = new Set();
+  for (const n of data.nodes) {
+    if (seen.has(n.id)) continue;
+    seen.add(n.id);
+    els.push({ data: { id: n.id, label: n.display, type: n.label,
+      vi: n.label_vi, center: n.is_center ? 1 : 0, full: n.text || "" } });
+  }
+  for (const e of data.edges) {
+    els.push({ data: { id: `e_${e.source}__${e.target}__${e.type}`,
+      source: e.source, target: e.target, label: e.type_vi } });
+  }
+  return els;
+}
+
+const CY_STYLE = [
+  { selector: "node", style: {
+    "background-color": (n) => NODE_COLORS[n.data("type")] || "#64748b",
+    "label": "data(label)", "color": "#fff", "font-size": "12px",
+    "text-valign": "center", "text-halign": "center", "text-wrap": "wrap",
+    "text-max-width": "84px", "width": 56, "height": 56,
+    "border-width": 3, "border-color": "#ffffff",
+    "transition-property": "border-color, border-width", "transition-duration": "120ms" } },
+  { selector: "node[center = 1]", style: {
+    "border-width": 5, "border-color": "#facc15", "width": 74, "height": 74,
+    "font-size": "13px", "font-weight": "bold" } },
+  { selector: "edge", style: {
+    "width": 2, "line-color": "#94a3b8", "target-arrow-color": "#94a3b8",
+    "target-arrow-shape": "triangle", "arrow-scale": 1.1, "curve-style": "bezier",
+    "label": "data(label)", "font-size": "10px", "color": "#64748b",
+    "text-rotation": "autorotate", "text-background-color": "#ffffff",
+    "text-background-opacity": 0.85, "text-background-padding": "3px" } },
+];
+
+function addToGraph(data) {
+  for (const el of cyElements(data)) {
+    if (cy.getElementById(el.data.id).length === 0) cy.add(el);
+  }
+}
+
+async function renderSubgraph(nodeId) {
+  const $g = $("#qa-graph");
+  const setVis = (v) => { $g.hidden = !v; const r = $("#qa-result"); if (r) r.classList.toggle("has-graph", v); };
+  if (!nodeId || typeof cytoscape === "undefined") { setVis(false); return; }
+  let data;
+  try { data = await api(`/graph/subgraph?node=${encodeURIComponent(nodeId)}&depth=2`); }
+  catch (e) { setVis(false); return; }
+  if (!data.nodes || !data.nodes.length) { setVis(false); return; }
+  setVis(true);
+
+  const cyBox = document.getElementById("cy");
+  // Đợi 1 frame để container 2-cột có kích thước thật rồi mới đo & layout.
+  await new Promise((r) => requestAnimationFrame(r));
+
+  // Trải lại node LẤP KÍN khung theo cả 2 chiều: cose cho bố cục hữu cơ, sau đó remap toạ
+  // độ về đúng ô chứa (zoom=1, pan=0) nên không còn dải trống trên/dưới hay hai bên.
+  // Có kẹp mức giãn để không méo hình khi đồ thị quá rộng/hẹp so với khung.
+  const runLayout = () => {
+    const r = cyBox.getBoundingClientRect();
+    const w = r.width > 40 ? r.width : 720, h = r.height > 40 ? r.height : 440;
+    // Layout trong khung VUÔNG (side theo số node) -> cose cho bố cục cân, KHÔNG bị kéo dẹt
+    // theo tỉ lệ ô chứa. Sau đó stretchFill giãn khối vuông này lấp kín ô thật (rộng > cao)
+    // đều cả 2 chiều, không dồn cục, không dải trống.
+    const side = Math.max(520, Math.sqrt(cy.nodes().length) * 96);
+    cy.layout({ name: "cose", animate: false, fit: false,
+      boundingBox: { x1: 0, y1: 0, w: side, h: side }, nodeRepulsion: 12000, idealEdgeLength: 130,
+      nodeOverlap: 16, gravity: 0.2, componentSpacing: 110, coolingFactor: 0.95, numIter: 1200 }).run();
+    stretchFill(w, h, 46);
+  };
+
+  const stretchFill = (w, h, pad) => {
+    const nodes = cy.nodes();
+    if (nodes.length < 2) { cy.zoom(1); cy.pan({ x: w / 2, y: h / 2 }); return; }
+    const bb = nodes.boundingBox();
+    if (!bb.w || !bb.h) return;
+    let sx = (w - 2 * pad) / bb.w, sy = (h - 2 * pad) / bb.h;
+    // kẹp tỉ lệ giãn 2 chiều để tránh méo (không cho 1 chiều giãn quá 2.3x chiều kia)
+    const R = 2.3;
+    if (sx > sy * R) sx = sy * R; else if (sy > sx * R) sy = sx * R;
+    const offX = (w - bb.w * sx) / 2, offY = (h - bb.h * sy) / 2;
+    nodes.positions((n) => {
+      const p = n.position();
+      return { x: offX + (p.x - bb.x1) * sx, y: offY + (p.y - bb.y1) * sy };
+    });
+    cy.zoom(1); cy.pan({ x: 0, y: 0 });
+  };
+
+  cy = cytoscape({ container: cyBox, elements: cyElements(data), style: CY_STYLE });
+  cy.resize();
+  runLayout();
+
+  // Container 2-cột có thể chưa đo đúng lúc init -> layout lại 1 nhịp sau; đổi kích thước
+  // cửa sổ cũng layout lại theo khung mới (fit() thường sẽ để lại khoảng trống nên không dùng).
+  const relayout = () => { if (cy) { cy.resize(); runLayout(); } };
+  setTimeout(relayout, 260);
+  if (!renderSubgraph._resizeBound) {
+    renderSubgraph._resizeBound = true;
+    let t; window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(relayout, 150); });
+  }
+
+  // Click node -> đọc nội dung điều luật; click cạnh -> xem quan hệ (giống Neo4j Browser)
+  cy.on("tap", "node", (evt) => showNodeDetail(evt.target));
+  cy.on("tap", "edge", (evt) => showEdgeDetail(evt.target));
+
+  const legendTypes = [...new Map(data.nodes.map((n) => [n.label, n.label_vi])).entries()];
+  $("#cy-legend").innerHTML = legendTypes.map(([t, vi]) =>
+    `<span class="cy-leg"><i style="background:${NODE_COLORS[t] || "#64748b"}"></i>${escapeHtml(vi)}</span>`).join("");
+
+  // hiện sẵn node trung tâm khi mở
+  const center = cy.nodes("[center = 1]");
+  if (center.length) showNodeDetail(center[0]);
+}
+
+function showNodeDetail(n) {
+  const text = n.data("full") || "(node này không có nội dung văn bản)";
+  $("#cy-detail").innerHTML = `
+    <div class="cy-detail-node">
+      <div class="cy-detail-head">
+        <span class="cy-detail-title">${escapeHtml(n.data("label"))}</span>
+        <span class="cy-detail-badge" style="background:${NODE_COLORS[n.data("type")] || "#64748b"}">${escapeHtml(n.data("vi") || "")}</span>
+        <button class="cy-expand-btn" data-expand="${escapeHtml(n.id())}">＋ Mở rộng quan hệ</button>
+      </div>
+      <div class="cy-detail-text">${escapeHtml(text)}</div>
+      <div class="cy-detail-id">${escapeHtml(n.id())}</div>
+    </div>`;
+  const btn = $("#cy-detail").querySelector("[data-expand]");
+  if (btn) btn.addEventListener("click", () => expandNode(btn.dataset.expand));
+}
+
+function showEdgeDetail(e) {
+  $("#cy-detail").innerHTML = `
+    <div class="cy-detail-edge">
+      <span class="cy-detail-title">${escapeHtml(e.source().data("label"))}</span>
+      <span class="cy-detail-rel">— ${escapeHtml(e.data("label"))} →</span>
+      <span class="cy-detail-title">${escapeHtml(e.target().data("label"))}</span>
+    </div>`;
+}
+
+async function expandNode(id) {
+  const src = cy.getElementById(id);
+  const base = src.length ? { ...src.position() } : { x: 0, y: 0 };
+  let more;
+  try { more = await api(`/graph/subgraph?node=${encodeURIComponent(id)}&depth=1`); }
+  catch (e) { return; }
+
+  // Node MỚI đặt thành vòng quanh node được click; node cũ GIỮ NGUYÊN vị trí
+  // -> không re-layout toàn graph -> không giật/nhảy.
+  const els = cyElements(more);
+  const newNodes = els.filter((el) => !el.data.source && cy.getElementById(el.data.id).length === 0);
+  const R = 130;
+  newNodes.forEach((el, i) => {
+    const ang = (2 * Math.PI * i) / Math.max(newNodes.length, 1);
+    el.position = { x: base.x + R * Math.cos(ang), y: base.y + R * Math.sin(ang) };
+  });
+  cy.add(newNodes);
+  els.forEach((el) => {
+    if (el.data.source && cy.getElementById(el.data.id).length === 0) cy.add(el);
+  });
+  // chỉ zoom vừa khung, KHÔNG xáo vị trí node cũ
+  cy.animate({ fit: { eles: cy.elements(), padding: 30 }, duration: 300, easing: "ease-out" });
 }
 
 // ---------- Search (Tra cuu van ban) ----------
@@ -322,26 +497,29 @@ function renderAnswer(r) {
 const GUEST_SEARCH_CAP = 5;
 const $searchForm    = $("#search-form");
 const $searchInput   = $("#search-input");
-const $searchDate    = $("#search-date");
 const $searchMeta    = $("#search-meta");
 const $searchResults = $("#search-results");
 
 $searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  withBusy($searchForm, () => runSearch($searchInput.value.trim(), $searchDate.value || null));
+  withBusy($searchForm, () => runSearch($searchInput.value.trim(), null));
 });
 
+let lastSearchQuery = "";
 async function runSearch(q, asOf) {
   if (!q) return;
+  lastSearchQuery = q;   // giữ để tô đậm từ khóa trong kết quả + trong điều luật gốc
   const isGuest = role() === "guest";
   const limit = isGuest ? GUEST_SEARCH_CAP : 30;
   if (isGuest) asOf = null;   // guest cam dung date filter
+  const activeOnly = $("#search-active-only")?.checked;
 
   $searchMeta.hidden = true;
   $searchResults.innerHTML = `<div class="loading">Đang tra cứu…</div>`;
   try {
     const params = new URLSearchParams({ q, limit: String(limit) });
     if (asOf) params.set("as_of_date", asOf);
+    if (activeOnly) params.set("active_only", "true");
     const r = await api(`/search?${params.toString()}`);
     renderSearchResults(r, isGuest);
   } catch (e) {
@@ -385,6 +563,22 @@ function downloadLinkHtml(nodeId) {
   `;
 }
 
+const _SEARCH_STOP = new Set(["là","của","và","các","cho","có","không","được","về",
+  "theo","đối","với","khi","hay","một","những","này","đó","thì","ở","trong","phải",
+  "bao","nhiêu","như","thế","nào","gì","ra","sao"]);
+
+function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+// Tô đậm từ khóa NGAY TRÊN chuỗi đã escape HTML (token là chữ/số nên an toàn).
+function hlKeywords(escapedText, query) {
+  const toks = (query || "").toLowerCase().match(/[0-9a-zà-ỹ]{2,}/giu) || [];
+  const uniq = [...new Set(toks)].filter((t) => !_SEARCH_STOP.has(t));
+  if (!uniq.length) return escapedText;
+  uniq.sort((a, b) => b.length - a.length);  // cụm dài match trước
+  const re = new RegExp("(" + uniq.map(escapeRegex).join("|") + ")", "giu");
+  return escapedText.replace(re, "<mark>$1</mark>");
+}
+
 function resultHtml(h) {
   const todayISO = new Date().toISOString().slice(0, 10);
   const isExpired = h.effective_to && h.effective_to <= todayISO;
@@ -395,7 +589,8 @@ function resultHtml(h) {
     ? `hiệu lực từ ${escapeHtml(h.effective_from)}${h.effective_to ? ` đến ${escapeHtml(h.effective_to)}` : ""}`
     : "";
   return `
-    <article class="result">
+    <article class="result clickable" data-node="${escapeHtml(h.node_id)}" role="button" tabindex="0"
+             title="Nhấn để đọc nguyên Điều luật gốc">
       <div class="result-head">
         <div class="result-cite">${escapeHtml(h.display)}</div>
         <div class="result-badges">
@@ -403,53 +598,91 @@ function resultHtml(h) {
           <span class="result-badge">${escapeHtml(h.node_label)}</span>
         </div>
       </div>
-      <div class="result-body">${escapeHtml(h.text)}</div>
+      <div class="result-body">${hlKeywords(escapeHtml(h.text), lastSearchQuery)}</div>
       <div class="result-foot">
         <div class="result-foot-left">
           <code>${escapeHtml(h.node_id)}</code>
           <span>${range}</span>
         </div>
+        <span class="result-open">Đọc nguyên Điều →</span>
         ${downloadLinkHtml(h.node_id)}
       </div>
     </article>
   `;
 }
 
-// ---------- Diff ----------
+// ---------- đọc NGUYÊN Điều luật gốc (modal) ----------
 
-let diffLoaded = false;
-async function loadDiff(docId) {
-  const $list = $("#diff-list");
-  $list.innerHTML = `<div class="loading">Đang tải…</div>`;
+async function openLawModal(nodeId) {
+  const modal = $("#law-modal");
+  _modalReturnFocus = document.activeElement;
+  $("#law-modal-head").innerHTML = `<div class="loading">Đang tải điều luật…</div>`;
+  $("#law-modal-body").innerHTML = "";
+  modal.hidden = false;
   try {
-    const d = await api(`/document/${encodeURIComponent(docId)}/diff`);
-    $("#diff-doc-title").textContent = `${d.document.doc_number} — ${d.document.title}`;
-    if (!d.diffs.length) {
-      $list.innerHTML = `<div class="loading">Văn bản này không có diff.</div>`;
-    } else {
-      $list.innerHTML = d.diffs.map(diffHtml).join("");
-    }
-    diffLoaded = true;
+    const d = await api(`/law/article?node_id=${encodeURIComponent(nodeId)}`);
+    renderArticle(d);
   } catch (e) {
-    $list.innerHTML = `<div class="error">Lỗi: ${escapeHtml(e.message)}</div>`;
+    $("#law-modal-head").innerHTML = `<div class="error">Lỗi: ${escapeHtml(e.message)}</div>`;
   }
 }
 
-function diffHtml(d) {
-  const oldSide = d.old_point
-    ? `<div class="side old"><h5>Văn bản cũ — ${escapeHtml(d.old_point.display)}</h5>${escapeHtml(d.old_point.text)}</div>`
-    : `<div class="side old empty">(Điểm mới hoàn toàn, không có bản cũ)</div>`;
-  const newSide = d.new_point
-    ? `<div class="side new"><h5>Văn bản mới — ${escapeHtml(d.new_point.display)}</h5>${escapeHtml(d.new_point.text)}</div>`
-    : `<div class="side new empty">(Điểm cũ bị xóa, không có bản mới)</div>`;
-  return `
-    <div class="diff-row">
-      <div class="change">${escapeHtml(d.change_type)} · độ tương đồng ${(d.similarity*100).toFixed(0)}% · từ ${escapeHtml(d.effective_from)}</div>
-      <div class="sides">${oldSide}${newSide}</div>
-      <div class="summary">${escapeHtml(d.summary)}</div>
-    </div>
+function renderArticle(d) {
+  const a = d.article;
+  const q = lastSearchQuery;
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const expired = a.effective_to && a.effective_to <= todayISO;
+  const badge = expired
+    ? `<span class="result-badge expired">Hết hiệu lực${a.effective_to ? ` (đến ${escapeHtml(a.effective_to)})` : ""}</span>`
+    : `<span class="result-badge active">Đang hiệu lực</span>`;
+  $("#law-modal-head").innerHTML = `
+    <div class="law-doc">${escapeHtml(a.doc_number)}</div>
+    <h3 id="law-title" class="law-title">${escapeHtml(a.display)}${a.heading ? ` — ${escapeHtml(a.heading)}` : ""}</h3>
+    <div class="law-badges">${badge}${a.effective_from ? `<span class="law-eff">hiệu lực từ ${escapeHtml(a.effective_from)}</span>` : ""}</div>
   `;
+  const rows = d.items
+    .filter((it) => it.label !== "Article")   // tiêu đề Điều đã ở head
+    .map((it) => {
+      const tgt = it.is_target ? " target" : "";
+      const label = it.label === "Clause" ? `Khoản ${escapeHtml(it.num)}.` : `${escapeHtml(it.num)})`;
+      const txt = hlKeywords(escapeHtml(it.text || it.heading || ""), q);
+      return `<div class="law-item depth-${it.depth}${tgt}"><span class="law-num">${label}</span> <span class="law-text">${txt}</span></div>`;
+    }).join("");
+  $("#law-modal-body").innerHTML = rows || `<div class="loading">Điều luật không có nội dung chi tiết.</div>`;
+  setTimeout(() => {
+    const t = $("#law-modal-body .law-item.target");
+    if (t) t.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, 30);
 }
+
+function closeLawModal() {
+  const m = $("#law-modal");
+  if (m.hidden) return;
+  m.hidden = true;
+  if (_modalReturnFocus && typeof _modalReturnFocus.focus === "function") {
+    _modalReturnFocus.focus();
+    _modalReturnFocus = null;
+  }
+}
+
+// Nhấn 1 kết quả -> bung nguyên Điều (bỏ qua khi bấm link tải .docx)
+$searchResults.addEventListener("click", (e) => {
+  if (e.target.closest("a")) return;
+  const card = e.target.closest(".result[data-node]");
+  if (card) openLawModal(card.dataset.node);
+});
+$searchResults.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const card = e.target.closest(".result[data-node]");
+  if (card) { e.preventDefault(); openLawModal(card.dataset.node); }
+});
+$$("#law-modal [data-close]").forEach((el) => el.addEventListener("click", closeLawModal));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !$("#law-modal").hidden) closeLawModal();
+});
+$("#search-active-only")?.addEventListener("change", () => {
+  if (lastSearchQuery) runSearch(lastSearchQuery, null);
+});
 
 // ---------- auth (fake, client-side) ----------
 
@@ -535,18 +768,8 @@ function applyRoleGates() {
   const r = role();
   document.body.dataset.role = r;
 
-  // Diff tab: guest -> locked, khac -> mo. Neu vua sign-in va dang o diff -> load
-  const lock = $("#diff-lock");
-  const diffList = $("#diff-list");
-  if (lock && diffList) {
-    lock.hidden = r !== "guest";
-    diffList.style.display = r === "guest" ? "none" : "";
-    const diffTabOpen = document.querySelector("#diff") && !document.querySelector("#diff").hidden;
-    if (r !== "guest" && diffTabOpen && !diffLoaded) loadDiff("qlt2025");
-  }
-
   // Guest khong duoc dung date filter -> disable input
-  ["#qa-date", "#search-date"].forEach((sel) => {
+  ["#qa-date"].forEach((sel) => {
     const el = $(sel);
     if (!el) return;
     el.disabled = r === "guest";
@@ -604,7 +827,7 @@ document.addEventListener("keydown", (e) => {
     }
   }
 });
-// "Đăng nhập để mở khóa" trong locked panel cua diff tab
+// Nut "Đăng nhập để tiếp tục" (vd. panel het luot hoi cua Khach) -> mo modal dang nhap
 document.addEventListener("click", (e) => {
   const t = e.target.closest("[data-open=\"signin\"]");
   if (t) openModal();

@@ -241,7 +241,11 @@ def document_diff(doc_id: str) -> dict:
                 id=doc_id,
             )
             if doc_rows:
-                doc = dict(doc_rows[0]["d"])
+                # neo4j.time.Date/DateTime khong serialize JSON duoc -> ep ve chuoi
+                doc = {
+                    k: (str(v) if type(v).__module__.startswith("neo4j.time") else v)
+                    for k, v in dict(doc_rows[0]["d"]).items()
+                }
                 diff_rows = run(
                     """
                     MATCH (d:LegalDocument {doc_id:$id})-[:HAS_ARTICLE|HAS_CLAUSE|HAS_POINT*1..3]->(n)-[s:SUPERSEDED_BY]->(newn)

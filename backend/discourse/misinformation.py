@@ -179,13 +179,16 @@ def cluster_misconceptions(claims: list[dict]) -> list[dict]:
         contradicts = sorted({
             cit["node_id"] for c in members for cit in c.get("citations", [])
         })
-        times = [c["created_at"] for c in members if c.get("created_at")]
+        times = sorted(c["created_at"] for c in members if c.get("created_at"))
         misconceptions.append({
             "misconception_id": f"misc-{i:03d}",
             "canonical_text": canonical["text"],
             "contradicts": contradicts,
-            "first_seen": min(times) if times else None,
-            "last_seen": max(times) if times else None,
+            "first_seen": times[0] if times else None,
+            "last_seen": times[-1] if times else None,
+            # Mốc thời gian TỪNG thành viên -> detect_trends đếm số claim THẬT trong
+            # cửa sổ (không xấp xỉ bằng cả cụm). Xem _count_in_window.
+            "member_times": times,
             "count": len(members),
             "total_engagement": sum(c.get("engagement", 0) for c in members),
             "member_claim_ids": [c.get("claim_id") for c in members],
@@ -258,6 +261,7 @@ def detect_trends(
             continue
         alerts.append({
             "misconception": misc,
+            "occurrences_in_window": in_window,  # số claim THẬT trong cửa sổ (không phải cả cụm)
             "velocity": round(in_window / window, 4),
             "severity": _severity(misc.get("total_engagement", 0)),
             "correction": misc.get("canonical_text", ""),
@@ -278,11 +282,20 @@ def _resolve_anchor(as_of: str | None, misconceptions: list[dict]) -> datetime |
 
 
 def _count_in_window(misc: dict, start: datetime, end: datetime) -> int:
-    """Số lần misconception xuất hiện trong [start, end].
+    """Số claim của misconception rơi trong [start, end] — ĐẾM THẬT theo member_times.
 
-    Không có mốc thời gian từng claim ở tầng này -> xấp xỉ bằng count nếu last_seen
-    nằm trong cửa sổ. Khi nối graph thật (Q3), Neo4j đếm chính xác theo post.created_at.
+    Ưu tiên đếm từng thành viên (chính xác: một cụm 6 claim trải 5 tháng chỉ tính đúng
+    số claim nằm trong cửa sổ, không thổi thành 6). member_times thiếu (dữ liệu cũ) ->
+    lùi về xấp xỉ: cả count nếu last_seen trong cửa sổ.
     """
+    member_times = misc.get("member_times")
+    if member_times:
+        n = 0
+        for t in member_times:
+            parsed = _parse(t)
+            if parsed and start <= parsed <= end:
+                n += 1
+        return n
     last = _parse(misc.get("last_seen"))
     if last and start <= last <= end:
         return misc.get("count", 0)

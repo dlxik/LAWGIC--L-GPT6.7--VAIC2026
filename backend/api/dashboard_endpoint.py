@@ -103,8 +103,8 @@ def _trends_from_neo4j() -> list[dict] | None:
                 END AS severity,
                 CASE
                     WHEN m.last_seen IS NOT NULL AND m.first_seen IS NOT NULL
-                        AND (m.last_seen - m.first_seen).hours > 0
-                    THEN toFloat(cnt) / toFloat((m.last_seen - m.first_seen).hours)
+                        AND m.last_seen.epochSeconds > m.first_seen.epochSeconds
+                    THEN toFloat(cnt) / (toFloat(m.last_seen.epochSeconds - m.first_seen.epochSeconds) / 3600.0)
                     ELSE 0.0
                 END AS velocity
             ORDER BY total_eng DESC

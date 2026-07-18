@@ -83,14 +83,24 @@ def _trends_from_neo4j() -> list[dict] | None:
         rows = run(
             """
             MATCH (m:Misconception)
+            // correction = correct_statement cua claim thanh vien tin cay nhat (KHONG
+            // phai canonical_text — do la cau SAI). Lay cau dung nhat de dinh chinh.
+            CALL {
+                WITH m
+                OPTIONAL MATCH (m)<-[:INSTANCE_OF]-(cc:Claim)
+                WHERE cc.correct_statement IS NOT NULL AND cc.correct_statement <> ''
+                RETURN cc.correct_statement AS correction
+                ORDER BY cc.confidence DESC LIMIT 1
+            }
             OPTIONAL MATCH (m)<-[:INSTANCE_OF]-(cl:Claim)<-[:CONTAINS_CLAIM]-(p:Post)
             OPTIONAL MATCH (m)-[:CONTRADICTS]->(target)
-            WITH m, count(DISTINCT cl) AS cnt,
+            WITH m, correction, count(DISTINCT cl) AS cnt,
                  coalesce(sum(p.engagement), 0) AS total_eng,
                  collect(DISTINCT coalesce(target.point_id, target.clause_id, target.article_id)) AS contradicts
             RETURN
                 m.misconception_id AS misconception_id,
                 m.canonical_text   AS canonical_text,
+                correction AS correction,
                 [c IN contradicts WHERE c IS NOT NULL] AS contradicts,
                 toString(m.first_seen) AS first_seen,
                 toString(m.last_seen)  AS last_seen,
@@ -144,8 +154,24 @@ def _misconception_detail_from_neo4j(misc_id: str) -> dict | None:
             """,
             id=misc_id,
         )
+        # neo4j.time.DateTime (first_seen/last_seen) khong serialize JSON -> ep chuoi
+        misc = {
+            k: (str(v) if type(v).__module__.startswith("neo4j.time") else v)
+            for k, v in dict(m).items()
+        }
+        # correction = correct_statement cua claim thanh vien tin cay nhat (khong phai
+        # canonical_text = cau SAI). Thieu thi de trong, frontend an dong dinh chinh.
+        corr_rows = run(
+            """
+            MATCH (m:Misconception {misconception_id:$id})<-[:INSTANCE_OF]-(c:Claim)
+            WHERE c.correct_statement IS NOT NULL AND c.correct_statement <> ''
+            RETURN c.correct_statement AS correction ORDER BY c.confidence DESC LIMIT 1
+            """,
+            id=misc_id,
+        )
+        misc["correction"] = corr_rows[0]["correction"] if corr_rows else ""
         return {
-            "misconception": dict(m),
+            "misconception": misc,
             "contradicts": contradicts_rows,
             "posts": posts_rows,
         }
@@ -187,8 +213,10 @@ def _rescore_via_p3(items: list[dict]) -> list[dict]:
     merged = []
     for a in alerts:
         m = a.get("misconception", {})
+        # ƯU TIÊN correction THẬT từ Neo4j (correct_statement) hơn detect_trends
+        # (no set = canonical_text = câu SAI). m tu _trends_from_neo4j da co correction dung.
         merged.append({**m, "velocity": a.get("velocity", 0), "severity": a.get("severity", "LOW"),
-                       "correction": a.get("correction", m.get("correction", ""))})
+                       "correction": m.get("correction") or a.get("correction", "")})
     return merged or items
 
 

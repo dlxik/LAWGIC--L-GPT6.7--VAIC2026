@@ -173,8 +173,8 @@ MERGE (c)-[:INSTANCE_OF]->(m)
 
 _MERGE_CONTRADICTS = """
 MATCH (m:Misconception {misconception_id: $misconception_id})
-MATCH (p:Point {point_id: $point_id})
-MERGE (m)-[:CONTRADICTS]->(p)
+MATCH (n) WHERE n.point_id = $point_id OR n.clause_id = $point_id OR n.article_id = $point_id
+MERGE (m)-[:CONTRADICTS]->(n)
 """
 
 

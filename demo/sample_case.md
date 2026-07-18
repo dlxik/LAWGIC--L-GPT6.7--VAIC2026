@@ -76,14 +76,17 @@ Chạy `python eval/run_eval.py` trên 48 claim gắn nhãn tay (`eval/gold_set.
 
 | Chỉ số | Giá trị |
 |---|---|
-| Verdict accuracy (toàn bộ, 4 nhãn) | **60,4%** (±14%) |
+| Verdict accuracy (toàn bộ 48 câu, 4 nhãn) | **60,4%** (±14%) |
 | Citation accuracy (trỏ đúng điều luật) | **54,3%** |
-| Trong phạm vi Điều 7, gộp 2 nhãn (khớp luật / hiểu sai) | **~82%** |
+| Trong phạm vi Điều 7 (34 câu), 3 nhãn | **50%** |
+| Trong phạm vi, gộp 2 nhãn (khớp / hiểu sai) | 50% (chặt) – 76,5% (rộng tay) |
 | Baseline (đoán bừa nhãn phổ biến nhất) | 29,2% |
 | Độ phủ (thảo luận về ngưỡng/cách tính) | ~40% |
 
-Con số vượt baseline hơn 30 điểm. Phần khó nhất (`PARTIALLY_INACCURATE` — đúng cấu
-trúc, sai con số/điều kiện) là ranh giới mờ mà cả người cũng cãi nhau.
+Con số vượt baseline (29%) đáng kể nhưng còn khiêm tốn, và **dao động giữa các lần
+chạy** (model FPT chưa ổn định). Hai chỗ kéo điểm: (1) ranh giới `PARTIALLY_INACCURATE`
+mờ mà cả người cũng cãi nhau, (2) hệ thống **né sang "không đủ căn cứ"** ở một số câu
+đáng ra phải phán — hướng cải thiện chính.
 
 Cấu hình: FPT AI `gpt-oss-120b`; truy hồi điều luật LAI — TF-IDF + embedding tiếng
 Việt tìm ứng viên, rồi graph mở rộng theo `SUPERSEDED_BY` (chỉ cho điểm luật cũ) +

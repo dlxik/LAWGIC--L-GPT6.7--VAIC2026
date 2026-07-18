@@ -146,32 +146,44 @@ def _family_expand(node_ids: list[str], nodes: dict) -> list[str]:
 
 
 def _graph_expand(node_ids: list[str], nodes: dict) -> list[str]:
-    """Thêm node liên quan qua SUPERSEDED_BY. Đây là bước ăn tiền.
+    """Bắc cầu luật cũ -> luật mới. Đây là bước ăn tiền (điểm khác biệt với RAG thuần).
 
-    Neo4j sống -> point_history() đi đúng cạnh Điểm<->Điểm.
-    Không -> fallback doc-level: node ở văn bản cũ thì kéo node cùng chủ đề ở
-    văn bản thay thế vào làm ứng viên (để LLM có cơ hội chọn luật mới).
+    CHỌN LỌC + GỘP hai nguồn, không thay thế nhau:
+
+    1. Cạnh SUPERSEDED_BY thật (khi Neo4j sống) — CHỈ query point_history cho ứng
+       viên ở văn bản CŨ (chỉ chúng mới có cạnh outgoing). Query cho điểm luật mới
+       là phí: chúng không thay thế gì, point_history trả về chính nó. Lọc theo
+       doc_id cắt ~40 truy vấn/claim xuống còn vài cái.
+
+    2. Bắc cầu doc-level bằng TF-IDF — LUÔN chạy, kể cả khi có graph. Lý do: nội
+       dung cũ bị XOÁ hẳn (vd thuế khoán) KHÔNG có cạnh supersede, nên cạnh graph
+       bắc sang rỗng; TF-IDF vẫn kéo được điều luật mới cùng chủ đề vào cho LLM.
+       Đây chính là chỗ bản 'chỉ graph' làm tụt điểm — bỏ mất ứng viên hữu ích.
     """
     expanded = list(node_ids)
+    old_doc_points = [
+        nid for nid in node_ids
+        if nodes.get(nid, {}).get("label") == "Point"
+        and nodes.get(nid, {}).get("doc_id") in SUCCESSOR_DOCS
+    ]
 
-    try:
-        from backend.graph import connection
-        from backend.graph.diffing import point_history
+    # 1. Supersede thật, chỉ cho điểm luật cũ.
+    if old_doc_points:
+        try:
+            from backend.graph import connection
+            from backend.graph.diffing import point_history
 
-        if connection.healthcheck():
-            for nid in node_ids:
-                if nodes.get(nid, {}).get("label") == "Point":
+            if connection.healthcheck():
+                for nid in old_doc_points:
                     for step in point_history(nid):
                         if step["point_id"] not in expanded:
                             expanded.append(step["point_id"])
-            return expanded
-    except Exception:
-        pass  # Neo4j chưa lên -> fallback dưới
+        except Exception:
+            pass  # Neo4j chưa lên -> chỉ dùng TF-IDF bridge dưới
 
-    # Fallback doc-level: tin đồn bám luật cũ -> kéo ứng viên từ luật mới.
+    # 2. Bắc cầu doc-level (luôn chạy): tin đồn bám luật cũ -> kéo ứng viên luật mới.
     for nid in node_ids:
-        doc_id = nodes.get(nid, {}).get("doc_id")
-        successor = SUCCESSOR_DOCS.get(doc_id)
+        successor = SUCCESSOR_DOCS.get(nodes.get(nid, {}).get("doc_id"))
         if successor:
             for extra in _retrieve(nodes[nid]["text"], 3):
                 if nodes.get(extra, {}).get("doc_id") == successor and extra not in expanded:

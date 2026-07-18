@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="docs/images/vaic-banner.png" width="720" alt="Vietnam AI Innovation Challenge 2026" />
+  <img src="docs/images/vaic-banner.png" width="300" alt="Vietnam AI Innovation Challenge 2026" />
 
   # Topic: LAWGIC — Legal Analytics With Graph-Integrated Cognition
 
@@ -16,20 +16,20 @@
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [1. Overview & Requirements Coverage](#-1-overview--requirements-coverage)
-- [2. Data](#-2-data)
-- [3. Model & Architecture](#️-3-model--architecture)
-- [4. Evaluation](#-4-evaluation)
-- [5. Deployment & Demo](#-5-deployment--demo)
-- [6. Limitations & Future Work](#-6-limitations--future-work)
-- [7. Impact & Applications](#-7-impact--applications)
-- [8. Authors & License](#-8-authors--license)
+- [1. Overview & Requirements Coverage](#1-overview--requirements-coverage)
+- [2. Data](#2-data)
+- [3. Model & Architecture](#3-model--architecture)
+- [4. Evaluation](#4-evaluation)
+- [5. Deployment & Demo](#5-deployment--demo)
+- [6. Limitations & Future Work](#6-limitations--future-work)
+- [7. Impact & Applications](#7-impact--applications)
+- [8. Authors & License](#8-authors--license)
 
 ---
 
-## 📖 1. Overview & Requirements Coverage
+## 1. Overview & Requirements Coverage
 
 Project built for **Vietnam AI Innovation Challenge (VAIC) 2026**.
 
@@ -48,7 +48,7 @@ LAWGIC addresses the full task on **one legal knowledge graph** (Neo4j) with thr
 2. **Citation-grounded Q&A** — every answer must carry an article–clause–point citation; if no basis is found in the graph, it **refuses to answer rather than guessing**. Two-layer anti-hallucination: prompt constraints + API re-validates that each `node_id` truly exists.
 3. **Time-aware Search** — full-text search over articles/clauses/points on the graph, with effectivity status over time via the `SUPERSEDED_BY` relation (at the **point level**) and the `law_as_of(date)` query.
 
-### ✅ Requirements coverage (task compliance matrix)
+### Requirements coverage (task compliance matrix)
 
 Every requirement in the brief is implemented and backed by measured evidence.
 
@@ -62,7 +62,7 @@ Every requirement in the brief is implemented and backed by measured evidence.
 | 6 | **Detect trends, misunderstandings, misinformation & communications risk** | Trend clustering + **severity ranking (comms-risk level)** + correction citing the exact violated article |
 | 7 | **Provide a dashboard or Q&A API with source citations** | **Both**: 3-tab dashboard **and** `/qa` API, every answer cited |
 
-> **Design principle:** every technical decision (extraction model, vote-combining, evaluation method) is backed by **numbers on a hand-labeled gold set**, and limitations are stated openly rather than glossed over — see [§4](#-4-evaluation).
+> **Design principle:** every technical decision (extraction model, vote-combining, evaluation method) is backed by **numbers on a hand-labeled gold set**, and limitations are stated openly rather than glossed over — see [§4](#4-evaluation).
 
 ### Directory structure
 ```
@@ -108,7 +108,7 @@ LAWGIC--L-GPT6.7--VAIC2026/
 
 ---
 
-## 📂 2. Data
+## 2. Data
 
 ### Data sources
 LAWGIC links **two data streams** on the same graph, mirroring the brief (legal documents + public discourse):
@@ -135,7 +135,7 @@ The personal-income-tax exemption threshold of **VND 500M/year** for household b
 
 ---
 
-## 🏗️ 3. Model & Architecture
+## 3. Model & Architecture
 
 ### Overall architecture
 The system is built around **two contracts frozen from hour one** — `backend/models/schemas.py` (data contract) and `backend/graph/schema.py` (graph contract) — so every module integrates through stable interfaces:
@@ -187,7 +187,7 @@ flowchart LR
 
 ---
 
-## ✅ 4. Evaluation
+## 4. Evaluation
 
 The full measurement process is documented in [`benchmark.md`](benchmark.md). Principle throughout: **every decision must have a number on a hand-labeled gold set**, and **limitations are stated openly**.
 
@@ -243,7 +243,7 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 
 ---
 
-## 🚀 5. Deployment & Demo
+## 5. Deployment & Demo
 
 ### Demo screenshots
 **Citation-grounded Q&A** *(Requirement 7)* — an answer with article–clause–point citations and an interactive law-relationship graph:
@@ -312,7 +312,7 @@ docker compose exec api python -m backend.graph.loader --wipe
 
 ---
 
-## 🧩 6. Limitations & Future Work
+## 6. Limitations & Future Work
 
 ### Current limitations (stated openly)
 - **Single-annotator gold** — inter-annotator agreement not yet measured (a stricter setup needs ≥2 annotators + Cohen's kappa). Mitigation: gold checked across 4 passes against the source text.
@@ -338,7 +338,7 @@ docker compose exec api python -m backend.graph.loader --wipe
 
 ---
 
-## 🌍 7. Impact & Applications
+## 7. Impact & Applications
 
 ### Benefits
 - **Grounded, hallucination-resistant legal answers:** every answer carries an article–clause–point citation; no basis → refuse, never guess.
@@ -354,7 +354,7 @@ docker compose exec api python -m backend.graph.loader --wipe
 
 ---
 
-## 👥 8. Authors & License
+## 8. Authors & License
 
 Built by **Team L-GPT 6.7**, a 4-member team from the [University of Engineering and Technology (UET) - VNU](https://uet.vnu.edu.vn):
 

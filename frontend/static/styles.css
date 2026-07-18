@@ -71,6 +71,11 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
+/* Sticky footer: giu chan trang o day viewport khi noi dung ngan */
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1 0 auto; }
+footer { flex-shrink: 0; }
+
 /* ---------------- Header ---------------- */
 
 header {

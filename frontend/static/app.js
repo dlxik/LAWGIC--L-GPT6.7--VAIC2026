@@ -49,17 +49,37 @@ const fmtNum = (n) => new Intl.NumberFormat("vi-VN").format(n);
 
 // ---------- tabs ----------
 
-$$(".sidebar-nav button").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const tab = btn.dataset.tab;
-    $$(".sidebar-nav button").forEach((b) => {
-      const on = b === btn;
-      b.classList.toggle("active", on);
-      b.setAttribute("aria-selected", on ? "true" : "false");
-    });
-    $$("main > section").forEach((s) => { s.hidden = s.id !== tab; });
-    if (tab === "diff" && !diffLoaded && role() !== "guest") loadDiff("qlt2025");
+function activateTab(btn) {
+  const tab = btn.dataset.tab;
+  $$(".sidebar-nav button").forEach((b) => {
+    const on = b === btn;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-selected", on ? "true" : "false");
+    b.setAttribute("tabindex", on ? "0" : "-1");
   });
+  $$("main > section").forEach((s) => { s.hidden = s.id !== tab; });
+  if (tab === "diff" && !diffLoaded && role() !== "guest") loadDiff("qlt2025");
+}
+
+$$(".sidebar-nav button").forEach((btn) => {
+  btn.addEventListener("click", () => activateTab(btn));
+});
+
+// Keyboard nav: arrow keys move focus + activate; Home/End go to first/last
+$(".sidebar-nav").addEventListener("keydown", (e) => {
+  const btns = $$(".sidebar-nav button");
+  const idx = btns.indexOf(document.activeElement);
+  if (idx < 0) return;
+  let next = null;
+  if (e.key === "ArrowDown" || e.key === "ArrowRight") next = btns[(idx + 1) % btns.length];
+  else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = btns[(idx - 1 + btns.length) % btns.length];
+  else if (e.key === "Home") next = btns[0];
+  else if (e.key === "End") next = btns[btns.length - 1];
+  if (next) {
+    e.preventDefault();
+    next.focus();
+    activateTab(next);
+  }
 });
 
 // ---------- stats + source badge ----------
@@ -101,7 +121,15 @@ async function loadTrends() {
     if ($count) $count.textContent = `${items.length} trend`;
     $trends.innerHTML = items.map(cardHtml).join("");
     $$(".card", $trends).forEach((c) => {
+      c.setAttribute("role", "button");
+      c.setAttribute("tabindex", "0");
       c.addEventListener("click", () => showMisconception(c.dataset.id));
+      c.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          showMisconception(c.dataset.id);
+        }
+      });
     });
   } catch (e) {
     $trends.innerHTML = `<div class="error">Lỗi tải trend: ${escapeHtml(e.message)}</div>`;
@@ -126,6 +154,7 @@ function cardHtml(m) {
   `;
 }
 
+let _detailToken = 0;
 function closeAllDetails() {
   $$(".card-detail", $trends).forEach((el) => el.remove());
   $$(".card.active", $trends).forEach((el) => el.classList.remove("active"));
@@ -144,7 +173,9 @@ async function showMisconception(id) {
   closeAllDetails();
   card.classList.add("active");
 
-  // Insert placeholder row ngay sau card
+  // Token de tranh race: neu user click card khac giua chung, cai holder cu
+  // duoc thay the va ket qua fetch cu KHONG duoc ghi vao holder moi.
+  const myToken = ++_detailToken;
   const holder = document.createElement("div");
   holder.className = "card-detail";
   holder.innerHTML = `<div class="loading">Đang tải chi tiết…</div>`;
@@ -153,6 +184,7 @@ async function showMisconception(id) {
 
   try {
     const d = await api(`/misconception/${encodeURIComponent(id)}`);
+    if (myToken !== _detailToken || !holder.isConnected) return;  // stale
     const m = d.misconception;
     const citations = d.contradicts.map(citationHtml).join("");
     const postsBlock = role() === "guest"
@@ -173,6 +205,7 @@ async function showMisconception(id) {
       ${postsBlock}
     `;
   } catch (e) {
+    if (myToken !== _detailToken || !holder.isConnected) return;
     holder.innerHTML = `<div class="error">Lỗi: ${escapeHtml(e.message)}</div>`;
   }
 }
@@ -553,7 +586,23 @@ $("#signin-form").addEventListener("submit", (e) => {
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModal();
+  const modal = $("#signin-modal");
+  if (modal.hidden) return;
+  if (e.key === "Escape") { closeModal(); return; }
+  if (e.key === "Tab") {
+    // Focus trap: Tab quanh cac phan tu focusable trong modal
+    const focusables = $$(
+      "button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])",
+      modal
+    ).filter((el) => !el.disabled && el.offsetParent !== null);
+    if (!focusables.length) return;
+    const first = focusables[0], last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
 });
 // "Đăng nhập để mở khóa" trong locked panel cua diff tab
 document.addEventListener("click", (e) => {

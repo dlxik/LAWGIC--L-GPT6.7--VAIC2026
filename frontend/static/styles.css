@@ -224,6 +224,8 @@ main {
   padding: 32px 40px 60px;
   min-width: 0;    /* cho phep con shrink duoi grid */
   max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;  /* center tren man rong / projector */
 }
 
 /* Page header per section */

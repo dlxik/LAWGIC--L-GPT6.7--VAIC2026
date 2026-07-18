@@ -1,5 +1,5 @@
 anthropic>=0.116.0
-openai>=1.0  # P3: client cho FPT AI Marketplace (mkp-api.fptcloud.com), tương thích OpenAI
+openai>=2.0  # core/llm.py: client cho FPT AI Marketplace (mkp-api.fptcloud.com), tương thích OpenAI — bản cài 2.46
 pydantic>=2.9
 pydantic-settings>=2.5
 neo4j>=5.25
@@ -9,4 +9,6 @@ beautifulsoup4>=4.12
 httpx>=0.27
 python-dateutil>=2.9
 rank-bm25>=0.2.2
+scikit-learn>=1.4     # P3 discourse: TF-IDF retrieval (linker) + clustering hieu nham (misinformation)
+numpy>=1.26           # embeddings.py dung truc tiep (cung la transitive cua scikit-learn)
 pytest>=8.3

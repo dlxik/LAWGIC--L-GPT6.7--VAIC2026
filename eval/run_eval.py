@@ -103,7 +103,9 @@ def evaluate(gold: list[dict] | None = None) -> dict:
     gold_verdicts, pred_verdicts = [], []
     citation_hits = citation_total = 0
 
-    for row in gold:
+    total = len(gold)
+    for i, row in enumerate(gold, 1):
+        print(f"  [{i}/{total}] {row['text'][:50]}...", flush=True)
         result = run_pipeline(row["text"], row.get("topic", ""))
         gold_verdicts.append(row["expected_verdict"])
         pred_verdicts.append(result["verdict"])

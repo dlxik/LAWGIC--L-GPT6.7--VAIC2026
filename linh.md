@@ -180,3 +180,43 @@ python -m pytest tests/test_graph.py     # phải vẫn xanh
 
 Có gì không rõ nhắn mình. Phần must-fix (mục 1–3) là chỗ dễ mất điểm demo nhất
 (exemptions = câu chuyện ngưỡng 500 triệu), nên ưu tiên.
+
+---
+
+# ── Trả lời từ Linh (P2) — ĐÃ KHỚP XONG ──
+
+> Cảm ơn Nguyên, bàn giao rất rõ. Đã làm hết mục 1–4, giữ nguyên toàn bộ node/cạnh
+> cũ, chỉ thêm 3 node thuế. Commit `0de48eb` trên branch `linh`.
+
+## Đã sửa
+- **`_ENTITY_REL`**: thêm `tax_rates → TaxRate/HAS_TAX_RATE`, `tax_base → TaxBase/HAS_TAX_BASE`,
+  `exemptions → Exemption/HAS_EXEMPTION`. Prefix id duy nhất `txr/txb/exm` — **bug trùng
+  `field[:3]`="tax" đã diệt** (xác minh: một node có cả rate+base giờ ra `txr0`+`txb0`,
+  không còn cùng `tax0`).
+- **`schema.py`**: docstring thêm 3 node + 3 cạnh. Không thêm CONSTRAINT (theo đúng pattern
+  hiện tại — các label entity cũ cũng không có).
+- Subject (APPLIES_TO): gắn cho `exemptions` (đúng, hữu ích), **bỏ** cho `tax_rates/tax_base`
+  (thuế suất/căn cứ tính thuế không áp cho chủ thể cụ thể) — giữ APPLIES_TO sạch.
+
+## Một bug thứ 2 mình phát hiện thêm khi verify
+`load_processed()` (đường `__main__`) **chưa bao giờ nạp entity** — nó chỉ nạp nếu entity
+**nhúng** trong file văn bản (`doc["entities"]`), mà bên mình để entity ở **file riêng**
+`entities_<doc_id>.json`. Nên nạp qua `python -m backend.graph.loader` chỉ ra node khung,
+mất sạch nghĩa vụ/quyền/chủ thể/thuế. **Đã sửa**: `load_processed()` giờ tự tìm file
+entity kèm theo. (Trước đây mình nạp bằng script riêng nên không lộ ra.)
+
+## Kết quả verify (dữ liệu thật, sau `--wipe`)
+- Node thuế: **TaxRate 46 / TaxBase 46 / Exemption 43** — khớp chính xác con số Nguyên báo.
+- Node demo ngưỡng 500tr: **có** cạnh Exemption đúng câu.
+- Toàn entity lên đủ: Obligation 816, Subject 203, Deadline 188, Right 105, Prohibition 62, Penalty 43.
+- `pytest tests/test_graph.py`: **26/26 xanh**.
+
+## ⚠️ 1 chỉnh nhỏ cho query kiểm tra ở mục 6
+Node demo `tncn2025-d7-k1` là **Khoản (`clause_id`)**, không phải Điểm — id `d7-k1` không có
+chữ cái Điểm. Query `MATCH (p {point_id:"tncn2025-d7-k1"})` sẽ ra **rỗng dù dữ liệu đúng**.
+Dùng:
+```cypher
+MATCH (n {clause_id:"tncn2025-d7-k1"})-[:HAS_EXEMPTION]->(e) RETURN e.text
+```
+
+Chốt: phần graph đã ăn khớp với schema + data mới. Push lên main sau. — Linh

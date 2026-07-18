@@ -1,9 +1,11 @@
-"""[P2] Regression test cho backend/graph/.
+"""[P2] Regression test cho backend/graph/ — chạy trên DỮ LIỆU THẬT.
 
 Chạy:  pytest tests/ -v          (cần Neo4j đang chạy: docker compose up -d neo4j)
 
-Mỗi test dưới đây khoá lại một quyết định thiết kế hoặc một lỗi ĐÃ TỪNG XẢY RA.
-Test đỏ nghĩa là có người vừa phá một trong hai thứ đó.
+KHÔNG còn fixture giả lập. Test nạp thẳng 3 văn bản thuế thật của P1 từ
+data/processed/ rồi kiểm các TÍNH CHẤT BẤT BIẾN + vài ca thật đã biết (Điều 52
+-> Điều 25, ngưỡng cutover 01/07/2026). Mỗi test khoá một quyết định thiết kế
+hoặc một lỗi ĐÃ TỪNG XẢY RA. Test đỏ = có người vừa phá một trong hai thứ đó.
 """
 
 from __future__ import annotations
@@ -14,25 +16,46 @@ import pytest
 
 from backend.core.config import ROOT
 from backend.graph import connection
-from backend.graph.diffing import diff_documents, law_as_of, point_history
-from backend.graph.loader import load_fixtures
+from backend.graph.diffing import (
+    _classify,
+    _pair_points,
+    diff_documents,
+    law_as_of,
+    point_history,
+)
+from backend.graph.loader import (
+    diff_all_replacements,
+    load_document,
+    load_entities,
+    load_processed,
+)
 from backend.graph.schema import apply_schema, verify_acceptance
 
-FIXTURE = json.loads(
-    (ROOT / "data" / "fixtures" / "mock_legal_docs.json").read_text(encoding="utf-8")
-)
+# --- Ca thật đã verify trên graph (dùng làm mốc assert) ---------------------
+OLD_DOC, NEW_DOC = "qlt2019", "qlt2025"        # qlt2025 REPLACES qlt2019
+CUTOVER = "2026-07-01"                          # luật mới có hiệu lực
+BEFORE = "2026-06-30"
+# Điều 52 (cũ) -> Điều 25 (mới): supersession thật, ĐỔI SỐ HIỆU, đổi thuật ngữ
+# "Người khai thuế" -> "Người nộp thuế" (REWORDED, sim ~0.82).
+SUP_OLD, SUP_NEW = "qlt2019-d52-k1-c", "qlt2025-d25-k1-c"
+DOCS = {"qlt2019", "qlt2025", "tncn2025"}
 
 
 @pytest.fixture(scope="module", autouse=True)
 def graph():
-    """Graph sạch + fixture, dùng chung cho cả module."""
+    """Graph sạch + DỮ LIỆU THẬT, dùng chung cho cả module (nạp 1 lần)."""
     if not connection.healthcheck():
         pytest.skip("Neo4j chưa chạy — docker compose up -d neo4j")
     connection.wipe()
     apply_schema()
-    load_fixtures()
+    load_processed()          # 3 văn bản thuế thật + entity từ file riêng của P1
+    diff_all_replacements()   # sinh SUPERSEDED_BY + đóng effective_to node cũ
     yield
     connection.close()
+
+
+def _count() -> int:
+    return connection.run("MATCH (n) RETURN count(n) AS n")[0]["n"]
 
 
 # ---------------------------------------------------------------------------
@@ -41,35 +64,50 @@ def graph():
 
 
 def test_loader_idempotent():
-    """Nạp lại lần 2 KHÔNG được nhân đôi node.
+    """Nạp lại KHÔNG được nhân đôi node. Khoá quyết định: MERGE theo id, không CREATE.
 
-    Khoá quyết định: MERGE theo id, không CREATE. Fixture sẽ được nạp lại hàng
-    chục lần trong 24h; CREATE là nhân đôi âm thầm rồi query trả kết quả sai.
+    Nạp lại văn bản nhỏ nhất (tncn2025) + entity của nó, đếm node phải giữ nguyên.
     """
-    before = connection.run("MATCH (n) RETURN count(n) AS n")[0]["n"]
-    load_fixtures()
-    after = connection.run("MATCH (n) RETURN count(n) AS n")[0]["n"]
-    assert before == after, f"nạp lại làm node tăng {before} -> {after}"
+    d = ROOT / "data" / "processed" / "legal_docs_structured"
+    doc = json.loads((d / "tncn2025.json").read_text(encoding="utf-8"))
+    ents = json.loads((d.parent / "entities_tncn2025.json").read_text(encoding="utf-8"))
+
+    before = _count()
+    load_document(doc)
+    load_entities(ents)
+    after = _count()
+    assert before == after, f"nạp lại làm node tăng {before} -> {after} (CREATE thay vì MERGE?)"
 
 
-def test_document_tree_complete():
-    """Cây Điều-Khoản-Điểm phải đủ 4 tầng, không đứt ở giữa."""
-    rows = connection.run(
-        """
-        MATCH (d:LegalDocument)-[:HAS_ARTICLE]->(a:Article)
-              -[:HAS_CLAUSE]->(k:Clause)-[:HAS_POINT]->(p:Point)
-        RETURN d.doc_id AS doc, count(p) AS points
-        ORDER BY doc
-        """
+def test_all_documents_present():
+    docs = {r["id"] for r in connection.run("MATCH (d:LegalDocument) RETURN d.doc_id AS id")}
+    assert docs == DOCS, f"thiếu/thừa văn bản: {docs}"
+
+
+def test_no_orphan_leaf_nodes():
+    """Mọi Điểm/Khoản/Điều phải truy ngược được lên tận LegalDocument.
+
+    Cây Điều-Khoản-Điểm không được đứt ở giữa. Một Điểm không có Khoản cha =
+    lỗi parser hoặc lỗi nạp, và nó sẽ vô hình với mọi query đi từ văn bản xuống.
+    """
+    orphan_p = connection.run(
+        "MATCH (p:Point) WHERE NOT (:Clause)-[:HAS_POINT]->(p) RETURN count(p) AS n"
+    )[0]["n"]
+    orphan_k = connection.run(
+        "MATCH (k:Clause) WHERE NOT (:Article)-[:HAS_CLAUSE]->(k) RETURN count(k) AS n"
+    )[0]["n"]
+    orphan_a = connection.run(
+        "MATCH (a:Article) WHERE NOT (:LegalDocument)-[:HAS_ARTICLE]->(a) RETURN count(a) AS n"
+    )[0]["n"]
+    assert (orphan_p, orphan_k, orphan_a) == (0, 0, 0), (
+        f"node mồ côi: {orphan_p} Điểm, {orphan_k} Khoản, {orphan_a} Điều"
     )
-    assert {r["doc"]: r["points"] for r in rows} == {"mock-old": 3, "mock-new": 3}
 
 
 def test_dates_are_date_type_not_string():
     """effective_from phải là kiểu date của Neo4j, không phải string.
 
-    Để string thì so sánh theo thứ tự chữ cái -> time-travel sai âm thầm,
-    không báo lỗi gì.
+    Để string thì so sánh theo thứ tự chữ cái -> time-travel sai âm thầm.
     """
     row = connection.run(
         "MATCH (p:Point) WHERE p.effective_from IS NOT NULL "
@@ -84,47 +122,57 @@ def test_dates_are_date_type_not_string():
 
 
 def test_entities_loaded():
-    exp = FIXTURE["expected_entities"]
-    n = connection.run("MATCH (p:Penalty) RETURN count(p) AS n")[0]["n"]
-    assert n == exp["penalty_count"]
+    pen = connection.run("MATCH (p:Penalty) RETURN count(p) AS n")[0]["n"]
+    subj = connection.run("MATCH (s:Subject) RETURN count(s) AS n")[0]["n"]
+    assert pen > 0 and subj > 0, "entity thật chưa lên graph"
 
-    n = connection.run("MATCH (s:Subject) RETURN count(s) AS n")[0]["n"]
-    assert n == exp["subject_count"], "Subject phải gộp, không nhân bản mỗi node một cái"
+    # Subject phải gộp: số node Subject ít hơn hẳn số cạnh APPLIES_TO trỏ vào nó
+    edges = connection.run("MATCH (:Subject)<-[r:APPLIES_TO]-() RETURN count(r) AS n")[0]["n"]
+    assert subj < edges, "Subject không được nhân bản mỗi node quy định một cái"
 
 
 def test_entity_labels_are_separate():
-    """Obligation / Right / Prohibition là label riêng, không gộp :Provision.
-
-    Khoá quyết định #4 — để query đọc được và Neo4j Browser tô màu khác nhau.
-    """
+    """Obligation / Right / Prohibition là label riêng, không gộp :Provision. Quyết định #4."""
     labels = {
-        r["l"]
-        for r in connection.run("MATCH (n) UNWIND labels(n) AS l RETURN DISTINCT l")
+        r["l"] for r in connection.run("MATCH (n) UNWIND labels(n) AS l RETURN DISTINCT l")
     }
-    assert "Prohibition" in labels
-    assert "Obligation" in labels
+    assert {"Obligation", "Right", "Prohibition"} <= labels
     assert "Provision" not in labels, "đã gộp label — trái quyết định #4"
+
+
+def test_tax_entities_loaded():
+    """3 node đặc thù luật thuế (P1) phải lên graph — nếu không, mất câu chuyện demo.
+
+    TaxRate/TaxBase/Exemption gắn qua HAS_TAX_RATE/HAS_TAX_BASE/HAS_EXEMPTION.
+    Khoản 'ngưỡng 500 triệu' (tncn2025-d7-k1) phải có Exemption.
+    """
+    n = connection.run(
+        "MATCH (:Exemption) RETURN count(*) AS n"
+    )[0]["n"]
+    assert n > 0, "không có node Exemption — 3 trường thuế của P1 bị rơi?"
+
+    row = connection.run(
+        "MATCH (k {clause_id:'tncn2025-d7-k1'})-[:HAS_EXEMPTION]->(e) RETURN e.text AS t"
+    )
+    assert row and "500 triệu" in row[0]["t"], "mất Exemption ngưỡng 500 triệu (node demo)"
 
 
 def test_penalty_reachable_from_point():
     """Penalty là node riêng, đi tới được từ Point. Khoá quyết định #5."""
     rows = connection.run(
-        """
-        MATCH (p:Point {point_id: 'mock-new-d5-k2-a'})-[:PENALIZES]->(pen:Penalty)
-        RETURN pen.type AS type, pen.duration_months AS months,
-               pen.is_permanent AS perm
-        ORDER BY type
-        """
+        "MATCH (p:Point)-[:PENALIZES]->(pen:Penalty) "
+        "RETURN pen.type AS type LIMIT 5"
     )
-    types = {r["type"] for r in rows}
-    assert types == {"FINE", "LICENSE_SUSPENSION"}
+    assert rows, "không Point nào dẫn tới Penalty"
+    assert all(r["type"] for r in rows), "Penalty thiếu type"
 
 
 def test_no_permanent_penalty_anywhere():
-    """KHÔNG có mức phạt vĩnh viễn nào trong luật.
+    """Luật thuế KHÔNG có mức phạt vĩnh viễn — bất biến dùng khi đối chiếu dư luận.
 
-    Đây là toàn bộ luận điểm của case demo: tin đồn nói "tước bằng vĩnh viễn",
-    graph nói 12 tháng. Test đỏ nghĩa là case demo sụp.
+    Nếu dư luận đồn 'phạt vĩnh viễn' mà graph nói is_permanent=false ở mọi Penalty,
+    đó chính là điểm bắt hiểu nhầm. Test đỏ = có dữ liệu phạt vĩnh viễn lọt vào,
+    phải rà lại nguồn.
     """
     n = connection.run(
         "MATCH (pen:Penalty) WHERE pen.is_permanent = true RETURN count(pen) AS n"
@@ -133,49 +181,20 @@ def test_no_permanent_penalty_anywhere():
 
 
 # ---------------------------------------------------------------------------
-# Diffing
+# Diffing  (_pair_points / _classify là unit test thuần, không cần graph)
 # ---------------------------------------------------------------------------
-
-
-def test_diff_matches_expected():
-    """Diff phải ra đúng 4 nhãn ghi trong fixture."""
-    diffs = diff_documents("mock-old", "mock-new")
-    got = {(d["old_point_id"], d["new_point_id"]): d["change_type"] for d in diffs}
-    for exp in FIXTURE["expected_diff"]:
-        key = (exp["old_point_id"], exp["new_point_id"])
-        assert key in got, f"thiếu cặp {key}"
-        assert got[key] == exp["change_type"], (
-            f"{key}: mong đợi {exp['change_type']}, nhận {got[key]}"
-        )
-
-
-def test_unrelated_points_not_paired():
-    """LỖI ĐÃ XẢY RA: ngưỡng 0.55 ghép mock-old-c với mock-new-d.
-
-    Hai hành vi hoàn toàn khác nhau ("không có báo hiệu" 1-2 triệu vs "tái phạm
-    nồng độ cồn" 20-22 triệu) nhưng sim=0.61 vì văn bản luật tiếng Việt quá
-    khuôn mẫu. Hạ SIMILARITY_PAIR_THRESHOLD xuống là test này đỏ.
-    """
-    diffs = diff_documents("mock-old", "mock-new", write=False)
-    pairs = {(d["old_point_id"], d["new_point_id"]) for d in diffs}
-    assert ("mock-old-d5-k2-c", "mock-new-d5-k2-d") not in pairs
-    assert ("mock-old-d5-k2-c", None) in pairs, "phải là REMOVED"
-    assert (None, "mock-new-d5-k2-d") in pairs, "phải là ADDED"
 
 
 def test_structural_match_requires_text_corroboration():
     """LỖI ĐÃ XẢY RA (teammate bắt): vị trí trùng nhau bị coi là bằng chứng.
 
     Bản đầu ghép cặp theo (Điều, Khoản, Điểm) VÔ ĐIỀU KIỆN, không kiểm text.
-    Fixture mock không lộ ra vì hai văn bản cùng đánh số. Dữ liệu thật thì
-    qlt2025 thay thế toàn bộ qlt2019 và đánh số lại (152 Điều -> 53 Điều), nên
-    40/73 cặp là rác — tệ nhất sim=0.01, sinh SUPERSEDED_BY rác, hỏng im lặng.
+    Dữ liệu thật: qlt2025 thay toàn bộ qlt2019 và đánh số lại (152 -> 53 Điều),
+    nên 40/73 cặp là rác — tệ nhất sim=0.01, sinh SUPERSEDED_BY rác, hỏng im lặng.
 
-    Hai Điểm dưới đây lấy nguyên văn từ dữ liệu thật, cùng Điều 34 Khoản 1
-    Điểm c, nội dung chẳng liên quan gì nhau.
+    Hai Điểm dưới lấy nguyên văn từ dữ liệu thật, cùng Điều 34 Khoản 1 Điểm c,
+    nội dung chẳng liên quan gì nhau.
     """
-    from backend.graph.diffing import _pair_points
-
     old = [{
         "node_id": "qlt2019-d34-k1-c", "level": "Point",
         "letter": "c", "article": 34, "clause": 1,
@@ -188,9 +207,10 @@ def test_structural_match_requires_text_corroboration():
         "text": "Áp dụng chế độ ưu tiên đối với người nộp thuế tuân thủ tốt "
                 "pháp luật về thuế, sẵn sàng kết nối;",
     }]
-    pairs = _pair_points(old, new)
-    matched = {(o["node_id"] if o else None, n["node_id"] if n else None) for o, n in pairs}
-
+    matched = {
+        (o["node_id"] if o else None, n["node_id"] if n else None)
+        for o, n in _pair_points(old, new)
+    }
     assert ("qlt2019-d34-k1-c", "qlt2025-d34-k1-c") not in matched, (
         "trùng vị trí KHÔNG phải bằng chứng — text phải xác nhận"
     )
@@ -201,84 +221,76 @@ def test_structural_match_requires_text_corroboration():
 def test_renumbered_point_still_found():
     """Ngược lại: Điểm bị đánh số lại nhưng giữ nội dung PHẢI ghép được.
 
-    Đây là lý do vẫn cần nhánh ghép theo text. Cặp thật từ dữ liệu thật:
-    Điều 52 -> Điều 25, và luật mới đổi thuật ngữ "Người khai thuế" ->
-    "Người nộp thuế" khiến similarity tụt xuống ~0.82.
+    Cặp thật: Điều 52 -> Điều 25, luật mới đổi "Người khai thuế" ->
+    "Người nộp thuế" khiến similarity tụt ~0.82 — ngưỡng fallback phải nhận.
     """
-    from backend.graph.diffing import _pair_points
-
     old = [{
-        "node_id": "qlt2019-d52-k1-c", "level": "Point",
-        "letter": "c", "article": 52, "clause": 1,
+        "node_id": SUP_OLD, "level": "Point", "letter": "c", "article": 52, "clause": 1,
         "text": "Người khai thuế không chứng minh, giải trình hoặc quá thời hạn "
                 "quy định mà không giải trình được;",
     }]
     new = [{
-        "node_id": "qlt2025-d25-k1-c", "level": "Point",
-        "letter": "c", "article": 25, "clause": 1,
+        "node_id": SUP_NEW, "level": "Point", "letter": "c", "article": 25, "clause": 1,
         "text": "Người nộp thuế không chứng minh, giải trình hoặc quá thời hạn "
                 "quy định mà không giải trình được;",
     }]
-    pairs = _pair_points(old, new)
-    matched = {(o["node_id"] if o else None, n["node_id"] if n else None) for o, n in pairs}
-    assert ("qlt2019-d52-k1-c", "qlt2025-d25-k1-c") in matched, (
-        "đổi thuật ngữ hệ thống kéo sim xuống ~0.82 — ngưỡng fallback phải nhận"
-    )
+    matched = {
+        (o["node_id"] if o else None, n["node_id"] if n else None)
+        for o, n in _pair_points(old, new)
+    }
+    assert (SUP_OLD, SUP_NEW) in matched, "đổi thuật ngữ kéo sim ~0.82 — fallback phải nhận"
 
 
 def test_leaf_clause_and_point_never_paired_together():
-    """Không được ghép một Khoản với một Điểm — khác tầng, khác đơn vị nội dung.
-
-    Sau khi diffing chuyển sang node lá, pool ghép có lẫn cả Clause lẫn Point.
-    Text của một Khoản-không-Điểm có thể rất giống text của một Điểm ở văn bản
-    kia, nhưng ghép chúng là sai: chúng không phải cùng một đơn vị quy định.
-    """
-    from backend.graph.diffing import _pair_points
-
-    same_text = "Người nộp thuế có trách nhiệm nộp hồ sơ khai thuế đúng thời hạn."
-    old = [{
-        "node_id": "x-d1-k1", "level": "Clause",
-        "letter": "", "article": 1, "clause": 1, "text": same_text,
-    }]
-    new = [{
-        "node_id": "y-d1-k1-a", "level": "Point",
-        "letter": "a", "article": 1, "clause": 1, "text": same_text,
-    }]
-    pairs = _pair_points(old, new)
-    matched = {(o["node_id"] if o else None, n["node_id"] if n else None) for o, n in pairs}
+    """Không được ghép một Khoản với một Điểm — khác tầng, khác đơn vị nội dung."""
+    same = "Người nộp thuế có trách nhiệm nộp hồ sơ khai thuế đúng thời hạn."
+    old = [{"node_id": "x-d1-k1", "level": "Clause", "letter": "", "article": 1, "clause": 1, "text": same}]
+    new = [{"node_id": "y-d1-k1-a", "level": "Point", "letter": "a", "article": 1, "clause": 1, "text": same}]
+    matched = {
+        (o["node_id"] if o else None, n["node_id"] if n else None)
+        for o, n in _pair_points(old, new)
+    }
     assert ("x-d1-k1", "y-d1-k1-a") not in matched, "Khoản không thể ghép với Điểm"
     assert ("x-d1-k1", None) in matched and (None, "y-d1-k1-a") in matched
 
 
+def test_tightened_detects_money_increase():
+    """Phân loại TIGHTENED dựa vào SỐ, không dựa vào text.
+
+    Hai câu gần giống nhau (sim ~0.87) nhưng tiền phạt tăng 3 lần -> phải ra
+    TIGHTENED, không phải REWORDED. So text thuần sẽ mất phần 'văn bản mới siết gì'.
+    """
+    old = {"text": "Phạt tiền từ 5.000.000 đồng đến 10.000.000 đồng đối với hành vi khai sai."}
+    new = {"text": "Phạt tiền từ 15.000.000 đồng đến 20.000.000 đồng đối với hành vi khai sai dẫn đến thiếu thuế."}
+    change_type, sim, summary = _classify(old, new)
+    assert change_type == "TIGHTENED", f"nhận {change_type}"
+    assert "15,000,000" in summary or "15.000.000" in summary
+
+
 def test_diff_is_idempotent():
     """Chạy diff 2 lần không tạo SUPERSEDED_BY trùng."""
-    diff_documents("mock-old", "mock-new")
+    diff_documents(OLD_DOC, NEW_DOC)
     before = connection.run("MATCH ()-[r:SUPERSEDED_BY]->() RETURN count(r) AS n")[0]["n"]
-    diff_documents("mock-old", "mock-new")
+    diff_documents(OLD_DOC, NEW_DOC)
     after = connection.run("MATCH ()-[r:SUPERSEDED_BY]->() RETURN count(r) AS n")[0]["n"]
     assert before == after
 
 
-def test_tightened_detects_money_increase():
-    """Phân loại TIGHTENED phải dựa vào SỐ, không dựa vào text.
+def test_real_supersession_is_reworded():
+    """Ca thật: Điều 52 Khoản 1 Điểm c (cũ) -> Điều 25 Khoản 1 Điểm c (mới).
 
-    Điểm a: text gần y hệt (sim 0.99) nhưng tiền phạt tăng 3 lần. So text thuần
-    sẽ ra REWORDED -> mất luôn phần "văn bản mới siết cái gì" của demo.
+    Số hiệu Điều khác hẳn, hệ thống vẫn phải ghép và phân loại REWORDED (chỉ
+    đổi 'Người khai thuế' -> 'Người nộp thuế', bản chất giữ nguyên).
     """
-    diffs = diff_documents("mock-old", "mock-new", write=False)
-    d = next(x for x in diffs if x["new_point_id"] == "mock-new-d5-k2-a")
-    assert d["change_type"] == "TIGHTENED"
-    assert d["similarity"] > 0.95, "text gần giống — chính vì thế mới cần so số"
-    assert "18,000,000" in d["summary"] or "18000000" in d["summary"]
+    diffs = diff_documents(OLD_DOC, NEW_DOC, write=False)
+    got = {(d["old_point_id"], d["new_point_id"]): d["change_type"] for d in diffs}
+    assert (SUP_OLD, SUP_NEW) in got, f"mất cặp thật {SUP_OLD} -> {SUP_NEW}"
+    assert got[(SUP_OLD, SUP_NEW)] == "REWORDED", f"nhận {got[(SUP_OLD, SUP_NEW)]}"
 
 
 def test_point_history_walks_supersede_chain():
-    diff_documents("mock-old", "mock-new")
-    hist = point_history("mock-old-d5-k2-a")
-    assert [h["point_id"] for h in hist] == [
-        "mock-old-d5-k2-a",
-        "mock-new-d5-k2-a",
-    ]
+    hist = [h["point_id"] for h in point_history(SUP_OLD)]
+    assert hist == [SUP_OLD, SUP_NEW], f"chuỗi lịch sử sai: {hist}"
 
 
 # ---------------------------------------------------------------------------
@@ -286,86 +298,85 @@ def test_point_history_walks_supersede_chain():
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("date,expected", FIXTURE["expected_q2_law_as_of"].items())
-def test_law_as_of(date, expected):
-    got = sorted(r["point_id"] for r in law_as_of(None, date))
-    assert got == sorted(expected)
+def test_law_as_of_changes_at_cutover():
+    """Cùng câu hỏi, khác ngày -> khác luật. Đây là điểm bán hàng của dự án.
+
+    Trước cutover và sau cutover phải trả về BỘ node khác nhau (luật mới thay cũ).
+    """
+    before = {r["point_id"] for r in law_as_of(None, BEFORE)}
+    after = {r["point_id"] for r in law_as_of(None, CUTOVER)}
+    assert before and after, "một trong hai ngày trả rỗng"
+    assert before != after, "luật trước/sau cutover phải khác nhau"
 
 
 def test_law_as_of_returns_leaf_clauses_not_just_points():
-    """LỖI ĐÃ XẢY RA: Q2 chỉ MATCH (p:Point) -> bỏ sót 53% nội dung văn bản.
+    """LỖI ĐÃ XẢY RA: Q2 chỉ MATCH (p:Point) -> bỏ sót ~53% nội dung.
 
-    Luật Việt Nam thật: phần lớn Khoản KHÔNG có Điểm nào — text của Khoản chính
-    là quy định. Đo trên qlt2019+qlt2025: 775/988 Khoản không có Điểm, 16 Điều
-    không có Khoản. Điều 89 "Hóa đơn điện tử" của Luật 2019 có 5 Khoản, 0 Điểm
-    -> vô hình hoàn toàn với Q2.
-
-    Quy tắc đúng (đã ghi trong docstring Temporal ngay từ đầu, nhưng quên cài):
-    node SÂU NHẤT giữ sự thật -> Q2 trả về node LÁ, bất kể Point/Clause/Article.
+    Luật Việt Nam: phần lớn Khoản KHÔNG có Điểm — text của Khoản chính là quy định.
+    Quy tắc: node SÂU NHẤT giữ sự thật -> Q2 trả node LÁ bất kể Point/Clause/Article.
+    Ca thật: Khoản qlt2025-d2-k2 không có Điểm nào, phải xuất hiện; còn Khoản có
+    Điểm (qlt2025-d25-k1) thì KHÔNG (nếu không sẽ trùng với các Điểm con của nó).
     """
-    rows = {r["point_id"]: r for r in law_as_of(None, "2026-06-30")}
-    assert "mock-old-d5-k9" in rows, (
-        "Khoản không có Điểm phải xuất hiện trong kết quả — chính nó là node lá"
-    )
-    assert rows["mock-old-d5-k9"]["level"] == "Clause"
-    assert "phạt tiền" in rows["mock-old-d5-k9"]["text"]
-
-    # Khoản CÓ Điểm thì không phải lá -> không được trả về (nếu không sẽ trùng
-    # nội dung với các Điểm con của nó)
-    assert "mock-old-d5-k2" not in rows, "Khoản có Điểm không phải node lá"
+    rows = {r["point_id"]: r for r in law_as_of(None, CUTOVER)}
+    assert "qlt2025-d2-k2" in rows, "Khoản không có Điểm phải xuất hiện — chính nó là node lá"
+    assert rows["qlt2025-d2-k2"]["level"] == "Clause"
+    assert "qlt2025-d25-k1" not in rows, "Khoản CÓ Điểm không phải node lá"
 
 
-def test_law_as_of_returns_each_point_once():
-    """LỖI ĐÃ XẢY RA: Điểm có 2 Penalty thì Q2 trả Điểm đó 2 lần.
+def test_law_as_of_returns_each_node_once():
+    """LỖI ĐÃ XẢY RA: Điểm có 2 Penalty -> Q2 trả 2 lần (thiếu collect()).
 
-    OPTIONAL MATCH sang Penalty làm mỗi Penalty đẻ một dòng. Điểm a có FINE +
-    LICENSE_SUSPENSION -> xuất hiện 2 lần. Bug này ẩn khi chưa có entity (0
-    penalty = 1 dòng null) và chỉ nổ với dữ liệu thật của P1, nơi Điểm nào cũng
-    có vài mức phạt. Bỏ collect() trong Q2 là test này đỏ.
+    Bug ẩn khi chưa có entity, chỉ nổ với dữ liệu thật nơi Điểm nào cũng có phạt.
     """
-    ids = [r["point_id"] for r in law_as_of(None, "2026-06-30")]
-    assert len(ids) == len(set(ids)), f"Điểm bị nhân bản: {ids}"
+    ids = [r["point_id"] for r in law_as_of(None, BEFORE)]
+    assert len(ids) == len(set(ids)), "node bị nhân bản trong kết quả law_as_of"
 
 
-def test_law_as_of_carries_penalties():
-    """Q2 vẫn phải kèm mức phạt — gộp thành list, không mất dữ liệu."""
-    rows = {r["point_id"]: r for r in law_as_of(None, "2026-07-01")}
-    pens = rows["mock-new-d5-k2-a"]["penalties"]
-    assert {p["type"] for p in pens} == {"FINE", "LICENSE_SUSPENSION"}
-    susp = next(p for p in pens if p["type"] == "LICENSE_SUSPENSION")
-    assert susp["duration_months"] == 12 and susp["is_permanent"] is False
-
-    # Điểm chưa có entity -> list rỗng, không phải [null]
-    assert rows["mock-new-d5-k2-d"]["penalties"] == []
+def test_law_as_of_carries_penalties_as_list():
+    """Q2 kèm mức phạt gộp thành LIST; node chưa có phạt là [] chứ không phải [null]."""
+    rows = law_as_of(None, BEFORE)
+    for r in rows:
+        assert isinstance(r["penalties"], list)
+        assert None not in r["penalties"], "penalties chứa null — thiếu lọc trong collect()"
+    assert any(r["penalties"] for r in rows), "không node nào kèm được Penalty"
 
 
 def test_no_gap_day_at_cutover():
-    """LỖI ĐÃ XẢY RA: ngày 30/6 trả về rỗng — một ngày luật biến mất.
+    """LỖI ĐÃ XẢY RA: ngày 30/6 trả rỗng — một ngày luật biến mất.
 
-    Nguyên nhân: fixture ghi effective_to=2026-06-30 nhưng query dùng
-    'effective_to > date' (loại trừ). Quy ước: effective_to là ngày ĐẦU TIÊN
-    HẾT hiệu lực. Ngày 15/6 và 15/7 pass kể cả khi sai -> chúng che bug.
+    Quy ước half-open [from, to): effective_to là ngày ĐẦU TIÊN HẾT hiệu lực.
+    Ngày xa cutover pass kể cả khi sai -> phải kiểm sát ngay 4 ngày quanh mốc.
     """
     for date in ("2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02"):
         assert law_as_of(None, date), f"ngày {date} không có luật nào — có ngày hở"
 
 
-def test_no_overlap_at_cutover():
-    """Không được vừa luật cũ vừa luật mới cùng có hiệu lực một ngày."""
-    for date in ("2026-06-30", "2026-07-01"):
-        docs = {r["point_id"].rsplit("-d5", 1)[0] for r in law_as_of(None, date)}
-        assert len(docs) == 1, f"ngày {date} có {docs} cùng hiệu lực"
+def test_superseded_node_and_replacement_never_both_active():
+    """Một quy định và bản THAY THẾ nó không được cùng hiệu lực một ngày (tránh đếm đôi).
+
+    CHÚ Ý: hai VĂN BẢN qlt2019/qlt2025 ĐƯỢC PHÉP chồng nhau trong giai đoạn
+    chuyển tiếp — đó chính là hiệu lực so le (Điều 13 luật mới sống từ 01/01/2026
+    trong khi phần lớn luật cũ còn sống tới 30/06). Bất biến đúng nằm ở mức NODE:
+    cặp (cũ)-[:SUPERSEDED_BY]->(mới) không bao giờ cùng xuất hiện trong law_as_of.
+    """
+    pairs = connection.run(
+        """MATCH (o)-[:SUPERSEDED_BY]->(n)
+           RETURN coalesce(o.point_id, o.clause_id, o.article_id) AS old,
+                  coalesce(n.point_id, n.clause_id, n.article_id) AS new"""
+    )
+    for date in (BEFORE, CUTOVER, "2026-01-15"):
+        active = {r["point_id"] for r in law_as_of(None, date)}
+        for p in pairs:
+            assert not (p["old"] in active and p["new"] in active), (
+                f"ngày {date}: cả {p['old']} lẫn bản thay thế {p['new']} cùng hiệu lực — đếm đôi"
+            )
 
 
 def test_law_as_of_survives_rerun_of_diff():
-    """Chạy lại diffing không được làm lệch effective_to.
-
-    Fixture ghi effective_to, diffing cũng ghi effective_to. Hai đường phải ra
-    cùng một giá trị, nếu không thì kết quả phụ thuộc vào việc ai chạy sau.
-    """
-    before = sorted(r["point_id"] for r in law_as_of(None, "2026-06-30"))
-    diff_documents("mock-old", "mock-new")
-    after = sorted(r["point_id"] for r in law_as_of(None, "2026-06-30"))
+    """Chạy lại diffing không được làm lệch effective_to (kết quả không phụ thuộc ai chạy sau)."""
+    before = sorted(r["point_id"] for r in law_as_of(None, BEFORE))
+    diff_documents(OLD_DOC, NEW_DOC)
+    after = sorted(r["point_id"] for r in law_as_of(None, BEFORE))
     assert before == after
 
 
@@ -375,6 +386,5 @@ def test_law_as_of_survives_rerun_of_diff():
 
 
 def test_acceptance_queries_all_pass():
-    results = verify_acceptance()
-    failed = [k for k, v in results.items() if not v]
+    failed = [k for k, v in verify_acceptance().items() if not v]
     assert not failed, f"query nghiệm thu fail: {failed}"

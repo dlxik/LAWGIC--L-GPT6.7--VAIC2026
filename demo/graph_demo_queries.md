@@ -1,11 +1,7 @@
 # Query demo cho Neo4j Browser (P2 — đã verify trên dữ liệu THẬT)
 
-> ⚠️ **Lưu ý quan trọng cho cả team:** file `demo_script.md` hiện viết quanh
-> luật **giao thông** (Nghị định 168, node `nd168-*`, "uống bia bị tước bằng").
-> Graph nạp thật lại là luật **thuế** (`qlt2019`, `qlt2025`, `tncn2025`). Bấm
-> đúng theo `demo_script.md` sẽ ra **rỗng** trên sân khấu. Các query dưới đây
-> thay thế, dùng đúng dữ liệu đang có. Câu chuyện "hiểu nhầm" (P3) và node
-> dashboard (P4) cũng cần đổi theo — cả team chốt lại narrative.
+> Đề tài đã chốt: **luật thuế** (`qlt2019`, `qlt2025`, `tncn2025`). Mọi query
+> dưới đây chạy trên đúng dữ liệu đang có trong graph.
 
 Mở `http://localhost:7474`. Mỗi query dưới trả **8–40 node**, hình vừa mắt.
 KHÔNG bấm "hiện tất cả" (3.979 node → treo Browser, thành một búi vô nghĩa).

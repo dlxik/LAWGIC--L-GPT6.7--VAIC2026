@@ -52,7 +52,7 @@ Bình luận ────> classifier ──> linker ──┘     (P2)      (P4
 | `frontend/static/` | dashboard 1 trang, 2 tab | P4 |
 | `eval/` | đo độ chính xác trên gold set | P3 |
 | `prompts/` | prompt LLM dùng trong pipeline | P1, P3 |
-| `demo/` | kịch bản demo + case mẫu nồng độ cồn | P4 |
+| `demo/` | query demo Neo4j + chú giải graph + case mẫu ngưỡng thuế | P2/P4 |
 
 ## Dữ liệu demo
 

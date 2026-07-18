@@ -503,38 +503,6 @@ def diff_all_replacements() -> None:
         print(f"  {p['old']} -> {p['new']}: {paired} cặp ghép được | {dict(c)}")
 
 
-def load_fixtures(fixtures_dir: Path | None = None) -> None:
-    """Nạp data/fixtures/*.json — CHỈ dùng cho tests/, không dùng cho pipeline.
-
-    Mock giữ lại vì nó có đáp án viết sẵn để làm regression test. Pipeline và
-    demo dùng load_processed() với dữ liệu thật của P1.
-    """
-    from backend.core.config import ROOT
-
-    d = fixtures_dir or ROOT / "data" / "fixtures"
-
-    legal = json.loads((d / "mock_legal_docs.json").read_text(encoding="utf-8"))
-    for doc in legal["documents"]:
-        load_document(doc)
-        print(f"  nạp văn bản {doc['doc_id']}")
-
-    # entity giả lập output extractor.py của P1 — giờ 8 thay bằng đồ thật
-    if legal.get("entities"):
-        load_entities(legal["entities"])
-        print(f"  nạp entity cho {len(legal['entities'])} node")
-
-    posts = json.loads((d / "mock_posts.json").read_text(encoding="utf-8"))
-    claims_by_post: dict[str, list[dict]] = {}
-    for c in posts.get("claims", []):
-        claims_by_post.setdefault(c["post_id"], []).append(c)
-    for post in posts["posts"]:
-        load_post(post, claims_by_post.get(post["post_id"], []))
-    print(f"  nạp {len(posts['posts'])} post, {len(posts.get('claims', []))} claim")
-
-    load_misconceptions(posts.get("misconceptions", []))
-    print(f"  nạp {len(posts.get('misconceptions', []))} misconception")
-
-
 def _normalize(text: str) -> str:
     return text.strip().lower().replace(" ", "_")
 
@@ -561,7 +529,7 @@ if __name__ == "__main__":
     diff_all_replacements()
 
     if "--verify" in sys.argv:
-        print("nghiệm thu (chạy trên fixture mock, cần --wipe trước):")
+        print("nghiệm thu (chạy trên dữ liệu thật vừa nạp):")
         print_acceptance()
 
     print("xong")

@@ -303,6 +303,46 @@ def _have_api_key() -> bool:
     return bool(s.llm_api_key or os.environ.get("LLM_API_KEY"))
 
 
+class SearchHit(BaseModel):
+    node_id: str
+    node_label: str
+    display: str
+    text: str
+    effective_from: str | None = None
+    effective_to: str | None = None
+    score: float | None = None
+
+
+class SearchResponseOut(BaseModel):
+    query: str
+    as_of_date: str | None = None
+    total: int
+    results: list[SearchHit]
+    source: str  # "neo4j" | "mock"
+
+
+@router.get("/search", response_model=SearchResponseOut)
+def search(
+    q: str,
+    as_of_date: str | None = None,
+    limit: int = 20,
+) -> SearchResponseOut:
+    """Tra cuu dieu luat (khong goi LLM). Dung chung retrieval logic voi /qa.
+
+    Guest ben frontend gioi han limit; backend khong quan tam ai goi — cap ket
+    qua boi limit tham so.
+    """
+    limit = max(1, min(limit, 50))
+    hits = _retrieve(q, as_of_date)
+    return SearchResponseOut(
+        query=q,
+        as_of_date=as_of_date,
+        total=len(hits),
+        results=[SearchHit(**h) for h in hits[:limit]],
+        source=get_source(),
+    )
+
+
 @router.post("/qa", response_model=QAResponseOut)
 def qa(req: QARequest) -> QAResponseOut:
     hits = _retrieve(req.question, req.as_of_date)

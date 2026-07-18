@@ -12,7 +12,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from backend.api import dashboard_endpoint, documents_endpoint, qa_endpoint
+from backend.api import dashboard_endpoint, documents_endpoint, qa_endpoint, ratelimit
 from backend.api.graph_source import get_source
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,6 +26,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Rate limit theo IP truoc khi router dispatch — chan curl bypass client-side quota
+app.middleware("http")(ratelimit.middleware)
 
 app.include_router(qa_endpoint.router)
 app.include_router(dashboard_endpoint.router)

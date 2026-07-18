@@ -28,22 +28,31 @@ router = APIRouter(tags=["dashboard"])
 
 
 def _stats_from_neo4j() -> dict | None:
-    """1 lot Cypher tra ve counts tong quan. None neu Neo4j sap."""
+    """Counts tong quan qua CALL{} de moi count doc lap.
+
+    LOI CU (Wave 4 audit): chuoi OPTIONAL MATCH... WITH...OPTIONAL MATCH... tao
+    cartesian product o buoc cuoi, sum(mp.engagement) bi nhan len n_miscs lan.
+    Sua: moi count trong 1 CALL{} rieng, gop lai o RETURN — Neo4j 5 hoat dong
+    dung y muon voi CALL{} subquery.
+    """
     try:
         from backend.graph.connection import run  # noqa: WPS433
         rows = run(
             """
-            OPTIONAL MATCH (d:LegalDocument)   WITH count(d) AS docs
-            OPTIONAL MATCH (a:Article)         WITH docs, count(a) AS articles
-            OPTIONAL MATCH (k:Clause)          WITH docs, articles, count(k) AS clauses
-            OPTIONAL MATCH (p:Point)           WITH docs, articles, clauses, count(p) AS points
-            OPTIONAL MATCH ()-[s:SUPERSEDED_BY]->()  WITH docs, articles, clauses, points, count(s) AS supersedes
-            OPTIONAL MATCH (po:Post)           WITH docs, articles, clauses, points, supersedes, count(po) AS posts
-            OPTIONAL MATCH (cl:Claim)          WITH docs, articles, clauses, points, supersedes, posts, count(cl) AS claims
-            OPTIONAL MATCH (m:Misconception)   WITH docs, articles, clauses, points, supersedes, posts, claims, count(m) AS miscs
-            OPTIONAL MATCH (mp:Post)-[:CONTAINS_CLAIM]->(:Claim)-[:INSTANCE_OF]->(:Misconception)
-            RETURN docs, articles, clauses, points, supersedes, posts, claims, miscs,
-                   coalesce(sum(mp.engagement), 0) AS total_engagement
+            CALL { MATCH (d:LegalDocument) RETURN count(d) AS docs }
+            CALL { MATCH (a:Article)       RETURN count(a) AS articles }
+            CALL { MATCH (k:Clause)        RETURN count(k) AS clauses }
+            CALL { MATCH (p:Point)         RETURN count(p) AS points }
+            CALL { MATCH ()-[s:SUPERSEDED_BY]->() RETURN count(s) AS supersedes }
+            CALL { MATCH (po:Post)         RETURN count(po) AS posts }
+            CALL { MATCH (cl:Claim)        RETURN count(cl) AS claims }
+            CALL { MATCH (m:Misconception) RETURN count(m) AS miscs }
+            CALL {
+                MATCH (mp:Post)-[:CONTAINS_CLAIM]->(:Claim)-[:INSTANCE_OF]->(:Misconception)
+                RETURN coalesce(sum(mp.engagement), 0) AS total_engagement
+            }
+            RETURN docs, articles, clauses, points, supersedes,
+                   posts, claims, miscs, total_engagement
             """,
         )
         if not rows:
@@ -235,8 +244,8 @@ def document_diff(doc_id: str) -> dict:
                 doc = dict(doc_rows[0]["d"])
                 diff_rows = run(
                     """
-                    MATCH (d:LegalDocument {doc_id:$id})-[:HAS_ARTICLE*1..3]->(n)-[s:SUPERSEDED_BY]->(newn)
-                    OPTIONAL MATCH (newd:LegalDocument)-[:HAS_ARTICLE*1..3]->(newn)
+                    MATCH (d:LegalDocument {doc_id:$id})-[:HAS_ARTICLE|HAS_CLAUSE|HAS_POINT*1..3]->(n)-[s:SUPERSEDED_BY]->(newn)
+                    OPTIONAL MATCH (newd:LegalDocument)-[:HAS_ARTICLE|HAS_CLAUSE|HAS_POINT*1..3]->(newn)
                     WITH n, newn, s, d, newd
                     RETURN
                       coalesce(n.point_id, n.clause_id, n.article_id) AS old_point_id,

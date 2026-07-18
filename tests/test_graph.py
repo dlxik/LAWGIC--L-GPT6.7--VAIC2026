@@ -25,9 +25,17 @@ FIXTURE = json.loads(
 
 @pytest.fixture(scope="module", autouse=True)
 def graph():
-    """Graph sạch + fixture, dùng chung cho cả module."""
+    """Graph sạch + fixture, dùng chung cho cả module.
+
+    CHỐT AN TOÀN: module này gọi wipe() = XÓA SẠCH graph đang kết nối. Nếu chạy
+    `pytest` bình thường mà NEO4J_URI trỏ vào graph THẬT -> mất data. Bắt buộc opt-in
+    ALLOW_WIPE=1 mới chạy; mặc định SKIP để bảo vệ graph production/demo.
+    """
+    import os
     if not connection.healthcheck():
         pytest.skip("Neo4j chưa chạy — docker compose up -d neo4j")
+    if os.environ.get("ALLOW_WIPE") not in ("1", "true", "True"):
+        pytest.skip("test_graph XÓA SẠCH graph — đặt ALLOW_WIPE=1 để chạy (chống xóa nhầm graph thật)")
     connection.wipe()
     apply_schema()
     load_fixtures()

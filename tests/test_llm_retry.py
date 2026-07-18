@@ -205,6 +205,9 @@ def test_sdk_internal_retry_disabled(monkeypatch):
         return real_openai(*args, **kwargs)
 
     monkeypatch.setattr(llm, "OpenAI", spy)
+    llm._client.cache_clear()  # _client la singleton (lru_cache) -> xoa cache de spy chay
     llm._client()
+    llm._client.cache_clear()  # don cache de khong ro ri client-spy sang test khac
 
     assert captured.get("max_retries") == 0  # khong de SDK retry chong len retry cua ta
+    assert captured.get("timeout") is not None  # co timeout -> khong treo vo han

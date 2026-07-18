@@ -12,12 +12,21 @@ Lifespan:
 
 from __future__ import annotations
 
+import logging
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+
+# Logging có cấu trúc (thay print rải rác): mức đọc từ env LOG_LEVEL, có timestamp +
+# tên module + level -> lọc/tắt được retry-noise, ship structured log lên tập trung.
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
 
 from backend.api import (
     dashboard_endpoint,

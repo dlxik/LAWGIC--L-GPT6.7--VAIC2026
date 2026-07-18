@@ -1,0 +1,15 @@
+# Cau hinh test + lint cho CI. Khong dung build system (chay truc tiep tu source).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+# test_graph.py XOA graph -> chi chay khi ALLOW_WIPE=1 (chong xoa nham graph that).
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = [".venv", "data", "frontend", "eval/results"]
+
+[tool.ruff.lint]
+# Bo qua cac quy tac gay on ao cho codebase khong-build (import trong ham co chu dich).
+ignore = ["E402", "E501"]

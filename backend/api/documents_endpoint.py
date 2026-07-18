@@ -13,6 +13,8 @@ moi doi sang MinIO/S3.
 
 from __future__ import annotations
 
+import logging
+
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
@@ -21,6 +23,9 @@ from fastapi.responses import FileResponse
 from backend.api import mock_data
 from backend.api.graph_source import get_source
 from backend.core.config import get_settings
+
+log = logging.getLogger(__name__)
+
 
 router = APIRouter(tags=["documents"])
 
@@ -57,7 +62,7 @@ def _list_from_neo4j() -> list[dict] | None:
         )
         return [dict(r) for r in rows]
     except Exception as e:  # driver down, timeout, ...
-        print(f"[documents] Neo4j query fail ({e.__class__.__name__}: {e})")
+        log.warning(f"[documents] Neo4j query fail ({e.__class__.__name__}: {e})")
         return None
 
 

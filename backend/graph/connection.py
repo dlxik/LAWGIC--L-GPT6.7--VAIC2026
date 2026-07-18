@@ -6,6 +6,7 @@ Mọi module đi qua đây, không ai tự tạo driver riêng.
 from __future__ import annotations
 
 import atexit
+import os
 from typing import Any
 
 from neo4j import Driver, GraphDatabase
@@ -13,6 +14,14 @@ from neo4j import Driver, GraphDatabase
 from backend.core.config import get_settings
 
 _driver: Driver | None = None
+
+# Timeout transaction (giay): mot query Neo4j treo se giu 1 worker threadpool cua API
+# vo han -> chan bang transaction timeout. Doc tu env de tinh chinh.
+def _query_timeout() -> float:
+    try:
+        return float(os.environ.get("NEO4J_QUERY_TIMEOUT", "30"))
+    except (TypeError, ValueError):
+        return 30.0
 
 
 def get_driver() -> Driver:
@@ -37,9 +46,16 @@ def close() -> None:
 
 
 def run(cypher: str, **params: Any) -> list[dict]:
-    """Query đọc. Trả list dict."""
+    """Query đọc. Explicit transaction có TIMEOUT (chống query Neo4j treo giữ worker).
+
+    Managed tx (execute_read) không nhận timeout ở driver 5.x -> dùng begin_transaction
+    với timeout. Đọc không cần auto-retry deadlock nên đánh đổi này hợp lý.
+    """
     with get_driver().session() as session:
-        return [record.data() for record in session.run(cypher, **params)]
+        with session.begin_transaction(timeout=_query_timeout()) as tx:
+            data = [record.data() for record in tx.run(cypher, **params)]
+            tx.commit()
+            return data
 
 
 def write(cypher: str, **params: Any) -> list[dict]:
@@ -75,5 +91,15 @@ def healthcheck() -> bool:
 
 
 def wipe() -> None:
-    """Xoá sạch graph. CHỈ dùng lúc dev để nạp lại fixture."""
+    """Xoá sạch graph. CHỐT AN TOÀN: chỉ chạy khi ALLOW_WIPE=1.
+
+    `MATCH (n) DETACH DELETE n` là thao tác huỷ diệt. Nếu NEO4J_URI vô tình trỏ vào
+    graph THẬT (vd chạy pytest/loader nhầm), một lần gọi là mất sạch. Bắt buộc đặt
+    env ALLOW_WIPE=1 để xác nhận có chủ đích. Loader CLI `--wipe` tự đặt biến này.
+    """
+    if os.environ.get("ALLOW_WIPE") not in ("1", "true", "True"):
+        raise RuntimeError(
+            "wipe() bị chặn: đặt ALLOW_WIPE=1 để xác nhận xoá sạch graph "
+            "(chốt chống chạy pytest/loader nhầm lên Neo4j thật)."
+        )
     write("MATCH (n) DETACH DELETE n")

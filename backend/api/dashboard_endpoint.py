@@ -12,12 +12,17 @@ Cypher va tra ve so lieu that. TODO cu da xoa.
 
 from __future__ import annotations
 
+import logging
+
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException
 
 from backend.api import mock_data
 from backend.api.graph_source import get_source
+
+log = logging.getLogger(__name__)
+
 
 router = APIRouter(tags=["dashboard"])
 
@@ -72,7 +77,7 @@ def _stats_from_neo4j() -> dict | None:
             "mode": "neo4j",
         }
     except Exception as e:
-        print(f"[stats] Neo4j fail ({e.__class__.__name__}: {e})")
+        log.warning(f"[stats] Neo4j fail ({e.__class__.__name__}: {e})")
         return None
 
 
@@ -122,7 +127,7 @@ def _trends_from_neo4j() -> list[dict] | None:
         )
         return [dict(r) for r in rows]
     except Exception as e:
-        print(f"[trends] Neo4j fail ({e.__class__.__name__}: {e})")
+        log.warning(f"[trends] Neo4j fail ({e.__class__.__name__}: {e})")
         return None
 
 
@@ -176,7 +181,7 @@ def _misconception_detail_from_neo4j(misc_id: str) -> dict | None:
             "posts": posts_rows,
         }
     except Exception as e:
-        print(f"[misc-detail] Neo4j fail ({e.__class__.__name__}: {e})")
+        log.warning(f"[misc-detail] Neo4j fail ({e.__class__.__name__}: {e})")
         return None
 
 
@@ -207,7 +212,7 @@ def _rescore_via_p3(items: list[dict]) -> list[dict]:
     try:
         alerts = detect_trends(items, as_of=None)
     except Exception as e:
-        print(f"[trends] detect_trends fail ({e.__class__.__name__}: {e}) -> fallback")
+        log.warning(f"[trends] detect_trends fail ({e.__class__.__name__}: {e}) -> fallback")
         return items
     # detect_trends bo misconception vao key nested; giu shape phang cho frontend
     merged = []
@@ -297,7 +302,7 @@ def document_diff(doc_id: str) -> dict:
                 )
                 return {"document": doc, "diffs": diff_rows}
         except Exception as e:
-            print(f"[diff] Neo4j fail ({e.__class__.__name__}: {e}) -> mock fallback")
+            log.warning(f"[diff] Neo4j fail ({e.__class__.__name__}: {e}) -> mock fallback")
 
     # Mock path
     if doc_id not in mock_data.DOCUMENTS:

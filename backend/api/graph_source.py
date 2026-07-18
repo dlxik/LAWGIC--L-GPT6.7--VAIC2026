@@ -9,7 +9,10 @@ De nghiem thu bang tay:
 
 from __future__ import annotations
 
+import logging
 import time
+
+log = logging.getLogger(__name__)
 
 _probe_cache: tuple[float, str] | None = None
 _PROBE_TTL = 5.0  # tranh mo lai driver moi request khi debug
@@ -32,7 +35,7 @@ def get_source() -> str:
     except NotImplementedError:
         source = "mock"
     except Exception as e:  # driver mat ket noi, chua co container, ...
-        print(f"[graph_source] Neo4j probe failed ({e.__class__.__name__}) -> mock")
+        log.warning(f"[graph_source] Neo4j probe failed ({e.__class__.__name__}) -> mock")
         source = "mock"
 
     _probe_cache = (now, source)

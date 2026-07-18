@@ -311,10 +311,15 @@ cp .env.example .env
 docker compose up
 ```
 
-### 4. Load the graph once
+### 4. Load the graph once (legal **and** social)
 ```bash
+# 4a. Legal graph: articles/clauses/points + entities + SUPERSEDED_BY diffing
 docker compose exec api python -m backend.graph.loader --wipe
+# 4b. Social layer: posts / claims / misconceptions (REQUIRED for the "Misinformation
+#     alerts" tab — the legal loader alone does NOT load discourse data)
+docker compose exec api python scripts/load_social_to_neo4j.py
 ```
+> ⚠️ Skipping 4b leaves the "Misinformation alerts" tab empty. Both loaders are idempotent.
 
 ### 5. Open the dashboard
 ```bash

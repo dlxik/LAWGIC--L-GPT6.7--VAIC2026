@@ -25,9 +25,11 @@ BAY DA TRA GIA:
 
 from __future__ import annotations
 
+import logging
 import random
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import lru_cache
 from pathlib import Path
 from typing import Sequence, TypeVar
 
@@ -41,6 +43,8 @@ from openai import (
 from pydantic import BaseModel, ValidationError
 
 from backend.core.config import get_settings
+
+log = logging.getLogger(__name__)
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -79,14 +83,30 @@ PARSE_RETRIES = 2
 _RETRY_TEMPERATURE = 0.3
 
 
+# Timeout MOI request (giay): chan call FPT treo vo han. Endpoint /qa la sync def chay
+# trong threadpool bi gioi han (~40) cua Starlette -> mot vai call treo se lam CAN KIET
+# threadpool va sap CA API (health, static, dashboard). APITimeoutError nam trong
+# _RETRYABLE nen timeout duoc coi la loi TAM THOI -> retry. Doc tu env de tinh chinh.
+def _request_timeout() -> float:
+    import os
+    try:
+        return float(os.environ.get("LLM_TIMEOUT", "60"))
+    except (TypeError, ValueError):
+        return 60.0
+
+
+@lru_cache(maxsize=1)
 def _client() -> OpenAI:
     settings = get_settings()
-    # max_retries=0: TAT retry ngam cua SDK. Ta tu retry o _create_with_retry de
-    # kiem soat backoff, jitter, va LOG duoc — khong de hai lop retry chong len nhau.
+    # SINGLETON (lru_cache): tao 1 lan roi tai dung -> GIU connection pool cua httpx.
+    # Truoc day tao OpenAI() moi moi call -> moi call bat tay TCP/TLS lai, duoi tai cao
+    # (BATCH_WORKERS=8 + /qa dong thoi) gay chan cong/tre. Test doi client thi cache_clear().
+    # max_retries=0: TAT retry ngam cua SDK. Ta tu retry o _create_with_retry.
     return OpenAI(
         api_key=settings.llm_api_key,
         base_url=settings.llm_base_url,
         max_retries=0,
+        timeout=_request_timeout(),  # chan treo vo han
     )
 
 
@@ -130,9 +150,9 @@ def _with_retry(call, *, op: str = "api"):
                 delay = min(server_hint, RETRY_MAX_DELAY)  # uu tien server bao
             else:
                 delay = random.uniform(0, capped)  # full jitter: 8 luong khong retry cung nhip
-            print(
-                f"[llm.retry:{op}] {type(exc).__name__} (thu {attempt + 1}/{MAX_RETRIES}) "
-                f"-> cho {delay:.1f}s"
+            log.warning(
+                "retry:%s %s (thu %d/%d) -> cho %.1fs",
+                op, type(exc).__name__, attempt + 1, MAX_RETRIES, delay,
             )
             time.sleep(delay)
     assert last_exc is not None  # vao _RETRYABLE it nhat 1 lan moi toi day
@@ -246,7 +266,7 @@ def extract_samples(
             try:
                 out.append(future.result())
             except Exception as exc:  # noqa: BLE001 - 1 mau hong khong giet ca vote
-                print(f"[extract_samples] bo 1 mau: {type(exc).__name__}: {exc}")
+                log.warning("extract_samples bo 1 mau: %s: %s", type(exc).__name__, exc)
     return out
 
 
@@ -291,7 +311,7 @@ def extract_batch(
             try:
                 out[custom_id] = future.result().model_dump()
             except Exception as exc:  # noqa: BLE001 - 1 item hong khong duoc giet ca batch
-                print(f"[extract_batch] {custom_id} -> {type(exc).__name__}: {exc}")
+                log.warning("extract_batch %s -> %s: %s", custom_id, type(exc).__name__, exc)
     return out
 
 

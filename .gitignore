@@ -46,8 +46,11 @@ data/processed/legal_docs_structured/*
 
 !data/**/.gitkeep
 
-# P3 scratch (chẩn đoán eval — không vào git). law_embeddings.npz cũng bị loại
-# bởi data/processed/* ở trên, sinh lại bằng embeddings.build_cache().
+# Cache embedding: COMMIT bản chuẩn (7.4MB) để fresh clone chạy Q&A ngay, không phải
+# rebuild qua FPT (chậm, cần API key) và tránh "mỗi máy embed ra vector khác".
+!data/processed/law_embeddings.npz
+
+# P3 scratch (chẩn đoán eval — không vào git).
 eval/_diag*.py
 eval/_diag*.txt
 eval/_diag_cache.json

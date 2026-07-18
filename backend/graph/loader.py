@@ -548,6 +548,8 @@ if __name__ == "__main__":
     from backend.graph.schema import apply_schema, print_acceptance
 
     if "--wipe" in sys.argv:
+        import os
+        os.environ["ALLOW_WIPE"] = "1"  # cờ --wipe rõ ràng = người dùng xác nhận
         print("wipe graph...")
         connection.wipe()
 

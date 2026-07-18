@@ -22,6 +22,8 @@ Output: list[Citation] (schemas.py). node_id PHẢI khớp node có thật — L
 
 from __future__ import annotations
 
+import logging
+
 import os
 import re
 import sys
@@ -31,6 +33,9 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from backend.core import llm
+
+log = logging.getLogger(__name__)
+
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.show_law import load_nodes  # noqa: E402
@@ -218,7 +223,7 @@ def _hybrid_retrieve(claim_text: str, k: int) -> list[str]:
         from backend.discourse import embeddings
         semantic = embeddings.retrieve(claim_text, k)
     except Exception as exc:  # noqa: BLE001 — retrieval phải sống sót khi embedding hỏng
-        print(f"  ! embedding lỗi, lùi về TF-IDF: {exc}")
+        log.warning(f"  ! embedding lỗi, lùi về TF-IDF: {exc}")
         return tfidf
     # Xen kẽ để cả hai nguồn đều có mặt ở đầu danh sách (ảnh hưởng _family_expand).
     merged: list[str] = []

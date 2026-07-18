@@ -479,6 +479,9 @@ async function renderSubgraph(nodeId) {
     cy.zoom(1); cy.pan({ x: 0, y: 0 });
   };
 
+  // Huỷ instance cũ trước khi tạo mới -> tránh rò cytoscape + canvas mồ côi tích lại
+  // qua mỗi lần hỏi (mỗi câu hỏi vẽ lại graph). Không destroy = leak bộ nhớ theo phiên.
+  if (cy) { try { cy.destroy(); } catch (_) {} cy = null; }
   cy = cytoscape({ container: cyBox, elements: cyElements(data), style: CY_STYLE });
   cy.resize();
   runLayout();

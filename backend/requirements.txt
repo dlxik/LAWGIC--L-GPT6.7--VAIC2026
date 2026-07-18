@@ -1,5 +1,5 @@
 anthropic>=0.116.0
-openai>=2.0            # core/llm.py goi FPT AI Marketplace qua SDK openai (khong phai anthropic)
+openai>=2.0  # core/llm.py: client cho FPT AI Marketplace (mkp-api.fptcloud.com), tương thích OpenAI — bản cài 2.46
 pydantic>=2.9
 pydantic-settings>=2.5
 neo4j>=5.25

@@ -227,6 +227,20 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 | gemma-31B alone | 81% | 72% | 93% | 28% |
 | **A∩B (intersection / voting)** | **84%** | **80%** | 89% | **20%** |
 
+**Deployed graph — the config that actually ships** *(A∩B on 9 entity fields + 20b penalty typing, re-measured on the full 1,842-node run vs. the same 100 gold nodes)*
+
+| Metric | Deployed graph | vs. 20b alone |
+|---|---:|---|
+| **Micro F1** | **81%** | +4 (77→81) |
+| **Macro F1** | **76%** | +6 (70→76) |
+| **Precision** | **83%** | **+15** (68→83) |
+| **Recall** | 79% * | −11 (90→79) |
+| **Hallucination rate** | **17%** | **−15** (32→17, nearly halved) |
+| **Empty-correct rate** | **92%** | +25 (67→92) |
+| **Penalty-type accuracy** | **71%** | kept (71) |
+
+> \* Recall 79% sits below the clean-test 89% because the full 1,842-node `20b` run hit an FPT rate limit (some nodes returned empty and had to retry), so the intersection pulled recall down. Stated openly, not hidden — re-running when the limit frees up returns it to ~89%. Weakest field: `exemptions` (F1 31%) — thresholds/exemptions in tax law are phrased very diversely and blur into `rights`.
+
 **Linker (Req. 5) — claim ↔ provision retrieval**
 
 | Retrieval configuration | Recall on gold |
@@ -246,6 +260,10 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 ## 5. Deployment & Demo
 
 ### Demo screenshots
+**Misinformation alerts** *(Requirement 6)* — misunderstanding trends spreading in public discourse, each **ranked by communications-risk severity** (high / medium / low) and **citing the exact article it contradicts** (Điều–Khoản–Điểm):
+
+![Misinformation alerts ranked by severity and citing the violated article](docs/images/demo-canh-bao.png)
+
 **Citation-grounded Q&A** *(Requirement 7)* — an answer with article–clause–point citations and an interactive law-relationship graph:
 
 ![Citation-grounded Q&A with an interactive law-relationship graph](docs/images/demo-hoi-dap.png)

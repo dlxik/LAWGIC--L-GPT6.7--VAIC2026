@@ -159,17 +159,40 @@ def stats() -> dict:
     return mock_data.mock_stats()
 
 
+def _rescore_via_p3(items: list[dict]) -> list[dict]:
+    """Neu P3's detect_trends co san, dung no de tinh lai velocity + severity.
+
+    Feature-flagged. Neu import fail hoac ham crash, tra lai items nguyen ban.
+    Frontend van doc severity/velocity/correction — trai nghiem khong doi.
+    """
+    try:
+        from backend.discourse.misinformation import detect_trends  # noqa: WPS433
+    except ImportError:
+        return items
+    try:
+        alerts = detect_trends(items, as_of=None)
+    except Exception as e:
+        print(f"[trends] detect_trends fail ({e.__class__.__name__}: {e}) -> fallback")
+        return items
+    # detect_trends bo misconception vao key nested; giu shape phang cho frontend
+    merged = []
+    for a in alerts:
+        m = a.get("misconception", {})
+        merged.append({**m, "velocity": a.get("velocity", 0), "severity": a.get("severity", "LOW"),
+                       "correction": a.get("correction", m.get("correction", ""))})
+    return merged or items
+
+
 @router.get("/trends")
 def trends() -> list[dict]:
     """Sap xep theo severity roi velocity giam dan."""
     if get_source() == "neo4j":
         real = _trends_from_neo4j()
-        if real is not None:
-            items = real
-        else:
-            items = list(mock_data.MISCONCEPTIONS)
+        items = real if real is not None else list(mock_data.MISCONCEPTIONS)
     else:
         items = list(mock_data.MISCONCEPTIONS)
+
+    items = _rescore_via_p3(items)
 
     sev_rank = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
     items.sort(key=lambda m: (sev_rank.get(m.get("severity"), 3), -m.get("velocity", 0)))

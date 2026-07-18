@@ -510,7 +510,7 @@ function renderAuth() {
     const roleLabel = a.role === "admin" ? "Quản trị" : "Người dùng";
     widget.innerHTML = `
       <div class="auth-user">
-        <div class="auth-avatar">${escapeHtml(a.email[0].toUpperCase())}</div>
+        <div class="auth-avatar">${escapeHtml((a.email && a.email[0] || "?").toUpperCase())}</div>
         <div class="auth-info">
           <div class="auth-email">${escapeHtml(a.email)}</div>
           <div class="auth-role ${a.role}">${roleLabel}</div>

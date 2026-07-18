@@ -148,8 +148,52 @@ def _display(row: dict) -> str:
     return " ".join(parts) if parts else row["node_id"]
 
 
+def _retrieve_via_linker(question: str) -> list[dict] | None:
+    """Try P3's hybrid retriever (TF-IDF + embeddings + SUPERSEDED_BY expansion).
+
+    Feature-flagged qua ImportError: chi kick in khi hien branch merge vao main.
+    P3 tu do gold: TF-IDF 63% -> hybrid 86% recall. Neu import failed hoac ham
+    nem loi thi tra None, caller fallback ve _retrieve local.
+    """
+    try:
+        from backend.discourse.linker import link_claim  # noqa: WPS433
+    except ImportError:
+        return None
+    try:
+        hits = link_claim(question, topic="")
+    except Exception as e:
+        print(f"[qa] linker.link_claim fail ({e.__class__.__name__}: {e}) -> fallback")
+        return None
+    # link_claim tra list[Citation dict], khong co effective_from/to. Chuan hoa
+    # ve cung shape voi mock/neo4j retrieval.
+    out = []
+    for h in hits:
+        out.append({
+            "node_id": h["node_id"],
+            "node_label": h.get("node_label", ""),
+            "text": h.get("text", ""),
+            "display": h.get("display", ""),
+            "effective_from": None,
+            "effective_to": None,
+            "score": h.get("confidence"),
+        })
+    return out
+
+
 def _retrieve(question: str, as_of_date: str | None) -> list[dict]:
-    """Tra list ung vien leaf-node (Point/Clause/Article). Da loc theo as_of_date."""
+    """Tra list ung vien leaf-node (Point/Clause/Article). Da loc theo as_of_date.
+
+    Retriever hierarchy:
+      1. P3's linker.link_claim (khi hien branch da merge) — smartest
+      2. Neo4j fulltext (khi graph live) — mid
+      3. Mock keyword lookup — offline fallback
+    """
+    # (1) P3's linker
+    via_p3 = _retrieve_via_linker(question)
+    if via_p3 is not None:
+        return via_p3
+
+    # (2) Neo4j fulltext
     if get_source() != "neo4j":
         return _retrieve_mock(question, as_of_date)
 

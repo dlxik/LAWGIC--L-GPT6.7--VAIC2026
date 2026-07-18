@@ -58,7 +58,7 @@ $$(".sidebar-nav button").forEach((btn) => {
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     $$("main > section").forEach((s) => { s.hidden = s.id !== tab; });
-    if (tab === "diff" && !diffLoaded) loadDiff("qlt2025");
+    if (tab === "diff" && !diffLoaded && role() !== "guest") loadDiff("qlt2025");
   });
 });
 
@@ -110,11 +110,12 @@ async function loadTrends() {
 
 function cardHtml(m) {
   const per24 = (m.velocity * 24).toFixed(0);
+  const sev = ["HIGH", "MEDIUM", "LOW"].includes(m.severity) ? m.severity : "MEDIUM";
   return `
     <article class="card" data-id="${escapeHtml(m.misconception_id)}">
       <div class="title-row">
         <div class="canonical">"${escapeHtml(m.canonical_text)}"</div>
-        <div class="sev ${escapeHtml(m.severity)}">${escapeHtml(m.severity)}</div>
+        <div class="sev ${sev}">${sev}</div>
       </div>
       <div class="meta">
         <span><b>${fmtNum(m.count)}</b> lần lặp</span>
@@ -212,8 +213,16 @@ const $qaDate   = $("#qa-date");
 
 $qaForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  askQuestion($qaInput.value.trim(), $qaDate.value || null);
+  withBusy($qaForm, () => askQuestion($qaInput.value.trim(), $qaDate.value || null));
 });
+
+async function withBusy(form, fn) {
+  const btn = form.querySelector("button[type=submit]");
+  if (!btn || btn.disabled) return;  // dang chay -> bo qua click thu 2
+  btn.disabled = true;
+  try { await fn(); }
+  finally { btn.disabled = false; }
+}
 
 $$(".qa-samples button").forEach((b) => {
   b.addEventListener("click", () => {
@@ -242,6 +251,7 @@ async function askQuestion(question, asOfDate) {
   if (role() === "guest") {
     asOfDate = null;  // guest khong duoc dung date filter
     guestAskCount++;
+    writeGuestAskCount(guestAskCount);
     renderGuestQuota();
   }
 
@@ -261,8 +271,11 @@ async function askQuestion(question, asOfDate) {
 function renderAnswer(r) {
   const cites = (r.citations || []).map(citationHtml).join("")
     || `<div class="loading">Không có trích dẫn.</div>`;
+  // Chi cho phep mode trong whitelist -> vua chan XSS vua tranh CSS class rac
+  const modeRaw = String(r.mode || "").toLowerCase();
+  const mode = ["llm", "template", "refused"].includes(modeRaw) ? modeRaw : "template";
   $qaAnswer.innerHTML = `
-    <h4>Câu trả lời <span class="mode ${r.mode}">${r.mode.toUpperCase()}</span></h4>
+    <h4>Câu trả lời <span class="mode ${mode}">${mode.toUpperCase()}</span></h4>
     <div class="body">${escapeHtml(r.answer)}</div>
     <h4>Trích dẫn Điều &mdash; Khoản &mdash; Điểm
       ${r.confidence != null ? `<span style="text-transform:none;color:var(--ink-dim)"> — độ tin cậy ${(r.confidence*100).toFixed(0)}%</span>` : ""}
@@ -282,7 +295,7 @@ const $searchResults = $("#search-results");
 
 $searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  runSearch($searchInput.value.trim(), $searchDate.value || null);
+  withBusy($searchForm, () => runSearch($searchInput.value.trim(), $searchDate.value || null));
 });
 
 async function runSearch(q, asOf) {
@@ -322,8 +335,26 @@ function renderSearchResults(r, isGuest) {
   $searchResults.innerHTML = r.results.map(resultHtml).join("");
 }
 
+function docIdFromNodeId(nodeId) {
+  // "qlt2025-d25-k1-a" -> "qlt2025"; empty if malformed
+  const idx = nodeId.indexOf("-");
+  return idx > 0 ? nodeId.slice(0, idx) : "";
+}
+
+function downloadLinkHtml(nodeId) {
+  const doc = docIdFromNodeId(nodeId);
+  if (!doc) return "";
+  return `
+    <a class="doc-download" href="${API}/documents/${encodeURIComponent(doc)}/file" download title="Tải văn bản gốc (.docx)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+      Tải văn bản gốc
+    </a>
+  `;
+}
+
 function resultHtml(h) {
-  const isExpired = h.effective_to && h.effective_to <= "2026-07-18";
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const isExpired = h.effective_to && h.effective_to <= todayISO;
   const badge = isExpired
     ? `<span class="result-badge expired">Hết hiệu lực</span>`
     : `<span class="result-badge active">Đang hiệu lực</span>`;
@@ -341,8 +372,11 @@ function resultHtml(h) {
       </div>
       <div class="result-body">${escapeHtml(h.text)}</div>
       <div class="result-foot">
-        <code>${escapeHtml(h.node_id)}</code>
-        <span>${range}</span>
+        <div class="result-foot-left">
+          <code>${escapeHtml(h.node_id)}</code>
+          <span>${range}</span>
+        </div>
+        ${downloadLinkHtml(h.node_id)}
       </div>
     </article>
   `;
@@ -387,8 +421,19 @@ function diffHtml(d) {
 // ---------- auth (fake, client-side) ----------
 
 const AUTH_KEY = "lawgic-auth";
+const GUEST_QUOTA_KEY = "lawgic-guest-asks";
 const GUEST_QUOTA = 5;
-let guestAskCount = 0;
+
+function readGuestAskCount() {
+  try {
+    const n = parseInt(localStorage.getItem(GUEST_QUOTA_KEY) || "0", 10);
+    return Number.isFinite(n) && n >= 0 ? n : 0;
+  } catch { return 0; }
+}
+function writeGuestAskCount(n) {
+  try { localStorage.setItem(GUEST_QUOTA_KEY, String(n)); } catch {}
+}
+let guestAskCount = readGuestAskCount();
 
 function currentAuth() {
   try { return JSON.parse(localStorage.getItem(AUTH_KEY) || "null"); }
@@ -457,12 +502,14 @@ function applyRoleGates() {
   const r = role();
   document.body.dataset.role = r;
 
-  // Diff tab: guest -> locked, khac -> mo
+  // Diff tab: guest -> locked, khac -> mo. Neu vua sign-in va dang o diff -> load
   const lock = $("#diff-lock");
   const diffList = $("#diff-list");
   if (lock && diffList) {
     lock.hidden = r !== "guest";
     diffList.style.display = r === "guest" ? "none" : "";
+    const diffTabOpen = document.querySelector("#diff") && !document.querySelector("#diff").hidden;
+    if (r !== "guest" && diffTabOpen && !diffLoaded) loadDiff("qlt2025");
   }
 
   // Guest khong duoc dung date filter -> disable input
@@ -474,8 +521,24 @@ function applyRoleGates() {
   });
 }
 
-function openModal() { $("#signin-modal").hidden = false; }
-function closeModal() { $("#signin-modal").hidden = true; }
+let _modalReturnFocus = null;
+function openModal() {
+  const m = $("#signin-modal");
+  if (!m.hidden) return;
+  _modalReturnFocus = document.activeElement;
+  m.hidden = false;
+  // Focus vao email ngay khi modal hien -- setTimeout de sau reflow
+  setTimeout(() => $("#signin-email")?.focus(), 0);
+}
+function closeModal() {
+  const m = $("#signin-modal");
+  if (m.hidden) return;
+  m.hidden = true;
+  if (_modalReturnFocus && typeof _modalReturnFocus.focus === "function") {
+    _modalReturnFocus.focus();
+    _modalReturnFocus = null;
+  }
+}
 
 $$("#signin-modal [data-close]").forEach(el => el.addEventListener("click", closeModal));
 $("#signin-form").addEventListener("submit", (e) => {
@@ -486,6 +549,7 @@ $("#signin-form").addEventListener("submit", (e) => {
     closeModal();
     $("#signin-form").reset();
     guestAskCount = 0;
+    writeGuestAskCount(0);
   }
 });
 document.addEventListener("keydown", (e) => {

@@ -12,6 +12,7 @@ graph. Format tra ra khop 1-1 voi schemas.py + P2's graph_legend.md.
 
 from __future__ import annotations
 
+import unicodedata
 from datetime import datetime, timezone
 
 # ---------- Corpus luat mock ----------
@@ -257,12 +258,24 @@ _KEYWORD_INDEX: list[tuple[list[str], list[str]]] = [
 ]
 
 
+def _fold(s: str) -> str:
+    """ASCII-fold + lowercase. 'Ngưỡng 500 triệu' -> 'nguong 500 trieu'.
+
+    Neo4j full-text co san Vietnamese analyzer nen path that khong can. Mock
+    path chi la keyword lookup, phai fold ca 2 phia nguoc lai giong nhau —
+    khong fold thi 'triệu' khong khop 'trieu' -> 0 hit im lang.
+    """
+    nfkd = unicodedata.normalize("NFKD", s.lower())
+    ascii_str = "".join(c for c in nfkd if not unicodedata.combining(c))
+    return ascii_str.replace("đ", "d").replace("Đ", "d")
+
+
 def mock_retrieve(question: str) -> list[dict]:
     """Tra list node ung vien cho cau hoi. Rat don gian, du de demo."""
-    q = question.lower()
+    q = _fold(question)
     hits: list[str] = []
     for kws, node_ids in _KEYWORD_INDEX:
-        if any(kw in q for kw in kws):
+        if any(_fold(kw) in q for kw in kws):
             for nid in node_ids:
                 if nid not in hits:
                     hits.append(nid)

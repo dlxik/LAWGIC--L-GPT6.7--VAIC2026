@@ -26,7 +26,7 @@ from __future__ import annotations
 import os
 import re
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from backend.api import mock_data
@@ -38,7 +38,11 @@ router = APIRouter(tags=["qa"])
 
 class QARequest(BaseModel):
     question: str = Field(min_length=3, max_length=500)
-    as_of_date: str | None = None  # ISO date, luat co hieu luc tai ngay nay
+    as_of_date: str | None = Field(
+        default=None,
+        pattern=r"^\d{4}-\d{2}-\d{2}$",
+        description="ISO date YYYY-MM-DD, luat co hieu luc tai ngay nay",
+    )
 
 
 class CitationOut(BaseModel):
@@ -323,19 +327,22 @@ class SearchResponseOut(BaseModel):
 
 @router.get("/search", response_model=SearchResponseOut)
 def search(
-    q: str,
-    as_of_date: str | None = None,
-    limit: int = 20,
+    q: str = Query(min_length=2, max_length=500),
+    as_of_date: str | None = Query(default=None, pattern=r"^\d{4}-\d{2}-\d{2}$"),
+    limit: int = Query(default=20, ge=1, le=50),
 ) -> SearchResponseOut:
     """Tra cuu dieu luat (khong goi LLM). Dung chung retrieval logic voi /qa.
 
-    Guest ben frontend gioi han limit; backend khong quan tam ai goi — cap ket
-    qua boi limit tham so.
+    Guest ben frontend gioi han limit; backend cap 1..50 bat ke ai goi.
+    Query bat buoc >=2 ky tu (giong /qa min_length=3 loosened cho luot go tu ngan).
     """
-    limit = max(1, min(limit, 50))
-    hits = _retrieve(q, as_of_date)
+    q_clean = q.strip()
+    if len(q_clean) < 2:
+        # Pydantic min_length count whitespace, do lai sau strip
+        return SearchResponseOut(query=q, as_of_date=as_of_date, total=0, results=[], source=get_source())
+    hits = _retrieve(q_clean, as_of_date)
     return SearchResponseOut(
-        query=q,
+        query=q_clean,
         as_of_date=as_of_date,
         total=len(hits),
         results=[SearchHit(**h) for h in hits[:limit]],

@@ -25,11 +25,19 @@ BAY DA TRA GIA:
 
 from __future__ import annotations
 
+import random
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Sequence, TypeVar
 
-from openai import OpenAI
+from openai import (
+    APIConnectionError,
+    APITimeoutError,
+    InternalServerError,
+    OpenAI,
+    RateLimitError,
+)
 from pydantic import BaseModel, ValidationError
 
 from backend.core.config import get_settings
@@ -47,10 +55,78 @@ MAX_TOKENS = 4096
 # ma khong dam may chu. Tang len de an 429/403.
 BATCH_WORKERS = 8
 
+# --- Retry/backoff ---
+# FPT rate-limit rat gat: benchmark.md ghi 1.842 node full-20b bi 429, nhieu node
+# tra rong -> recall tut con 79%. SDK openai co max_retries=2 NGAM nhung (a) khong
+# du, (b) khong log ra nen khong ai biet dang mat data. => tat retry ngam cua SDK
+# (max_retries=0 trong _client) va tu retry o day: co backoff mu + jitter + ton
+# trong header Retry-After. CHI retry loi TAM THOI; loi vinh vien (400/401/403 sai
+# key / WAF chan UA) nem ngay, khoi phi thoi gian.
+MAX_RETRIES = 5  # so lan thu LAI (tong toi da MAX_RETRIES+1 lan goi)
+RETRY_BASE_DELAY = 1.0  # giay, moc cho lan retry dau
+RETRY_MAX_DELAY = 30.0  # tran mot lan cho, tranh treo vo han
+RETRY_MULTIPLIER = 2.0  # exponential: 1s, 2s, 4s, 8s, 16s (roi cap 30s)
+
+# 429 + moi 5xx (InternalServerError) + loi mang (APIConnectionError, ma
+# APITimeoutError la con cua no). 403 = PermissionDenied KHONG nam day -> khong retry.
+_RETRYABLE = (RateLimitError, APIConnectionError, APITimeoutError, InternalServerError)
+
 
 def _client() -> OpenAI:
     settings = get_settings()
-    return OpenAI(api_key=settings.llm_api_key, base_url=settings.llm_base_url)
+    # max_retries=0: TAT retry ngam cua SDK. Ta tu retry o _create_with_retry de
+    # kiem soat backoff, jitter, va LOG duoc — khong de hai lop retry chong len nhau.
+    return OpenAI(
+        api_key=settings.llm_api_key,
+        base_url=settings.llm_base_url,
+        max_retries=0,
+    )
+
+
+def _retry_after_seconds(exc: Exception) -> float | None:
+    """Doc header Retry-After (giay) tu response 429 neu co. Server bao thi nghe server."""
+    resp = getattr(exc, "response", None)
+    headers = getattr(resp, "headers", None)
+    if not headers:
+        return None
+    raw = headers.get("retry-after")
+    if raw is None:
+        return None
+    try:
+        return max(0.0, float(raw))  # dang so giay
+    except (TypeError, ValueError):
+        return None  # dang HTTP-date -> bo qua, dung backoff mu
+
+
+def _create_with_retry(**kwargs):
+    """Goi chat.completions.create, retry loi tam thoi (429 / 5xx / mang).
+
+    Loi vinh vien (BadRequest/Auth/PermissionDenied...) khong nam trong _RETRYABLE
+    nen bat ra ngoai vong lap va nem ngay. Het luot retry -> nem loi cuoi cung de
+    caller (vd extract_batch) xu ly nhu truoc.
+    """
+    client = _client()
+    last_exc: Exception | None = None
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            return client.chat.completions.create(**kwargs)
+        except _RETRYABLE as exc:
+            last_exc = exc
+            if attempt == MAX_RETRIES:
+                break  # het luot -> nem o duoi
+            capped = min(RETRY_MAX_DELAY, RETRY_BASE_DELAY * RETRY_MULTIPLIER**attempt)
+            server_hint = _retry_after_seconds(exc)
+            if server_hint is not None:
+                delay = min(server_hint, RETRY_MAX_DELAY)  # uu tien server bao
+            else:
+                delay = random.uniform(0, capped)  # full jitter: 8 luong khong retry cung nhip
+            print(
+                f"[llm.retry] {type(exc).__name__} (thu {attempt + 1}/{MAX_RETRIES}) "
+                f"-> cho {delay:.1f}s"
+            )
+            time.sleep(delay)
+    assert last_exc is not None  # vao _RETRYABLE it nhat 1 lan moi toi day
+    raise last_exc
 
 
 def _tool_for(schema: type[BaseModel]) -> dict:
@@ -84,7 +160,9 @@ def extract(prompt: str, schema: type[T], *, system: str | None = None) -> T:
         messages.append({"role": "system", "content": system})
     messages.append({"role": "user", "content": prompt})
 
-    response = _client().chat.completions.create(
+    # _parse_tool_call NAM NGOAI retry: loi schema/tra rong khong phai loi tam thoi,
+    # khong retry o day de khoi che giau bug that.
+    response = _create_with_retry(
         model=get_settings().llm_model,
         max_tokens=MAX_TOKENS,
         temperature=0,  # trich xuat -> muon on dinh, khong muon sang tao

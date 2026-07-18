@@ -237,7 +237,7 @@ def _anchor_family(nodes: dict) -> list[str]:
     return [nid for nid in sorted(nodes) if _article_id(nid) == ANCHOR_ARTICLE]
 
 
-def _candidate_set(claim_text: str) -> tuple[list[str], dict]:
+def _candidate_set(claim_text: str, anchor: bool = True) -> tuple[list[str], dict]:
     _, _, _, nodes = _index()
     # Chuẩn hoá query đời thường -> gần văn bản luật (bung viết tắt, "miễn thuế" ->
     # "không phải nộp thuế"...) để retrieval khớp đúng điều luật. Xem query_norm.py.
@@ -246,12 +246,13 @@ def _candidate_set(claim_text: str) -> tuple[list[str], dict]:
     family = _family_expand(retrieved, nodes)  # anh em cùng Điều
     expanded = _graph_expand(family, nodes)    # bắc cầu SUPERSEDED_BY sang luật mới
 
-    # Neo họ Điều 7 lên ĐẦU: đứng đầu nên không bao giờ bị cắt bởi MAX_CANDIDATES,
-    # kể cả khi retrieval đã lấp đủ 55 chỗ cho claim khó (đo được: đưa xuống cuối
-    # thì 4 claim tụt recall vì bị truncate). Giữ nguyên phần còn lại theo thứ tự cũ.
-    anchor = _anchor_family(nodes)
-    ordered = anchor + [nid for nid in expanded if nid not in set(anchor)]
-    return ordered[:MAX_CANDIDATES], nodes
+    # Neo họ Điều 7 lên ĐẦU — CHỈ cho DISCOURSE (claim dân dã về hộ kinh doanh hay
+    # trượt Điều 7, cần ép vào để đủ recall). Q&A TỔNG QUÁT gọi anchor=False: nếu neo,
+    # MỌI câu hỏi bị Điều 7 đè top -> repeal detection tắt + câu ngoài Điều 7 trả sai.
+    if anchor:
+        anchor_nodes = _anchor_family(nodes)
+        expanded = anchor_nodes + [nid for nid in expanded if nid not in set(anchor_nodes)]
+    return expanded[:MAX_CANDIDATES], nodes
 
 
 # ---------- Bước 3: LLM chọn ----------

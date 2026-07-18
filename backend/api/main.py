@@ -2,10 +2,17 @@
 
 Serve luon frontend tinh o /  -> mo http://localhost:8000/ la thay dashboard.
 CORS mo cho * de dev khi mo file:// hay port khac. Prod thi siet lai.
+
+Lifespan:
+  Khi Neo4j online -> chay apply_schema() idempotent lan boot dau. Loader du
+  lieu (load_processed) van la 1-shot script — khong tu chay khi API start
+  vi ton thoi gian va can cli tuong tac. Xem README '3. Nap graph' de biet
+  cach chay.
 """
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -18,7 +25,36 @@ from backend.api.graph_source import get_source
 ROOT = Path(__file__).resolve().parents[2]
 STATIC_DIR = ROOT / "frontend" / "static"
 
-app = FastAPI(title="LAWGIC API", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """apply_schema idempotent len boot dau — CHI khi Neo4j da song.
+
+    Neo4j driver mac dinh retry ket noi ~30s (Transaction retry loop). Neu goi
+    thang apply_schema khi Neo4j tat, uvicorn treo may chuc giay truoc khi
+    binding cong 8000. Fail-fast: healthcheck() bao voi timeout ngan, KHONG
+    dat -> bo qua. get_source() ben dashboard/qa endpoint tu re-probe sau.
+    """
+    try:
+        from backend.graph.connection import get_driver, healthcheck  # noqa: WPS433
+        try:
+            get_driver().verify_connectivity()  # sync, timeout 30s default nhung network tra loi ngay
+        except Exception:
+            print("[lifespan] Neo4j offline — skip apply_schema (endpoint tu re-probe sau)")
+            yield
+            return
+        if healthcheck():
+            from backend.graph.schema import apply_schema  # noqa: WPS433
+            apply_schema()
+            print("[lifespan] apply_schema OK")
+    except NotImplementedError:
+        print("[lifespan] apply_schema chua san sang — skip")
+    except Exception as e:
+        print(f"[lifespan] boot task fail ({e.__class__.__name__}: {e}) — skip")
+    yield
+
+
+app = FastAPI(title="LAWGIC API", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

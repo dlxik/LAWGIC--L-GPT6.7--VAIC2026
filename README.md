@@ -18,13 +18,29 @@ Legal Knowledge Graph nối hai luồng — **văn bản pháp luật** và **th
 ## Chạy
 
 ```bash
-cp .env.example .env        # điền ANTHROPIC_API_KEY
-docker compose up           # Neo4j + API
+# 1. Config: điền LLM_API_KEY (FPT AI Marketplace) + Neo4j password
+cp .env.example .env
+
+# 2. Up cả stack — Neo4j + API
+docker compose up
+
+# 3. Nạp graph một lần (chạy trong container api)
+docker compose exec api python -m backend.graph.loader --wipe
+
+# 4. Mở dashboard (đã mount /frontend/static tại root API)
+open http://localhost:8000/
 ```
 
-- API: http://localhost:8000/docs
-- Neo4j Browser: http://localhost:7474
-- Dashboard: mở `frontend/static/index.html`
+- **Dashboard**: http://localhost:8000/ (sidebar 4 tab: Cảnh báo hiểu nhầm, Hỏi–Đáp có citation, So sánh văn bản, Tra cứu văn bản)
+- **API docs (Swagger)**: http://localhost:8000/docs
+- **Neo4j Browser**: http://localhost:7474 (paste `demo/graph_legend.md` để tô màu graph)
+
+Dữ liệu (`data/processed/legal_docs_structured/`, `data/processed/entities_*.json`,
+`data/raw/social_posts.json`) đã commit — không cần chạy lại parser/extractor. Nếu muốn build lại từ đầu, xem `scripts/`.
+
+**Sign-in dashboard**: bất kỳ email/password nào cũng được (client-side fake auth cho hackathon).
+Email chứa `admin` → vai trò Quản trị; email khác → Người dùng; không đăng nhập → Khách (5 câu Q&A/session).
+Backend còn có rate limit thật: 10 câu Q&A + 30 tra cứu/phút/IP (xem `backend/api/ratelimit.py`).
 
 ## Pipeline
 
@@ -49,12 +65,18 @@ Bình luận ────> classifier ──> linker ──┘     (P2)      (P4
 | `backend/graph/` | loader, semantic diffing, truy vấn theo thời gian | P2 |
 | `backend/discourse/` | phân loại chủ đề, liên kết claim↔điều luật, phát hiện trend | P3 |
 | `backend/api/` | Q&A API (có citation) + API dashboard | P4 |
-| `frontend/static/` | dashboard 1 trang, 2 tab | P4 |
-| `eval/` | đo độ chính xác trên gold set | P3 |
+| `frontend/static/` | dashboard sidebar + 4 tab (roles: Khách / Người dùng / Quản trị) | P4 |
+| `eval/` | đo độ chính xác trên gold set 48 claim | P3 |
 | `prompts/` | prompt LLM dùng trong pipeline | P1, P3 |
-| `demo/` | kịch bản demo + case mẫu nồng độ cồn | P4 |
+| `demo/` | kịch bản demo tax + query Neo4j đã dán màu | P4 |
 
 ## Dữ liệu demo
 
-Văn bản có hiệu lực từ 1/7/2026, thảo luận công khai đến 17/7/2026.
-Comment chỉ lấy nội dung công khai, tác giả được hash, không lưu danh tính.
+Ba văn bản thuế: Luật Quản lý thuế **38/2019/QH14** (cũ, một phần bị thay thế),
+Luật Quản lý thuế sửa đổi **108/2025/QH15**, Luật Thuế thu nhập cá nhân sửa đổi
+**109/2025/QH15**. Cả hai luật mới hiệu lực **01/07/2026**. Case demo chính: ngưỡng
+miễn TNCN **500 triệu** cho hộ kinh doanh — dư luận nhớ nhầm ngưỡng ~100–200 triệu
+theo quy định khoán cũ.
+
+Comment lấy công khai trên VnExpress (3.321 post, 04/06/2025 – 10/04/2026);
+tác giả được hash, không lưu danh tính.

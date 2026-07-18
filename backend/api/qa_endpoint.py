@@ -5,17 +5,26 @@ Khong tim duoc dieu luat -> tra loi "khong du can cu", KHONG doan.
 
 Chong bia dat (2 lop):
   1. Prompt yeu cau LLM CHI dung dieu luat co trong context, tra ve node_id.
-  2. API validate lai node_id ung voi node CO THAT trong graph/mock. Citation
+  2. API validate lai node_id ung voi node CO THAT trong graph. Citation
      khong khop bi loai bo. Neu sau khi loc khong con citation nao -> tu choi
      tra loi. LLM khong duoc tin cay.
 
-Khi khong co ANTHROPIC_API_KEY hoac API fail -> fallback tra loi templated tu
-dieu luat retrieval duoc. Van co citation that.
+Nguon du lieu:
+  - graph_source == "neo4j" -> Cypher: full-text tren Point.text/Clause.text
+    (index point_text, clause_text da co san), tra ve leaf-node (Point neu
+    co, nguoc lai Clause hoac Article — theo quy tac "node sau nhat giu su
+    that" cua P2).
+  - graph_source == "mock"  -> keyword lookup trong mock_data (chi khi Neo4j
+    chua chay, giu de dev offline).
+
+Khi khong co LLM_API_KEY hoac LLM fail -> fallback template: liet ke nguyen
+van dieu luat retrieve duoc, van co citation THAT.
 """
 
 from __future__ import annotations
 
 import os
+import re
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
@@ -53,22 +62,119 @@ REFUSAL = (
     "quan trong pham vi du lieu he thong dang co."
 )
 
+# Lucene reserved chars trong full-text query. Neu khong strip, cau hoi co dau
+# ngoac / dau cham hoi bi Lucene parse loi -> 0 hit im lang.
+_LUCENE_SPECIAL = re.compile(r'[+\-!(){}\[\]^"~*?:\\/&|]')
+
+
+def _sanitize(question: str) -> str:
+    q = _LUCENE_SPECIAL.sub(" ", question).strip()
+    return q or "*"
+
+
+# ---------------------------------------------------------------------------
+# Cypher
+# ---------------------------------------------------------------------------
+
+# Retrieval: full-text tren Point + leaf-Clause, chuan hoa ve cung shape,
+# lam giau parent chain -> tao "display" (Dieu-Khoan-Diem-doc).
+_RETRIEVE_CYPHER = """
+CALL {
+  CALL db.index.fulltext.queryNodes('point_text', $q) YIELD node, score
+  RETURN node, score
+  UNION
+  CALL db.index.fulltext.queryNodes('clause_text', $q) YIELD node, score
+  WHERE NOT (node)-[:HAS_POINT]->()
+  RETURN node, score
+}
+WITH node, score
+WHERE $date IS NULL OR (
+    node.effective_from <= date($date)
+    AND (node.effective_to IS NULL OR node.effective_to > date($date))
+)
+OPTIONAL MATCH path = (d:LegalDocument)-[:HAS_ARTICLE|HAS_CLAUSE|HAS_POINT*1..3]->(node)
+WITH node, score, d, path
+RETURN
+  coalesce(node.point_id, node.clause_id, node.article_id) AS node_id,
+  labels(node)[0] AS node_label,
+  node.text AS text,
+  d.doc_number AS doc_number,
+  d.doc_id AS doc_id,
+  [x IN nodes(path) WHERE x:Article][0].number AS dieu,
+  [x IN nodes(path) WHERE x:Clause][0].number AS khoan,
+  CASE WHEN 'Point' IN labels(node) THEN node.letter ELSE null END AS letter,
+  toString(node.effective_from) AS effective_from,
+  toString(node.effective_to) AS effective_to,
+  score
+ORDER BY score DESC
+LIMIT 12
+"""
+
+# Validate: kiem tra node_id LLM tra ve co ton tai khong + lam giau lai
+# metadata de tao Citation. Chi luu 1 doi Cypher, khong loop trong Python.
+_LOOKUP_CYPHER = """
+UNWIND $ids AS wanted_id
+MATCH (node)
+WHERE (node:Point   AND node.point_id   = wanted_id)
+   OR (node:Clause  AND node.clause_id  = wanted_id)
+   OR (node:Article AND node.article_id = wanted_id)
+OPTIONAL MATCH path = (d:LegalDocument)-[:HAS_ARTICLE|HAS_CLAUSE|HAS_POINT*1..3]->(node)
+RETURN
+  wanted_id AS node_id,
+  labels(node)[0] AS node_label,
+  node.text AS text,
+  d.doc_number AS doc_number,
+  [x IN nodes(path) WHERE x:Article][0].number AS dieu,
+  [x IN nodes(path) WHERE x:Clause][0].number AS khoan,
+  CASE WHEN 'Point' IN labels(node) THEN node.letter ELSE null END AS letter
+"""
+
+
+def _display(row: dict) -> str:
+    """'Diem a Khoan 2 Dieu 25 Luat 108/2025/QH15' (o cap co san)."""
+    parts: list[str] = []
+    if row.get("letter"):
+        parts.append(f"Điểm {row['letter']}")
+    if row.get("khoan") is not None:
+        parts.append(f"Khoản {row['khoan']}")
+    if row.get("dieu") is not None:
+        parts.append(f"Điều {row['dieu']}")
+    if row.get("doc_number"):
+        parts.append(str(row["doc_number"]))
+    return " ".join(parts) if parts else row["node_id"]
+
 
 def _retrieve(question: str, as_of_date: str | None) -> list[dict]:
-    """Tra list Point ung vien. Loc theo as_of_date neu co."""
-    if get_source() == "mock":
-        candidates = mock_data.mock_retrieve(question)
-    else:
-        # TODO[P4]: goi backend/discourse/linker hoac 1 truy van BM25 + graph
-        candidates = mock_data.mock_retrieve(question)
+    """Tra list ung vien leaf-node (Point/Clause/Article). Da loc theo as_of_date."""
+    if get_source() != "neo4j":
+        return _retrieve_mock(question, as_of_date)
 
+    from backend.graph.connection import run  # noqa: WPS433 — tranh top-level neu ko dung
+
+    rows = run(_RETRIEVE_CYPHER, q=_sanitize(question), date=as_of_date)
+    return [
+        {
+            "node_id": r["node_id"],
+            "node_label": r["node_label"],
+            "text": r["text"],
+            "display": _display(r),
+            "effective_from": r.get("effective_from"),
+            "effective_to": r.get("effective_to"),
+            "score": r.get("score"),
+        }
+        for r in rows
+        if r.get("node_id")
+    ]
+
+
+def _retrieve_mock(question: str, as_of_date: str | None) -> list[dict]:
+    """Duong lui offline khi Neo4j chua chay."""
+    candidates = mock_data.mock_retrieve(question)
     if not as_of_date:
         return candidates
-
     out = []
     for c in candidates:
-        eff_from = c.get("effective_from")
-        eff_to = c.get("effective_to")
+        eff_from, eff_to = c.get("effective_from"), c.get("effective_to")
         if eff_from and eff_from > as_of_date:
             continue
         if eff_to and eff_to < as_of_date:
@@ -77,11 +183,38 @@ def _retrieve(question: str, as_of_date: str | None) -> list[dict]:
     return out
 
 
-def _valid_node_ids() -> set[str]:
-    """Node_id co that. Khi P2 xong -> query graph."""
-    if get_source() == "mock":
-        return set(mock_data.LEGAL_NODES.keys())
-    return set(mock_data.LEGAL_NODES.keys())  # TODO[P4]
+def _lookup_nodes(node_ids: list[str]) -> dict[str, dict]:
+    """Given LLM-emitted node_ids -> {id: node dict} for those that EXIST.
+
+    ID nao khong trong graph bi drop im lang — day CHINH la lop chong LLM bia.
+    """
+    if not node_ids:
+        return {}
+    if get_source() != "neo4j":
+        out = {}
+        for nid in node_ids:
+            if nid in mock_data.LEGAL_NODES:
+                out[nid] = mock_data.LEGAL_NODES[nid]
+        return out
+
+    from backend.graph.connection import run  # noqa: WPS433
+
+    rows = run(_LOOKUP_CYPHER, ids=list(node_ids))
+    return {
+        r["node_id"]: {
+            "node_id": r["node_id"],
+            "node_label": r["node_label"],
+            "text": r["text"],
+            "display": _display(r),
+        }
+        for r in rows
+        if r.get("node_id") and r.get("text")
+    }
+
+
+# ---------------------------------------------------------------------------
+# Answer builders
+# ---------------------------------------------------------------------------
 
 
 def _template_answer(hits: list[dict]) -> QAResponseOut:
@@ -109,7 +242,7 @@ def _template_answer(hits: list[dict]) -> QAResponseOut:
 
 def _llm_answer(question: str, hits: list[dict], as_of_date: str | None) -> QAResponseOut:
     """Goi LLM voi context la nguyen van dieu luat, bat buoc tra citation."""
-    from backend.core.llm import extract  # noqa: WPS433 — tranh top-level neu khong dung
+    from backend.core.llm import extract  # noqa: WPS433
 
     class _LLMAnswer(BaseModel):
         answer: str
@@ -119,10 +252,11 @@ def _llm_answer(question: str, hits: list[dict], as_of_date: str | None) -> QARe
     corpus = "\n\n".join(
         f"[{h['node_id']}] {h['display']}\n{h['text']}" for h in hits
     )
+    example_id = hits[0]["node_id"] if hits else "qlt2025-d25-k1-a"
     as_of_note = f"Hieu luc tinh den ngay: {as_of_date}\n" if as_of_date else ""
     system = (
         "Ban la tro ly phap ly. TRA LOI CHI dua tren dieu luat duoc cung cap. "
-        "MOI citation phai la node_id chinh xac trong context (vd 'nd168-d5-k2-a'). "
+        f"MOI citation phai la node_id chinh xac trong context (vi du '{example_id}'). "
         "Khong co dieu luat khop -> answer = 'khong du can cu', citation_node_ids = []."
     )
     prompt = (
@@ -132,12 +266,12 @@ def _llm_answer(question: str, hits: list[dict], as_of_date: str | None) -> QARe
     )
 
     result = extract(prompt, _LLMAnswer, system=system)
-    valid_ids = _valid_node_ids()
+    found = _lookup_nodes(result.citation_node_ids)
     citations: list[CitationOut] = []
     for nid in result.citation_node_ids:
-        if nid not in valid_ids:
+        node = found.get(nid)
+        if not node:
             continue  # LLM bia -> vut
-        node = mock_data.LEGAL_NODES[nid]
         citations.append(
             CitationOut(
                 node_id=nid,
@@ -165,7 +299,8 @@ def _llm_answer(question: str, hits: list[dict], as_of_date: str | None) -> QARe
 
 
 def _have_api_key() -> bool:
-    return bool(get_settings().anthropic_api_key or os.environ.get("ANTHROPIC_API_KEY"))
+    s = get_settings()
+    return bool(s.llm_api_key or os.environ.get("LLM_API_KEY"))
 
 
 @router.post("/qa", response_model=QAResponseOut)

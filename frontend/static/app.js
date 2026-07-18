@@ -43,7 +43,7 @@ $$("nav button").forEach((btn) => {
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     $$("body > section").forEach((s) => { s.hidden = s.id !== tab; });
-    if (tab === "diff" && !diffLoaded) loadDiff("nd168");
+    if (tab === "diff" && !diffLoaded) loadDiff("qlt2025");
   });
 });
 

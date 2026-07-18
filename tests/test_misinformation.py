@@ -30,12 +30,13 @@ def test_no_citation_is_unverifiable_without_llm(monkeypatch):
 def test_verdict_uses_llm_when_citations_present(monkeypatch):
     captured = {}
 
-    def fake_extract(prompt, schema):
+    def fake_samples(prompt, schema, *, n, temperature, system=None):
         captured["prompt"] = prompt
-        return schema(verdict="INACCURATE", confidence=0.9,
-                      explanation="200 < 500", correct_statement="...")
+        captured["n"] = n
+        return [schema(verdict="INACCURATE", confidence=0.9,
+                       explanation="200 < 500", correct_statement="...")] * n
 
-    monkeypatch.setattr(mis.llm, "extract", fake_extract)
+    monkeypatch.setattr(mis.llm, "extract_samples", fake_samples)
     monkeypatch.setattr(mis.llm, "load_prompt", lambda name: "<hd>")
 
     cites = [{"node_id": "tncn2025-d7-k1", "display": "Điều 7 Khoản 1",
@@ -43,7 +44,29 @@ def test_verdict_uses_llm_when_citations_present(monkeypatch):
     result = mis.verdict_for_claim("doanh thu 200tr phải nộp thuế", cites)
 
     assert result["verdict"] == "INACCURATE"
-    assert "tncn2025-d7-k1" in captured["prompt"]  # điều luật được đưa vào prompt
+    assert captured["n"] == mis.VERDICT_SAMPLES     # self-consistency: nhiều mẫu
+    assert "tncn2025-d7-k1" in captured["prompt"]   # điều luật được đưa vào prompt
+
+
+def test_verdict_majority_vote_wins(monkeypatch):
+    """Bỏ phiếu đa số: 3 PARTIAL vs 2 INACCURATE -> PARTIALLY_INACCURATE thắng."""
+    from backend.discourse.misinformation import _VerdictResult
+
+    def fake_samples(prompt, schema, *, n, temperature, system=None):
+        return [
+            _VerdictResult(verdict="PARTIALLY_INACCURATE", confidence=0.6),
+            _VerdictResult(verdict="PARTIALLY_INACCURATE", confidence=0.7),
+            _VerdictResult(verdict="PARTIALLY_INACCURATE", confidence=0.5),
+            _VerdictResult(verdict="INACCURATE", confidence=0.95),
+            _VerdictResult(verdict="INACCURATE", confidence=0.95),
+        ]
+
+    monkeypatch.setattr(mis.llm, "extract_samples", fake_samples)
+    monkeypatch.setattr(mis.llm, "load_prompt", lambda name: "<hd>")
+
+    cites = [{"node_id": "tncn2025-d7-k1", "display": "Điều 7 Khoản 1", "text": "..."}]
+    result = mis.verdict_for_claim("claim", cites)
+    assert result["verdict"] == "PARTIALLY_INACCURATE"  # 3 phiếu > 2, dù INAC confidence cao hơn
 
 
 # ---------- cluster_misconceptions ----------

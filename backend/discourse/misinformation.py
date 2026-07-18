@@ -15,6 +15,7 @@ KHÔNG còn không tham số như stub cũ. Contract chung `schemas.py::TrendAle
 
 from __future__ import annotations
 
+import os
 from datetime import datetime, timedelta, timezone
 from enum import Enum
 
@@ -29,6 +30,23 @@ from backend.core import config, llm
 # hai câu cùng nghĩa mà khác hẳn chữ. Đủ cho việc gom tin đồn lặp lại theo mẫu.
 SIMILARITY_THRESHOLD = 0.45
 
+# Self-consistency: hỏi verdict NHIỀU lần ở temperature>0 rồi lấy nhãn ĐA SỐ. Dập
+# nhiễu khi model lưỡng lự giữa ACCURATE/PARTIALLY — chỗ 1 lần gọi ở temp=0 hay
+# trượt. Đo trên gold: kéo verdict_accuracy lên vài điểm mà không đổi model/prompt.
+# 5 mẫu 0.5 là điểm cân giữa lợi và chi phí (5× lượt gọi verdict, chạy song song).
+# Đọc từ env để ablate (VERDICT_SAMPLES=1 -> tắt voting, single-shot temp=0).
+VERDICT_SAMPLES = int(os.getenv("VERDICT_SAMPLES", "5"))
+VERDICT_VOTE_TEMPERATURE = 0.5
+
+# Phá hoà phiếu. Đo trên gold (confusion matrix): model rụt rè hệ thống — hạ oan
+# ACCURATE (ACCU->PART/INAC) và rút lui về UNVERIFIABLE (PART/INAC->UNVE), chiếm
+# 70% lỗi. Nguyên nhân: khi phiếu sát, tie-break cũ ("confidence") nghiêng về nhãn
+# model TỰ TIN hơn = nhãn rõ ràng/rụt rè (INAC/UNVE), khuếch đại bias. "commit" phá
+# hoà theo mức DÁM CAM KẾT (ACCURATE > PARTIAL > INACCURATE > UNVERIFIABLE): khi số
+# phiếu bằng nhau, chọn nhãn ít rụt rè hơn -> sửa đúng hướng bias đã đo.
+# Đặt VERDICT_TIEBREAK=confidence để chạy lại hành vi cũ khi ablate.
+VERDICT_TIEBREAK = os.getenv("VERDICT_TIEBREAK", "commit")
+
 
 # ---------- verdict_for_claim ----------
 
@@ -38,6 +56,17 @@ class Verdict(str, Enum):
     PARTIALLY_INACCURATE = "PARTIALLY_INACCURATE"
     INACCURATE = "INACCURATE"
     UNVERIFIABLE = "UNVERIFIABLE"
+
+
+# Mức DÁM CAM KẾT, cao = ít rụt rè. Dùng phá hoà phiếu theo hướng sửa bias (xem
+# VERDICT_TIEBREAK). ACCURATE đòi claim đúng hẳn -> khó cam kết nhất -> ưu tiên cao
+# nhất khi hoà; UNVERIFIABLE là chỗ rút lui -> thấp nhất.
+_COMMIT_RANK = {
+    Verdict.ACCURATE: 3,
+    Verdict.PARTIALLY_INACCURATE: 2,
+    Verdict.INACCURATE: 1,
+    Verdict.UNVERIFIABLE: 0,
+}
 
 
 class _VerdictResult(BaseModel):
@@ -70,7 +99,7 @@ def verdict_for_claim(claim_text: str, citations: list[dict]) -> dict:
         f"---\n\nCLAIM: {claim_text!r}\n\n"
         f"ĐIỀU LUẬT ĐƯỢC TRÍCH DẪN:\n{law_text}"
     )
-    result = llm.extract(prompt, _VerdictResult)
+    result = _vote_verdict(prompt)
 
     return {
         "verdict": _field(result, "verdict"),
@@ -78,6 +107,40 @@ def verdict_for_claim(claim_text: str, citations: list[dict]) -> dict:
         "explanation": _field(result, "explanation"),
         "correct_statement": _field(result, "correct_statement"),
     }
+
+
+def _vote_verdict(prompt: str) -> _VerdictResult:
+    """Self-consistency: lấy VERDICT_SAMPLES mẫu, trả mẫu có verdict ĐA SỐ.
+
+    VERDICT_SAMPLES=1 -> single-shot temp=0 (không voting), dùng để ablate.
+    Chọn đại diện = mẫu confidence cao nhất trong nhóm thắng (để explanation/
+    correct_statement đi kèm là của lần chắc chắn nhất). Phá hoà theo VERDICT_TIEBREAK:
+    'commit' (mặc định) ưu tiên nhãn ít rụt rè; 'confidence' (cũ) ưu tiên tổng
+    confidence. Mọi mẫu hỏng (rỗng) -> lùi về 1 lần gọi thường.
+    """
+    if VERDICT_SAMPLES <= 1:
+        return llm.extract(prompt, _VerdictResult)
+
+    samples = llm.extract_samples(
+        prompt, _VerdictResult, n=VERDICT_SAMPLES, temperature=VERDICT_VOTE_TEMPERATURE
+    )
+    if not samples:
+        return llm.extract(prompt, _VerdictResult)
+
+    tally: dict[Verdict, float] = {}
+    conf_sum: dict[Verdict, float] = {}
+    for s in samples:
+        tally[s.verdict] = tally.get(s.verdict, 0.0) + 1.0
+        conf_sum[s.verdict] = conf_sum.get(s.verdict, 0.0) + s.confidence
+
+    # Đa số theo SỐ PHIẾU trước; hoà thì phá theo policy. 'commit' sửa bias rụt rè
+    # đã đo (ưu tiên nhãn dám cam kết); 'confidence' giữ hành vi cũ để so sánh.
+    def _key(v: Verdict):
+        second = _COMMIT_RANK[v] if VERDICT_TIEBREAK == "commit" else conf_sum[v]
+        return (tally[v], second)
+
+    winner = max(tally, key=_key)
+    return max((s for s in samples if s.verdict == winner), key=lambda s: s.confidence)
 
 
 def _field(obj, name):

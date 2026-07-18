@@ -9,4 +9,6 @@ beautifulsoup4>=4.12
 httpx>=0.27
 python-dateutil>=2.9
 rank-bm25>=0.2.2
+numpy>=1.26  # P3: embeddings/linker (vector, cosine)
+scikit-learn>=1.4  # P3: TF-IDF fallback, cosine_similarity, gom cụm hiểu nhầm
 pytest>=8.3

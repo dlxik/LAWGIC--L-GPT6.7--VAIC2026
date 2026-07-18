@@ -1,8 +1,8 @@
 <div align="center">
 
-  <img src="docs/images/vaic-banner.png" width="300" alt="Vietnam AI Innovation Challenge 2026" />
+  <img src="docs/images/vaic-banner.png" width="450" alt="Vietnam AI Innovation Challenge 2026" />
 
-  # Topic: LAWGIC — Legal Analytics With Graph-Integrated Cognition
+  # LAWGIC - Legal Analytics With Graph-Integrated Cognition
 
   **A Legal Knowledge Graph that links legal documents and public discourse on a single Neo4j instance — structuring law at the article–clause–point level, tracking amendments over time, and answering legal questions with mandatory source citations while detecting policy misunderstandings spreading on social media.**
 

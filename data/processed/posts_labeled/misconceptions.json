@@ -1,0 +1,1923 @@
+[
+  {
+    "misconception_id": "misc-000",
+    "canonical_text": "Thu nhập 120 triệu đồng mỗi năm không phải nộp thuế",
+    "contradicts": [
+      "tncn2025-d10-k1-a",
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k3",
+      "tncn2025-d9-k2"
+    ],
+    "first_seen": "2025-06-05T10:38:09+00:00",
+    "last_seen": "2025-12-11T01:16:44+00:00",
+    "count": 23,
+    "total_engagement": 354,
+    "member_claim_ids": [
+      "vne-59917441-c0",
+      "vne-61406451-c0",
+      "vne-61407504-c1",
+      "vne-61407897-c1",
+      "vne-61663562-c0",
+      "vne-61663608-c1",
+      "vne-61747724-c1",
+      "vne-61748820-c0",
+      "vne-61749329-c0",
+      "vne-61749592-c0",
+      "vne-61773697-c0",
+      "vne-61772497-c0",
+      "vne-61863750-c0",
+      "vne-61854819-c0",
+      "vne-61855511-c0",
+      "vne-61856688-c0",
+      "vne-61856688-c1",
+      "vne-59928193-c0",
+      "vne-59927616-c0",
+      "vne-61662281-c0",
+      "vne-61773929-c0",
+      "vne-61857695-c1",
+      "vne-61857716-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-001",
+    "canonical_text": "Thuế thu nhập cá nhân được tính trên doanh thu, không tính lợi nhuận.",
+    "contradicts": [
+      "qlt2019-d50-k2-d",
+      "tncn2025-d14-k1",
+      "tncn2025-d20-k1",
+      "tncn2025-d20-k2",
+      "tncn2025-d24-k1",
+      "tncn2025-d7",
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k3",
+      "tncn2025-d7-k3-a",
+      "tncn2025-d7-k3-c",
+      "tncn2025-d7-k4"
+    ],
+    "first_seen": "2025-06-05T03:58:57+00:00",
+    "last_seen": "2025-12-10T03:55:46+00:00",
+    "count": 22,
+    "total_engagement": 314,
+    "member_claim_ids": [
+      "vne-59912059-c0",
+      "vne-59915376-c0",
+      "vne-59929658-c0",
+      "vne-59935459-c0",
+      "vne-59958370-c0",
+      "vne-61406860-c0",
+      "vne-61407201-c0",
+      "vne-61408443-c0",
+      "vne-61689637-c0",
+      "vne-61715072-c0",
+      "vne-61771394-c0",
+      "vne-61854792-c0",
+      "vne-59959745-c2",
+      "vne-59927415-c0",
+      "vne-59927678-c0",
+      "vne-61670219-c0",
+      "vne-61689405-c0",
+      "vne-61722927-c0",
+      "vne-61725825-c0",
+      "vne-61746464-c0",
+      "vne-61667745-c1",
+      "vne-61773051-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-002",
+    "canonical_text": "Ngưỡng đóng thuế thu nhập hiện tại là 15.5 triệu đồng mỗi tháng",
+    "contradicts": [
+      "tncn2025-d10-k1-a",
+      "tncn2025-d19-k1",
+      "tncn2025-d27-k1",
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-10-25T02:19:44+00:00",
+    "last_seen": "2025-11-22T13:27:25+00:00",
+    "count": 9,
+    "total_engagement": 85,
+    "member_claim_ids": [
+      "vne-61407693-c0",
+      "vne-61410207-c2",
+      "vne-61411882-c0",
+      "vne-61663212-c0",
+      "vne-61669916-c0",
+      "vne-61689132-c1",
+      "vne-61662354-c0",
+      "vne-61690690-c0",
+      "vne-61690690-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-003",
+    "canonical_text": "Doanh thu trên 500 triệu đồng có thể được tính thuế theo doanh thu 1 triệu đồng.",
+    "contradicts": [
+      "tncn2025-d10-k1",
+      "tncn2025-d10-k1-a",
+      "tncn2025-d10-k1-b",
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k3",
+      "tncn2025-d9-k2"
+    ],
+    "first_seen": "2025-10-25T03:11:46+00:00",
+    "last_seen": "2025-12-10T03:29:45+00:00",
+    "count": 6,
+    "total_engagement": 17,
+    "member_claim_ids": [
+      "vne-61410556-c0",
+      "vne-61408279-c0",
+      "vne-61751101-c0",
+      "vne-61747724-c2",
+      "vne-61854325-c0",
+      "vne-61716859-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-004",
+    "canonical_text": "Thu nhập 75 triệu đồng mỗi năm phải chịu thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d19-k1",
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-11-29T03:59:07+00:00",
+    "last_seen": "2025-12-10T06:25:48+00:00",
+    "count": 5,
+    "total_engagement": 21,
+    "member_claim_ids": [
+      "vne-61857126-c0",
+      "vne-61855896-c0",
+      "vne-61856261-c0",
+      "vne-61747740-c0",
+      "vne-61774779-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-005",
+    "canonical_text": "Thuế thu nhập cá nhân được tính khi lương trên 15.5 triệu đồng/tháng (tương đương 186 triệu đồng/năm).",
+    "contradicts": [
+      "tncn2025-d10-k1-a",
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-10-25T06:23:59+00:00",
+    "last_seen": "2025-12-10T03:40:39+00:00",
+    "count": 4,
+    "total_engagement": 14,
+    "member_claim_ids": [
+      "vne-61410198-c0",
+      "vne-61697139-c0",
+      "vne-61775525-c0",
+      "vne-61854520-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-006",
+    "canonical_text": "Trên 500 triệu đồng mới phải nộp thuế, và sẽ nộp theo tỷ lệ của phần vượt trên 500 triệu đồng",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-11-20T11:14:07+00:00",
+    "last_seen": "2025-11-29T10:49:11+00:00",
+    "count": 4,
+    "total_engagement": 69,
+    "member_claim_ids": [
+      "vne-61671875-c0",
+      "vne-61747401-c0",
+      "vne-61750097-c0",
+      "vne-61747574-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-007",
+    "canonical_text": "Bắt buộc phải xuất hóa đơn điện tử, khai thuế và nộp thuế",
+    "contradicts": [
+      "qlt2019-d4-k1",
+      "qlt2025-d26-k5",
+      "qlt2025-d26-k5-a",
+      "qlt2025-d26-k5-c",
+      "qlt2025-d26-k6"
+    ],
+    "first_seen": "2025-06-09T05:17:48+00:00",
+    "last_seen": "2025-12-10T03:21:42+00:00",
+    "count": 3,
+    "total_engagement": 34,
+    "member_claim_ids": [
+      "vne-59956298-c1",
+      "vne-61690401-c0",
+      "vne-61854191-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-008",
+    "canonical_text": "Doanh thu hàng năm khoảng 1,200,000,000 đồng được miễn thuế thu nhập cá nhân như công nhân.",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-10-25T05:18:13+00:00",
+    "last_seen": "2025-12-10T04:13:59+00:00",
+    "count": 3,
+    "total_engagement": 9,
+    "member_claim_ids": [
+      "vne-61409605-c0",
+      "vne-61855131-c0",
+      "vne-61688428-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-009",
+    "canonical_text": "Mức miễn trừ gia cảnh là 190 triệu đồng mỗi năm",
+    "contradicts": [
+      "tncn2025-d10-k1-a"
+    ],
+    "first_seen": "2025-11-19T16:02:52+00:00",
+    "last_seen": "2025-12-10T05:30:56+00:00",
+    "count": 3,
+    "total_engagement": 35,
+    "member_claim_ids": [
+      "vne-61665556-c0",
+      "vne-61663624-c0",
+      "vne-61856498-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-010",
+    "canonical_text": "Đối với hộ kinh doanh nhỏ lẻ, doanh thu phải vượt 300 triệu đồng mới phải nộp thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k2-c",
+      "tncn2025-d7-k3"
+    ],
+    "first_seen": "2025-06-06T04:25:56+00:00",
+    "last_seen": "2025-11-19T15:08:53+00:00",
+    "count": 3,
+    "total_engagement": 75,
+    "member_claim_ids": [
+      "vne-61663296-c0",
+      "vne-59925747-c2",
+      "vne-61546726-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-011",
+    "canonical_text": "Doanh thu tối thiểu để đạt ngưỡng chịu thuế là 155 triệu đồng mỗi tháng, giả sử lợi nhuận 10% trên doanh thu.",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-11-19T14:04:18+00:00",
+    "last_seen": "2025-12-02T00:51:25+00:00",
+    "count": 3,
+    "total_engagement": 14,
+    "member_claim_ids": [
+      "vne-61662778-c0",
+      "vne-61664640-c0",
+      "vne-61770824-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-012",
+    "canonical_text": "Thuế trên doanh thu tính theo tổng số tiền bán ra, ngay cả khi doanh nghiệp lỗ, vẫn phải đóng thuế",
+    "contradicts": [
+      "qlt2019-d50-k2-d",
+      "qlt2019-d50-k4",
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k2-c",
+      "tncn2025-d7-k2-d",
+      "tncn2025-d7-k3",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-10-25T10:03:50+00:00",
+    "last_seen": "2025-12-10T04:54:15+00:00",
+    "count": 3,
+    "total_engagement": 11,
+    "member_claim_ids": [
+      "vne-61853725-c0",
+      "vne-61855955-c0",
+      "vne-61412026-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-013",
+    "canonical_text": "Hộ kinh doanh vẫn phải nộp thuế khoán",
+    "contradicts": [
+      "qlt2019-d44-k2",
+      "qlt2019-d51-k1",
+      "tncn2025-d7-k3-e"
+    ],
+    "first_seen": "2025-06-05T02:35:16+00:00",
+    "last_seen": "2025-06-12T00:14:54+00:00",
+    "count": 2,
+    "total_engagement": 59,
+    "member_claim_ids": [
+      "vne-59910652-c0",
+      "vne-59989776-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-014",
+    "canonical_text": "Việc tổng hợp hóa đơn, sổ sách,... để tính thuế là trách nhiệm của ngành thuế.",
+    "contradicts": [
+      "qlt2019-d51-k1",
+      "qlt2019-d51-k2",
+      "qlt2019-d93-k1"
+    ],
+    "first_seen": "2025-06-06T05:51:17+00:00",
+    "last_seen": "2025-06-06T06:46:44+00:00",
+    "count": 2,
+    "total_engagement": 10,
+    "member_claim_ids": [
+      "vne-59927672-c0",
+      "vne-59926993-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-015",
+    "canonical_text": "Tax is calculated based on revenue.",
+    "contradicts": [
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-06-06T09:21:51+00:00",
+    "last_seen": "2025-06-09T07:22:25+00:00",
+    "count": 2,
+    "total_engagement": 6,
+    "member_claim_ids": [
+      "vne-59929804-c1",
+      "vne-59957935-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-016",
+    "canonical_text": "Nếu thuế đến thanh tra và phát hiện sai sót, chủ doanh nghiệp phải chịu phạt.",
+    "contradicts": [
+      "qlt2019-d142-k3",
+      "qlt2019-d47-k2",
+      "qlt2019-d47-k3-a",
+      "qlt2019-d57-k2-c",
+      "qlt2025-d44-k5"
+    ],
+    "first_seen": "2025-06-06T07:30:09+00:00",
+    "last_seen": "2025-06-09T06:39:13+00:00",
+    "count": 2,
+    "total_engagement": 35,
+    "member_claim_ids": [
+      "vne-59928293-c0",
+      "vne-59957379-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-017",
+    "canonical_text": "Cửa hàng phải nộp thuế thu nhập cá nhân khi doanh thu đạt mức quy định",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-06-06T05:53:47+00:00",
+    "last_seen": "2025-11-29T02:32:22+00:00",
+    "count": 2,
+    "total_engagement": 5,
+    "member_claim_ids": [
+      "vne-59927026-c0",
+      "vne-61747095-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-018",
+    "canonical_text": "Mức miễn trừ bản thân là 15,5 triệu đồng/tháng, còn miễn trừ người phụ thuộc tùy trường hợp, không tính mặc định",
+    "contradicts": [
+      "tncn2025-d10-k1-a",
+      "tncn2025-d10-k1-b"
+    ],
+    "first_seen": "2025-10-25T01:36:27+00:00",
+    "last_seen": "2025-10-25T07:00:56+00:00",
+    "count": 2,
+    "total_engagement": 10,
+    "member_claim_ids": [
+      "vne-61407199-c0",
+      "vne-61410556-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-019",
+    "canonical_text": "Mua hàng từ nông dân phải ghi vào hóa đơn.",
+    "contradicts": [
+      "qlt2019-d143-k3",
+      "qlt2019-d29-k4",
+      "qlt2025-d26-k5-a",
+      "qlt2025-d40-k3-d"
+    ],
+    "first_seen": "2025-11-07T16:50:39+00:00",
+    "last_seen": "2025-11-25T15:21:18+00:00",
+    "count": 2,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61550037-c0",
+      "vne-61716901-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-020",
+    "canonical_text": "Không được trừ bất kỳ chi phí nào khi tính thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-11-07T08:20:35+00:00",
+    "last_seen": "2025-11-22T07:04:00+00:00",
+    "count": 2,
+    "total_engagement": 33,
+    "member_claim_ids": [
+      "vne-61545641-c0",
+      "vne-61688140-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-021",
+    "canonical_text": "Doanh thu khoảng 1,5 đến 2 tỷ đồng mới phải đóng thuế",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-11-19T13:45:51+00:00",
+    "last_seen": "2025-11-19T19:17:27+00:00",
+    "count": 2,
+    "total_engagement": 9,
+    "member_claim_ids": [
+      "vne-61664110-c0",
+      "vne-61662631-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-022",
+    "canonical_text": "Nếu tổng thu 1 tỉ đồng và lợi nhuận 10%, thì lợi nhuận chưa đạt 100 triệu đồng trong một năm, nên hộ kinh doanh này không phải nộp thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-11-22T13:28:32+00:00",
+    "last_seen": "2025-11-22T13:28:32+00:00",
+    "count": 2,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61690699-c0",
+      "vne-61690699-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-023",
+    "canonical_text": "Chi phí nhân công phải được nộp bảo hiểm xã hội và tính thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d7-k2-a",
+      "tncn2025-d8-k2"
+    ],
+    "first_seen": "2025-06-10T10:06:29+00:00",
+    "last_seen": "2025-11-25T11:09:59+00:00",
+    "count": 2,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61715183-c1",
+      "vne-59971355-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-024",
+    "canonical_text": "For a small business with an annual revenue of 300 million VND, the tax payable is 1 million VND.",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k2-c"
+    ],
+    "first_seen": "2025-11-25T12:42:42+00:00",
+    "last_seen": "2025-11-25T12:42:42+00:00",
+    "count": 2,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61715814-c0",
+      "vne-61715814-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-025",
+    "canonical_text": "Một hộ kinh doanh có thu nhập 100 triệu đồng mỗi năm, tức khoảng 8,33 triệu đồng mỗi tháng, đã vượt ngưỡng 15,5 triệu đồng và phải nộp thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d10-k1-a",
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-11-19T23:37:28+00:00",
+    "last_seen": "2025-11-26T09:04:10+00:00",
+    "count": 2,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-61723574-c0",
+      "vne-61664549-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-026",
+    "canonical_text": "Công luật quy định người kinh doanh phải có hóa đơn đầu vào và hóa đơn đầu ra",
+    "contradicts": [
+      "qlt2019-d91-k4",
+      "qlt2025-d26-k5-a"
+    ],
+    "first_seen": "2025-06-06T04:25:33+00:00",
+    "last_seen": "2025-11-29T14:30:24+00:00",
+    "count": 2,
+    "total_engagement": 7,
+    "member_claim_ids": [
+      "vne-61751220-c2",
+      "vne-59925740-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-027",
+    "canonical_text": "Thuế trên doanh thu chỉ áp dụng với bán lẻ.",
+    "contradicts": [
+      "qlt2019-d50-k2-d",
+      "qlt2019-d50-k4",
+      "tncn2025-d7-k3",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-11-25T09:44:07+00:00",
+    "last_seen": "2025-12-02T02:41:32+00:00",
+    "count": 2,
+    "total_engagement": 17,
+    "member_claim_ids": [
+      "vne-61772698-c1",
+      "vne-61714414-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-028",
+    "canonical_text": "Nếu doanh thu trung bình 80 triệu đồng mỗi tháng, người nộp thuế không phải nộp thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2"
+    ],
+    "first_seen": "2025-12-02T04:04:08+00:00",
+    "last_seen": "2025-12-05T09:43:30+00:00",
+    "count": 2,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61774027-c1",
+      "vne-61811856-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-029",
+    "canonical_text": "Thuế vẫn phải đóng dần theo phương pháp kê khai",
+    "contradicts": [
+      "qlt2019-d124-k5",
+      "qlt2019-d50-k2-d",
+      "qlt2019-d51-k5",
+      "qlt2019-d59-k1-d",
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-06-05T01:07:12+00:00",
+    "last_seen": "2025-11-20T00:43:05+00:00",
+    "count": 2,
+    "total_engagement": 4,
+    "member_claim_ids": [
+      "vne-59909094-c0",
+      "vne-61665070-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-030",
+    "canonical_text": "Thuế được đánh trên doanh thu, không cần biết lãi lỗ.",
+    "contradicts": [
+      "qlt2019-d50-k2-d",
+      "tncn2025-d20-k2",
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k3",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-06-05T16:56:34+00:00",
+    "last_seen": "2025-11-26T07:47:46+00:00",
+    "count": 2,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59920450-c0",
+      "vne-61722927-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-031",
+    "canonical_text": "Thuế thu nhập cá nhân không được tính trên lợi nhuận nếu không có sổ sách kế toán",
+    "contradicts": [
+      "qlt2019-d143-k2",
+      "qlt2019-d50-k1-b",
+      "qlt2019-d50-k1-c",
+      "qlt2019-d52-k1-d",
+      "qlt2025-d24-k2-c",
+      "qlt2025-d25-k1-d"
+    ],
+    "first_seen": "2025-11-22T10:49:16+00:00",
+    "last_seen": "2025-11-22T10:49:16+00:00",
+    "count": 2,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61689725-c0",
+      "vne-61689725-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-032",
+    "canonical_text": "Hộ kinh doanh phải kê khai đầy đủ, nếu không thì phải đóng thuế theo doanh thu",
+    "contradicts": [
+      "qlt2019-d51-k1",
+      "qlt2025-d12-k3-c"
+    ],
+    "first_seen": "2025-11-29T01:41:26+00:00",
+    "last_seen": "2025-12-03T03:56:04+00:00",
+    "count": 2,
+    "total_engagement": 8,
+    "member_claim_ids": [
+      "vne-61746673-c0",
+      "vne-61785881-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-033",
+    "canonical_text": "Freelancers không phải đóng thuế thu nhập cá nhân.",
+    "contradicts": [
+      "qlt2019-d33-k2-đ",
+      "qlt2019-d5-k1"
+    ],
+    "first_seen": "2025-06-05T02:20:17+00:00",
+    "last_seen": "2025-06-05T02:20:17+00:00",
+    "count": 1,
+    "total_engagement": 7,
+    "member_claim_ids": [
+      "vne-59910421-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-034",
+    "canonical_text": "Thuế thu nhập cá nhân không liên quan đến bảo hiểm xã hội hay các ưu đãi khác",
+    "contradicts": [
+      "tncn2025-d8-k2"
+    ],
+    "first_seen": "2025-06-06T11:12:17+00:00",
+    "last_seen": "2025-06-06T11:12:17+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59931022-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-035",
+    "canonical_text": "Khi đăng ký thành lập doanh nghiệp, hệ thống kế toán và sổ sách phải tuân thủ quy định, vi phạm sẽ bị phạt ngay.",
+    "contradicts": [
+      "qlt2025-d26-k5-b",
+      "qlt2025-d27-k2-a"
+    ],
+    "first_seen": "2025-06-05T10:46:48+00:00",
+    "last_seen": "2025-06-05T10:46:48+00:00",
+    "count": 1,
+    "total_engagement": 6,
+    "member_claim_ids": [
+      "vne-59917509-c2"
+    ]
+  },
+  {
+    "misconception_id": "misc-036",
+    "canonical_text": "Hộ kinh doanh không đủ năng lực để vận hành như một doanh nghiệp.",
+    "contradicts": [
+      "qlt2019-d102-k1",
+      "qlt2019-d105-k1-a"
+    ],
+    "first_seen": "2025-06-07T04:12:41+00:00",
+    "last_seen": "2025-06-07T04:12:41+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-59937360-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-037",
+    "canonical_text": "Thuế suất 5-10k được áp dụng làm tăng giá",
+    "contradicts": [
+      "tncn2025-d20-k3-b",
+      "tncn2025-d20-k3-d"
+    ],
+    "first_seen": "2025-06-05T01:10:24+00:00",
+    "last_seen": "2025-06-05T01:10:24+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-59909144-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-038",
+    "canonical_text": "Tất cả doanh nghiệp phải ghi nhận doanh thu bán hàng vào sổ sách lưu trữ và cơ quan thuế sẽ tính thuế dựa trên doanh thu đó.",
+    "contradicts": [
+      "qlt2019-d17-k5",
+      "qlt2019-d50-k4",
+      "tncn2025-d7-k3",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-06-05T19:06:18+00:00",
+    "last_seen": "2025-06-05T19:06:18+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59920749-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-039",
+    "canonical_text": "Nếu sổ sách ghi nhận thu nhập vượt mức quy định, doanh nghiệp phải nộp thuế lợi tức.",
+    "contradicts": [
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-06-05T19:06:18+00:00",
+    "last_seen": "2025-06-05T19:06:18+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59920749-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-040",
+    "canonical_text": "Khi mua hàng từ người dân, không nhất thiết phải có hoá đơn; chỉ cần kê khai thông tin của người bán vào bảng kê khai và bên thuế chấp nhận.",
+    "contradicts": [
+      "qlt2019-d29-k4",
+      "qlt2025-d26-k5-g",
+      "qlt2025-d40-k3-d",
+      "qlt2025-d45-k4-c"
+    ],
+    "first_seen": "2025-06-06T05:56:56+00:00",
+    "last_seen": "2025-06-06T05:56:56+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-59927074-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-041",
+    "canonical_text": "Doanh thu 274.000 đồng mỗi ngày thì phải kê khai nộp thuế.",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k3"
+    ],
+    "first_seen": "2025-06-06T05:17:32+00:00",
+    "last_seen": "2025-06-06T05:17:32+00:00",
+    "count": 1,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-59926544-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-042",
+    "canonical_text": "Thuế suất 1.5% áp dụng cho bán buôn, bán lẻ hàng hóa.",
+    "contradicts": [
+      "tncn2025-d7-k3-d"
+    ],
+    "first_seen": "2025-06-06T08:53:26+00:00",
+    "last_seen": "2025-06-06T08:53:26+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59929445-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-043",
+    "canonical_text": "Tax on revenue is 1.5% of revenue",
+    "contradicts": [
+      "tncn2025-d7-k3-d"
+    ],
+    "first_seen": "2025-06-06T14:10:10+00:00",
+    "last_seen": "2025-06-06T14:10:10+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59932466-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-044",
+    "canonical_text": "Thuế bán hàng được tính là 1,5% của giá bán",
+    "contradicts": [
+      "tncn2025-d7-k3-d"
+    ],
+    "first_seen": "2025-06-06T06:44:16+00:00",
+    "last_seen": "2025-06-06T06:44:16+00:00",
+    "count": 1,
+    "total_engagement": 8,
+    "member_claim_ids": [
+      "vne-59927638-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-045",
+    "canonical_text": "Nhà hàng và công ty phải nộp thuế thu nhập cá nhân khi doanh thu đạt 3 tỷ đồng trong một năm; nếu doanh thu thấp hơn, họ vẫn phải nộp thuế khoan như hiện nay",
+    "contradicts": [
+      "tncn2025-d7-k2-b",
+      "tncn2025-d7-k3"
+    ],
+    "first_seen": "2025-06-06T05:53:47+00:00",
+    "last_seen": "2025-06-06T05:53:47+00:00",
+    "count": 1,
+    "total_engagement": 4,
+    "member_claim_ids": [
+      "vne-59927026-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-046",
+    "canonical_text": "Hộ kinh doanh tự khai doanh thu và tính thuế 1,5% trên số tiền bán hàng hóa, dịch vụ.",
+    "contradicts": [
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-06-06T06:21:58+00:00",
+    "last_seen": "2025-06-06T06:21:58+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59927379-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-047",
+    "canonical_text": "Doanh thu 120 triệu đồng một năm yêu cầu đăng ký kinh doanh và nộp thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k2"
+    ],
+    "first_seen": "2025-06-06T08:23:17+00:00",
+    "last_seen": "2025-06-06T08:23:17+00:00",
+    "count": 1,
+    "total_engagement": 5,
+    "member_claim_ids": [
+      "vne-59929059-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-048",
+    "canonical_text": "Thuế được tính trên tổng doanh thu bán lẻ phân bón",
+    "contradicts": [
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-10-25T03:56:22+00:00",
+    "last_seen": "2025-10-25T03:56:22+00:00",
+    "count": 1,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-61408801-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-049",
+    "canonical_text": "Khi bán thẻ cào điện thoại mệnh giá 100k, thuế phải đóng là 1,5k",
+    "contradicts": [
+      "tncn2025-d7-k3-e"
+    ],
+    "first_seen": "2025-10-25T04:06:06+00:00",
+    "last_seen": "2025-10-25T04:06:06+00:00",
+    "count": 1,
+    "total_engagement": 6,
+    "member_claim_ids": [
+      "vne-61408921-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-050",
+    "canonical_text": "Nộp thuế cá nhân kinh doanh tự do, nhiều trường hợp bên kia họ thu thuế rồi thì không cần khai báo bên Việt Nam nữa",
+    "contradicts": [
+      "qlt2019-d35-k6",
+      "qlt2025-d12-k3",
+      "qlt2025-d12-k3-a"
+    ],
+    "first_seen": "2025-10-25T04:41:59+00:00",
+    "last_seen": "2025-10-25T04:41:59+00:00",
+    "count": 1,
+    "total_engagement": 9,
+    "member_claim_ids": [
+      "vne-61409285-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-051",
+    "canonical_text": "Hộ kinh doanh không có đủ hoá đơn, chứng từ nên không thể tính thuế theo lợi nhuận",
+    "contradicts": [
+      "qlt2019-d50-k1-c",
+      "qlt2019-d51-k1",
+      "qlt2019-d52-k1-g",
+      "qlt2025-d24-k2-b",
+      "qlt2025-d24-k2-d",
+      "qlt2025-d25-k1-g"
+    ],
+    "first_seen": "2025-10-25T08:44:54+00:00",
+    "last_seen": "2025-10-25T08:44:54+00:00",
+    "count": 1,
+    "total_engagement": 7,
+    "member_claim_ids": [
+      "vne-61411483-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-052",
+    "canonical_text": "Người lao động được giảm trừ thu nhập tối đa 15.5 triệu đồng cộng với 6.5 triệu đồng, nên không bị tính thuế",
+    "contradicts": [
+      "tncn2025-d10-k1-a",
+      "tncn2025-d10-k1-b"
+    ],
+    "first_seen": "2025-11-01T17:56:07+00:00",
+    "last_seen": "2025-11-01T17:56:07+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61487353-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-053",
+    "canonical_text": "Doanh thu dưới 3 tỷ đồng của hộ kinh doanh vẫn phải nộp thuế ngay cả khi lỗ, vì không được tính theo lợi nhuận",
+    "contradicts": [
+      "tncn2025-d7-k3"
+    ],
+    "first_seen": "2025-10-25T11:22:45+00:00",
+    "last_seen": "2025-10-25T11:22:45+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61412550-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-054",
+    "canonical_text": "Thuế lợi nhuận được tính trên doanh thu cho các doanh nghiệp bán lẻ nhỏ lẻ.",
+    "contradicts": [
+      "qlt2019-d50-k2-d",
+      "qlt2019-d50-k4"
+    ],
+    "first_seen": "2025-11-07T08:55:14+00:00",
+    "last_seen": "2025-11-07T08:55:14+00:00",
+    "count": 1,
+    "total_engagement": 5,
+    "member_claim_ids": [
+      "vne-61546054-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-055",
+    "canonical_text": "Theo quy định của Luật thuế, mọi giao dịch kinh doanh phải được lập hóa đơn.",
+    "contradicts": [
+      "qlt2025-d26-k5-a"
+    ],
+    "first_seen": "2025-11-07T09:01:48+00:00",
+    "last_seen": "2025-11-07T09:01:48+00:00",
+    "count": 1,
+    "total_engagement": 5,
+    "member_claim_ids": [
+      "vne-61546144-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-056",
+    "canonical_text": "Tất cả doanh nghiệp, bất kể quy mô, phải xuất hóa đơn đầy đủ.",
+    "contradicts": [
+      "qlt2019-d143-k3",
+      "qlt2019-d35-k1",
+      "qlt2019-d50-k4",
+      "qlt2019-d6-k7"
+    ],
+    "first_seen": "2025-11-07T09:25:05+00:00",
+    "last_seen": "2025-11-07T09:25:05+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61546437-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-057",
+    "canonical_text": "Vietnamese tax law permits starting the calculation from any point.",
+    "contradicts": [
+      "qlt2025-d31-k4"
+    ],
+    "first_seen": "2025-11-07T12:24:50+00:00",
+    "last_seen": "2025-11-07T12:24:50+00:00",
+    "count": 1,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-61548090-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-058",
+    "canonical_text": "Các khoản BHXH, lương hưu và trợ cấp thất nghiệp phải được tính vào thu nhập chịu thuế",
+    "contradicts": [
+      "tncn2025-d4-k9",
+      "tncn2025-d8-k2"
+    ],
+    "first_seen": "2025-11-19T13:52:32+00:00",
+    "last_seen": "2025-11-19T13:52:32+00:00",
+    "count": 1,
+    "total_engagement": 9,
+    "member_claim_ids": [
+      "vne-61662681-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-059",
+    "canonical_text": "Một người lao động phải tạo ra 930 triệu đồng doanh thu với lợi nhuận 20% để bắt đầu chịu thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-11-20T01:25:21+00:00",
+    "last_seen": "2025-11-20T01:25:21+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61665648-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-060",
+    "canonical_text": "Thuế cho thuê tài sản phải tính dựa trên mức khấu trừ thuế thu nhập cá nhân sau khi trừ phần khấu trừ.",
+    "contradicts": [
+      "tncn2025-d7-k4"
+    ],
+    "first_seen": "2025-11-22T08:49:10+00:00",
+    "last_seen": "2025-11-22T08:49:10+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61688844-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-061",
+    "canonical_text": "Nếu nộp thuế khoán, thì phải có sổ sách",
+    "contradicts": [
+      "qlt2019-d51-k1"
+    ],
+    "first_seen": "2025-11-22T09:45:28+00:00",
+    "last_seen": "2025-11-22T09:45:28+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61689307-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-062",
+    "canonical_text": "Doanh thu 3 triệu đồng một ngày là quá nhỏ để phải đóng thuế",
+    "contradicts": [
+      "tncn2025-d7-k1",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-11-22T07:19:06+00:00",
+    "last_seen": "2025-11-22T07:19:06+00:00",
+    "count": 1,
+    "total_engagement": 79,
+    "member_claim_ids": [
+      "vne-61688221-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-063",
+    "canonical_text": "Hóa đơn không được miễn phí",
+    "contradicts": [
+      "qlt2025-d26-k6"
+    ],
+    "first_seen": "2025-11-22T14:47:53+00:00",
+    "last_seen": "2025-11-22T14:47:53+00:00",
+    "count": 1,
+    "total_engagement": 10,
+    "member_claim_ids": [
+      "vne-61691152-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-064",
+    "canonical_text": "The 15% tax rate applies to individual entrepreneurs whose annual revenue is less than 3 billion dong.",
+    "contradicts": [
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-11-25T09:47:12+00:00",
+    "last_seen": "2025-11-25T09:47:12+00:00",
+    "count": 1,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-61714445-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-065",
+    "canonical_text": "Thuế 0.5% của 110,000 đồng bằng 500 đồng.",
+    "contradicts": [
+      "tncn2025-d7-k3-b"
+    ],
+    "first_seen": "2025-11-25T12:52:44+00:00",
+    "last_seen": "2025-11-25T12:52:44+00:00",
+    "count": 1,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-61715885-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-066",
+    "canonical_text": "Bạn có thể khấu trừ toàn bộ chi phí đầu vào, bao gồm tiền mặt, tiền mặt bằng, tiền máy móc, tiền dụng cụ, để tính thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-11-25T09:45:54+00:00",
+    "last_seen": "2025-11-25T09:45:54+00:00",
+    "count": 1,
+    "total_engagement": 8,
+    "member_claim_ids": [
+      "vne-61714433-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-067",
+    "canonical_text": "Nếu hộ kinh doanh được loại trừ chi phí, thì thuế thu nhập cá nhân phải được tính từ tiền lương.",
+    "contradicts": [
+      "tncn2025-d7-k2-a",
+      "tncn2025-d8-k1"
+    ],
+    "first_seen": "2025-11-25T16:29:42+00:00",
+    "last_seen": "2025-11-25T16:29:42+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61717247-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-068",
+    "canonical_text": "Các cá nhân và tổ chức phải nộp thuế khoán.",
+    "contradicts": [
+      "qlt2019-d51-k1",
+      "qlt2019-d51-k3"
+    ],
+    "first_seen": "2025-11-25T14:11:10+00:00",
+    "last_seen": "2025-11-25T14:11:10+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61716471-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-069",
+    "canonical_text": "Cơ sở sản xuất kinh doanh phải kết nối dữ liệu bán hàng với cơ quan thuế và phải xuất hóa đơn chịu thuế cho người mua, bất kể người mua có yêu cầu hay không.",
+    "contradicts": [
+      "qlt2019-d90-k1",
+      "qlt2019-d90-k2",
+      "qlt2025-d26-k5-a"
+    ],
+    "first_seen": "2025-11-25T14:11:10+00:00",
+    "last_seen": "2025-11-25T14:11:10+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61716471-c3"
+    ]
+  },
+  {
+    "misconception_id": "misc-070",
+    "canonical_text": "Thuế được đánh trên doanh thu là thuế đánh trên phần vốn của người kinh doanh.",
+    "contradicts": [
+      "qlt2019-d50-k2-d",
+      "tncn2025-d20-k2",
+      "tncn2025-d3-k4-a",
+      "tncn2025-d7-k3-a"
+    ],
+    "first_seen": "2025-11-25T21:30:20+00:00",
+    "last_seen": "2025-11-25T21:30:20+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61717699-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-071",
+    "canonical_text": "Nếu bạn trả lương cho chính mình, bạn sẽ phải đóng thuế 15% trên 120 triệu đồng",
+    "contradicts": [
+      "tncn2025-d9-k2"
+    ],
+    "first_seen": "2025-11-29T05:41:42+00:00",
+    "last_seen": "2025-11-29T05:41:42+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61748408-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-072",
+    "canonical_text": "Thuế thu nhập cá nhân là 15% của doanh thu",
+    "contradicts": [
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-11-28T23:47:30+00:00",
+    "last_seen": "2025-11-28T23:47:30+00:00",
+    "count": 1,
+    "total_engagement": 5,
+    "member_claim_ids": [
+      "vne-61745953-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-073",
+    "canonical_text": "Thuế thu nhập cá nhân trên thu nhập từ cho thuê bất động sản được tính 10%.",
+    "contradicts": [
+      "tncn2025-d7-k4"
+    ],
+    "first_seen": "2025-11-29T02:21:34+00:00",
+    "last_seen": "2025-11-29T02:21:34+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61746991-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-074",
+    "canonical_text": "Doanh thu 700 triệu đồng vẫn có thể tránh để dưới ngưỡng 500 triệu, nên doanh thu phải 1 tỷ đồng để bắt buộc đóng thuế",
+    "contradicts": [
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-11-29T04:01:21+00:00",
+    "last_seen": "2025-11-29T04:01:21+00:00",
+    "count": 1,
+    "total_engagement": 3,
+    "member_claim_ids": [
+      "vne-61747757-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-075",
+    "canonical_text": "Lương công nhân, nhân viên cao lương 15,5 triệu đồng mỗi tháng là ngưỡng miễn thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d10-k1-a"
+    ],
+    "first_seen": "2025-11-29T07:10:05+00:00",
+    "last_seen": "2025-11-29T07:10:05+00:00",
+    "count": 1,
+    "total_engagement": 4,
+    "member_claim_ids": [
+      "vne-61748919-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-076",
+    "canonical_text": "Mốc bắt đầu tính thuế là 500 triệu đồng",
+    "contradicts": [
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-11-29T04:17:58+00:00",
+    "last_seen": "2025-11-29T04:17:58+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61747860-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-077",
+    "canonical_text": "Theo quy định pháp luật hiện hành, mức thuế suất là 1,5%.",
+    "contradicts": [
+      "tncn2025-d7-k3-d"
+    ],
+    "first_seen": "2025-11-29T05:14:50+00:00",
+    "last_seen": "2025-11-29T05:14:50+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61748210-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-078",
+    "canonical_text": "Thuế thu nhập cá nhân bắt đầu từ 1%",
+    "contradicts": [
+      "tncn2025-d7-k3-e"
+    ],
+    "first_seen": "2025-12-02T03:45:06+00:00",
+    "last_seen": "2025-12-02T03:45:06+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61773697-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-079",
+    "canonical_text": "Không cần đăng ký kinh doanh và không đóng thuế môn bài",
+    "contradicts": [
+      "qlt2019-d32-k1",
+      "qlt2019-d32-k2-a",
+      "qlt2019-d33-k2",
+      "qlt2019-d33-k2-a"
+    ],
+    "first_seen": "2025-12-02T04:12:15+00:00",
+    "last_seen": "2025-12-02T04:12:15+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61774132-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-080",
+    "canonical_text": "Thuế thu nhập cá nhân tính theo doanh thu gây bất công vì lợi nhuận khác nhau",
+    "contradicts": [
+      "tncn2025-d20-k1",
+      "tncn2025-d7-k2"
+    ],
+    "first_seen": "2025-12-02T05:16:01+00:00",
+    "last_seen": "2025-12-02T05:16:01+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61774927-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-081",
+    "canonical_text": "Chạy xe công nghệ là làm công, không phải kinh doanh",
+    "contradicts": [
+      "tncn2025-d3-k1",
+      "tncn2025-d3-k7-b"
+    ],
+    "first_seen": "2025-12-02T05:19:25+00:00",
+    "last_seen": "2025-12-02T05:19:25+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61774983-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-082",
+    "canonical_text": "Các tiệm tạp hóa ở nông thôn có doanh thu 500 triệu đồng sẽ bị tính thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-12-02T01:02:45+00:00",
+    "last_seen": "2025-12-02T01:02:45+00:00",
+    "count": 1,
+    "total_engagement": 6,
+    "member_claim_ids": [
+      "vne-61771002-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-083",
+    "canonical_text": "Chi phí khác như điện, nước, lương, lãi không thể tính vào trừ khi lên công ty.",
+    "contradicts": [
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-12-10T10:10:07+00:00",
+    "last_seen": "2025-12-10T10:10:07+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61859755-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-084",
+    "canonical_text": "Hộ kinh doanh không phải chịu thuế trên toàn bộ doanh thu từ đồng đầu tiên.",
+    "contradicts": [
+      "qlt2025-d13-k1-a"
+    ],
+    "first_seen": "2025-12-10T03:01:00+00:00",
+    "last_seen": "2025-12-10T03:01:00+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61853864-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-085",
+    "canonical_text": "Sau khi kê khai thuế, doanh nghiệp phải mở tài khoản ngân hàng riêng để nhận doanh thu.",
+    "contradicts": [
+      "qlt2019-d35-k1"
+    ],
+    "first_seen": "2025-12-10T04:41:59+00:00",
+    "last_seen": "2025-12-10T04:41:59+00:00",
+    "count": 1,
+    "total_engagement": 6,
+    "member_claim_ids": [
+      "vne-61855729-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-086",
+    "canonical_text": "Thuế được giảm xuống mức 0.5% đến 2%",
+    "contradicts": [
+      "tncn2025-d7-k3-b"
+    ],
+    "first_seen": "2025-12-10T04:17:04+00:00",
+    "last_seen": "2025-12-10T04:17:04+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61855197-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-087",
+    "canonical_text": "Thuế thu nhập cá nhân áp dụng mức 10% cho thu nhập 500 triệu đồng.",
+    "contradicts": [
+      "tncn2025-d7-k1"
+    ],
+    "first_seen": "2025-12-10T05:30:56+00:00",
+    "last_seen": "2025-12-10T05:30:56+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61856498-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-088",
+    "canonical_text": "A revenue of 1 billion per year would result in tax of 2.5-10 million.",
+    "contradicts": [
+      "tncn2025-d9-k2"
+    ],
+    "first_seen": "2025-12-10T06:02:59+00:00",
+    "last_seen": "2025-12-10T06:02:59+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61856882-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-089",
+    "canonical_text": "Thu nhập làm thuê 15,5 triệu đồng trở lên mới bị tính thuế thu nhập cá nhân",
+    "contradicts": [
+      "tncn2025-d10-k1",
+      "tncn2025-d10-k1-a"
+    ],
+    "first_seen": "2025-12-10T14:22:23+00:00",
+    "last_seen": "2025-12-10T14:22:23+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61861485-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-090",
+    "canonical_text": "Doanh nghiệp phải xuất hóa đơn điện tử và ký bằng token.",
+    "contradicts": [
+      "qlt2019-d8-k5",
+      "qlt2025-d26-k5-a"
+    ],
+    "first_seen": "2025-06-06T01:41:56+00:00",
+    "last_seen": "2025-06-06T01:41:56+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59922891-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-091",
+    "canonical_text": "Không có hoàn thuế.",
+    "contradicts": [
+      "qlt2019-d75-k2",
+      "qlt2025-d18-k6"
+    ],
+    "first_seen": "2025-06-05T16:56:34+00:00",
+    "last_seen": "2025-06-05T16:56:34+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59920450-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-092",
+    "canonical_text": "Luật thuế thu nhập cá nhân yêu cầu có hoá đơn đầu vào nhưng không cho phép trừ chi phí đó khi tính thuế trên lợi nhuận",
+    "contradicts": [
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-06-05T02:01:41+00:00",
+    "last_seen": "2025-06-05T02:01:41+00:00",
+    "count": 1,
+    "total_engagement": 73,
+    "member_claim_ids": [
+      "vne-59910097-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-093",
+    "canonical_text": "Hoá đơn đầu vào vẫn có",
+    "contradicts": [
+      "qlt2019-d125-k1-d"
+    ],
+    "first_seen": "2025-06-06T05:15:33+00:00",
+    "last_seen": "2025-06-06T05:15:33+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59926519-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-094",
+    "canonical_text": "Bán tạp hóa không cần phải thành lập doanh nghiệp",
+    "contradicts": [
+      "qlt2019-d102-k1",
+      "qlt2019-d33-k2-a"
+    ],
+    "first_seen": "2025-06-06T09:38:24+00:00",
+    "last_seen": "2025-06-06T09:38:24+00:00",
+    "count": 1,
+    "total_engagement": 10,
+    "member_claim_ids": [
+      "vne-59930054-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-095",
+    "canonical_text": "Hộ kinh doanh có quyền kê khai thuế theo chế độ kế toán (lợi nhuận) nếu muốn, mặc dù hầu hết không chọn.",
+    "contradicts": [
+      "qlt2019-d51-k5"
+    ],
+    "first_seen": "2025-06-06T05:36:17+00:00",
+    "last_seen": "2025-06-06T05:36:17+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59926779-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-096",
+    "canonical_text": "Việc không xuất phiếu bán hàng hoặc gian lận sẽ bị xử lý hình sự",
+    "contradicts": [
+      "qlt2019-d136-k7",
+      "qlt2019-d143-k3",
+      "qlt2025-d44-k6"
+    ],
+    "first_seen": "2025-06-06T05:17:44+00:00",
+    "last_seen": "2025-06-06T05:17:44+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59926548-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-097",
+    "canonical_text": "Thuế doanh thu 1,5-4,5%",
+    "contradicts": [
+      "tncn2025-d20-k3-c",
+      "tncn2025-d7-k3-c",
+      "tncn2025-d7-k3-d"
+    ],
+    "first_seen": "2025-06-09T07:16:03+00:00",
+    "last_seen": "2025-06-09T07:16:03+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59957846-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-098",
+    "canonical_text": "Doanh nghiệp chỉ nộp thuế 20% trên doanh thu vượt 5 triệu đồng, không tính thuế trên 85k",
+    "contradicts": [
+      "tncn2025-d7-k2-d"
+    ],
+    "first_seen": "2025-06-10T04:36:29+00:00",
+    "last_seen": "2025-06-10T04:36:29+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59967817-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-099",
+    "canonical_text": "Cây xăng dầu sẽ xuất hóa đơn khi có yêu cầu, nhưng không xuất hóa đơn cho từng cá nhân, thay vào đó dữ liệu kinh doanh đã được nhập vào hệ thống",
+    "contradicts": [
+      "qlt2019-d6-k7",
+      "qlt2019-d90-k1",
+      "qlt2019-d91-k4"
+    ],
+    "first_seen": "2025-06-10T05:11:20+00:00",
+    "last_seen": "2025-06-10T05:11:20+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-59968278-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-100",
+    "canonical_text": "Hình phạt khi không xuất hóa đơn là vài trăm lần giá trị đơn hàng.",
+    "contradicts": [
+      "qlt2019-d138-k2",
+      "qlt2019-d138-k2-b",
+      "qlt2019-d138-k2-d"
+    ],
+    "first_seen": "2025-10-25T03:46:45+00:00",
+    "last_seen": "2025-10-25T03:46:45+00:00",
+    "count": 1,
+    "total_engagement": 5,
+    "member_claim_ids": [
+      "vne-61408717-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-101",
+    "canonical_text": "Luật thuế yêu cầu doanh nghiệp phải sử dụng phần mềm và hóa đơn điện tử",
+    "contradicts": [
+      "qlt2019-d91-k1",
+      "qlt2019-d91-k3",
+      "qlt2025-d26-k3-b"
+    ],
+    "first_seen": "2025-10-27T09:07:03+00:00",
+    "last_seen": "2025-10-27T09:07:03+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61429107-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-102",
+    "canonical_text": "Lương sau khi trừ bảo hiểm phải trên 186 triệu đồng mỗi năm mới phải nộp thuế",
+    "contradicts": [
+      "tncn2025-d10-k1-a"
+    ],
+    "first_seen": "2025-11-19T12:54:27+00:00",
+    "last_seen": "2025-11-19T12:54:27+00:00",
+    "count": 1,
+    "total_engagement": 53,
+    "member_claim_ids": [
+      "vne-61662266-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-103",
+    "canonical_text": "Lợi nhuận trên 200 triệu đồng trong một năm phải chịu thuế và được tính theo khung bậc thang.",
+    "contradicts": [
+      "tncn2025-d9-k2"
+    ],
+    "first_seen": "2025-11-19T13:29:39+00:00",
+    "last_seen": "2025-11-19T13:29:39+00:00",
+    "count": 1,
+    "total_engagement": 18,
+    "member_claim_ids": [
+      "vne-61662519-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-104",
+    "canonical_text": "Chi phí xây dựng, lãi vay, hao mòn tài sản, điện và nước không được trừ khi khai thuế thu nhập cá nhân.",
+    "contradicts": [
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-11-24T08:45:26+00:00",
+    "last_seen": "2025-11-24T08:45:26+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61703770-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-105",
+    "canonical_text": "Để tính thuế, cần có hóa đơn đỏ cho mọi giao dịch; nếu không có, không có cơ sở trừ",
+    "contradicts": [
+      "qlt2019-d2-k1-c",
+      "qlt2019-d91-k4"
+    ],
+    "first_seen": "2025-11-22T10:01:05+00:00",
+    "last_seen": "2025-11-22T10:01:05+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61689405-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-106",
+    "canonical_text": "Hiện nay thuế thu nhập cá nhân được kê khai dựa trên doanh thu thực tế.",
+    "contradicts": [
+      "tncn2025-d7-k2",
+      "tncn2025-d7-k4"
+    ],
+    "first_seen": "2025-11-23T01:03:10+00:00",
+    "last_seen": "2025-11-23T01:03:10+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61692698-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-107",
+    "canonical_text": "Ngưỡng doanh thu 3 tỷ đồng vẫn phải kê khai thuế",
+    "contradicts": [
+      "tncn2025-d7-k2-c"
+    ],
+    "first_seen": "2025-11-25T09:25:00+00:00",
+    "last_seen": "2025-11-25T09:25:00+00:00",
+    "count": 1,
+    "total_engagement": 8,
+    "member_claim_ids": [
+      "vne-61714237-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-108",
+    "canonical_text": "The tax rate ranges from 0.5% to 2%.",
+    "contradicts": [
+      "tncn2025-d20-k3-a",
+      "tncn2025-d20-k3-c",
+      "tncn2025-d7-k3-b",
+      "tncn2025-d7-k3-c",
+      "tncn2025-d7-k3-e"
+    ],
+    "first_seen": "2025-11-25T10:08:25+00:00",
+    "last_seen": "2025-11-25T10:08:25+00:00",
+    "count": 1,
+    "total_engagement": 4,
+    "member_claim_ids": [
+      "vne-61714667-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-109",
+    "canonical_text": "Chi phí đầu vào của hộ kinh doanh, ví dụ mua bún, gà, thịt, rau, không được tính là hợp lý hợp lệ để trừ thuế",
+    "contradicts": [
+      "tncn2025-d7-k2-a"
+    ],
+    "first_seen": "2025-11-25T16:50:28+00:00",
+    "last_seen": "2025-11-25T16:50:28+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61717322-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-110",
+    "canonical_text": "Tax on profit for individuals is 17%.",
+    "contradicts": [
+      "tncn2025-d7-k2-c"
+    ],
+    "first_seen": "2025-11-29T03:24:28+00:00",
+    "last_seen": "2025-11-29T03:24:28+00:00",
+    "count": 1,
+    "total_engagement": 4,
+    "member_claim_ids": [
+      "vne-61747433-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-111",
+    "canonical_text": "Taxpayers with annual revenue between 1 billion and 3 billion VND must pay tax on revenue or profit if they can prove costs.",
+    "contradicts": [
+      "tncn2025-d7-k2-a",
+      "tncn2025-d7-k3"
+    ],
+    "first_seen": "2025-11-29T02:01:08+00:00",
+    "last_seen": "2025-11-29T02:01:08+00:00",
+    "count": 1,
+    "total_engagement": 4,
+    "member_claim_ids": [
+      "vne-61746825-c2"
+    ]
+  },
+  {
+    "misconception_id": "misc-112",
+    "canonical_text": "If a household rents out its premises for 1 billion VND, the owner must pay personal income tax on that 1 billion VND.",
+    "contradicts": [
+      "tncn2025-d7-k4"
+    ],
+    "first_seen": "2025-11-29T09:31:00+00:00",
+    "last_seen": "2025-11-29T09:31:00+00:00",
+    "count": 1,
+    "total_engagement": 2,
+    "member_claim_ids": [
+      "vne-61749685-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-113",
+    "canonical_text": "Có một luật quy định đánh thuế tạp hóa tới 15% trên tổng doanh thu.",
+    "contradicts": [
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-12-02T04:47:29+00:00",
+    "last_seen": "2025-12-02T04:47:29+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-61774577-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-114",
+    "canonical_text": "Thuế suất 15% là ưu đãi thuế suất thu nhập doanh nghiệp dành cho công ty siêu nhỏ có doanh thu tương đương.",
+    "contradicts": [
+      "tncn2025-d7-k2-b"
+    ],
+    "first_seen": "2025-12-10T03:26:08+00:00",
+    "last_seen": "2025-12-10T03:26:08+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61854259-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-115",
+    "canonical_text": "Bạn chỉ phải đóng thuế khi lợi nhuận vượt 20%",
+    "contradicts": [
+      "tncn2025-d15-k2",
+      "tncn2025-d16-k2",
+      "tncn2025-d17-k2"
+    ],
+    "first_seen": "2025-12-10T05:50:59+00:00",
+    "last_seen": "2025-12-10T05:50:59+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61856745-c1"
+    ]
+  },
+  {
+    "misconception_id": "misc-116",
+    "canonical_text": "Hộ kinh doanh mua vào bán ra không được khấu trừ thuế đầu vào.",
+    "contradicts": [
+      "qlt2019-d2-k1-c",
+      "qlt2019-d34-k2-c",
+      "qlt2025-d12-k3-a"
+    ],
+    "first_seen": "2025-06-06T09:37:12+00:00",
+    "last_seen": "2025-06-06T09:37:12+00:00",
+    "count": 1,
+    "total_engagement": 1,
+    "member_claim_ids": [
+      "vne-59930039-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-117",
+    "canonical_text": "Trong năm 2026, người lao động được miễn thuế thu nhập cá nhân khi thu nhập hàng tháng không vượt quá 15.5 triệu đồng hoặc tổng thu nhập hàng năm không vượt quá 186 triệu đồng.",
+    "contradicts": [
+      "tncn2025-d10-k1-a"
+    ],
+    "first_seen": "2025-11-20T02:47:24+00:00",
+    "last_seen": "2025-11-20T02:47:24+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61666903-c0"
+    ]
+  },
+  {
+    "misconception_id": "misc-118",
+    "canonical_text": "To be taxed on profit, a taxpayer must register as a business entity and apply the current 20% tax rate.",
+    "contradicts": [
+      "qlt2019-d30-k1",
+      "tncn2025-d7-k2-d"
+    ],
+    "first_seen": "2025-11-25T15:47:39+00:00",
+    "last_seen": "2025-11-25T15:47:39+00:00",
+    "count": 1,
+    "total_engagement": 0,
+    "member_claim_ids": [
+      "vne-61717076-c0"
+    ]
+  }
+]

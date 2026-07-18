@@ -70,13 +70,22 @@ MATCH (old:LegalDocument {doc_id: $old_doc_id})
 MERGE (new)-[:%s]->(old)
 """
 
-# Entity — dùng label riêng cho Obligation/Right/Prohibition (quyết định #4)
+# Entity — dùng label riêng cho Obligation/Right/Prohibition (quyết định #4).
+# Phần tử thứ 3 = prefix id DUY NHẤT: không dùng field[:3] vì tax_rates/tax_base
+# đều ra "tax" -> trùng entity_id -> MERGE đè node -> mất nửa dữ liệu thuế (P1 báo).
 _ENTITY_REL = {
-    "obligations": ("Obligation", "IMPOSES"),
-    "rights": ("Right", "GRANTS"),
-    "prohibitions": ("Prohibition", "PROHIBITS"),
-    "deadlines": ("Deadline", "HAS_DEADLINE"),
+    "obligations":  ("Obligation",  "IMPOSES",       "obl"),
+    "rights":       ("Right",        "GRANTS",        "rig"),
+    "prohibitions": ("Prohibition",  "PROHIBITS",     "pro"),
+    "deadlines":    ("Deadline",     "HAS_DEADLINE",  "dea"),
+    "tax_rates":    ("TaxRate",      "HAS_TAX_RATE",  "txr"),   # đặc thù luật thuế (P1)
+    "tax_base":     ("TaxBase",      "HAS_TAX_BASE",  "txb"),
+    "exemptions":   ("Exemption",    "HAS_EXEMPTION", "exm"),
 }
+
+# Chủ thể (APPLIES_TO) chỉ gắn cho entity có "người chịu tác động" thật sự.
+# Thuế suất / căn cứ tính thuế không áp cho ai cụ thể -> bỏ, giữ APPLIES_TO sạch.
+_NO_SUBJECT_FIELDS = {"tax_rates", "tax_base"}
 
 _MERGE_ENTITY = """
 MATCH (n) WHERE n.point_id = $node_id OR n.clause_id = $node_id OR n.article_id = $node_id
@@ -261,15 +270,17 @@ def load_entities(entities: list[dict[str, Any]]) -> None:
     for ent in entities:
         node_id = ent["node_id"]
 
-        for field, (label, rel) in _ENTITY_REL.items():
+        for field, (label, rel, prefix) in _ENTITY_REL.items():
             for i, text in enumerate(ent.get(field, [])):
-                entity_id = f"{node_id}-{field[:3]}{i}"
+                entity_id = f"{node_id}-{prefix}{i}"
                 stmts.append(
                     (
                         _MERGE_ENTITY % (label, rel),
                         {"node_id": node_id, "entity_id": entity_id, "text": text},
                     )
                 )
+                if field in _NO_SUBJECT_FIELDS:
+                    continue
                 # Chủ thể gắn vào entity, không gắn thẳng vào Điểm
                 for subject in ent.get("subjects", []):
                     stmts.append(
@@ -453,9 +464,16 @@ def load_processed(processed_dir: Path | None = None) -> list[str]:
         )
         loaded.append(doc["doc_id"])
 
-        if doc.get("entities"):
-            load_entities(doc["entities"])
-            print(f"  {'':<12} + entity cho {len(doc['entities'])} node")
+        # Entity: ưu tiên bản nhúng (fixtures/mock), nếu không có thì tìm file
+        # riêng entities_<doc_id>.json — đây là cách P1 xuất (file tách rời).
+        ents = doc.get("entities")
+        if not ents:
+            side = d.parent / f"entities_{doc['doc_id']}.json"
+            if side.exists():
+                ents = json.loads(side.read_text(encoding="utf-8"))
+        if ents:
+            load_entities(ents)
+            print(f"  {'':<12} + entity cho {len(ents)} node")
 
     return loaded
 

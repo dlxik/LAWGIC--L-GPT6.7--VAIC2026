@@ -10,6 +10,7 @@ NODES
   Penalty {penalty_id, type, min_amount, max_amount, duration_months,
            is_permanent, text}
   Obligation | Right | Prohibition | Deadline {node_id, text}
+  TaxRate | TaxBase | Exemption {node_id, text}   -- đặc thù luật thuế (P1)
   Topic   {topic_id, name}
   Post    {post_id, platform, url, author_hash, content, created_at, engagement}
           (parent_id chở bằng quan hệ REPLY_TO, không lưu làm property)
@@ -22,7 +23,10 @@ RELATIONSHIPS
   (Article|Clause|Point)-[:GRANTS]->(Right)
   (Article|Clause|Point)-[:PROHIBITS]->(Prohibition)
   (Article|Clause|Point)-[:PENALIZES]->(Penalty)
-  (Obligation|Right|Prohibition)-[:APPLIES_TO]->(Subject)
+  (Article|Clause|Point)-[:HAS_TAX_RATE]->(TaxRate)
+  (Article|Clause|Point)-[:HAS_TAX_BASE]->(TaxBase)
+  (Article|Clause|Point)-[:HAS_EXEMPTION]->(Exemption)
+  (Obligation|Right|Prohibition|Exemption)-[:APPLIES_TO]->(Subject)
   (LegalDocument)-[:AMENDS|REPLACES|REFERENCES]->(LegalDocument)
   (Point)-[:SUPERSEDED_BY {change_type, similarity, effective_from}]->(Point)
   (Post)-[:ABOUT]->(Topic)

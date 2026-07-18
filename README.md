@@ -248,6 +248,26 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 | Lexical TF-IDF only | 63% |
 | **Hybrid (embeddings + TF-IDF + graph expansion)** | **86%** |
 
+**Q&A — EXTRACT-MATCH (khớp chữ · 44 answerable + 6 off-topic)** *(Requirement 7)*
+
+| Metric | Kết quả | Ý nghĩa |
+|---|---|---|
+| `citation_accuracy` | **73%** (32/44) | điều luật đúng có trong citation trả về |
+| `answer_correctness` | **68%** (17/25) | số/tỷ lệ (500tr, 15%…) đúng trong câu trả lời |
+| `answerable_answered` | **93%** (41/44) | câu trả được, không từ chối oan |
+| `offtopic_refused` | **100%** (6/6) | lạc đề PHẢI từ chối — chống bịa (mạnh nhất) |
+
+**Q&A — SEMANTIC / RAGAS-style (so nghĩa bằng embedding FPT · 44 mẫu)**
+
+| Metric | Điểm | Ánh xạ RAGAS |
+|---|---:|---|
+| `answer_similarity` | 0.59 | ~ answer_correctness (cos đáp án vs gold) |
+| `answer_relevancy` | 0.64 | câu trả lời bám câu hỏi |
+| `context_recall` | 0.58 | citation có chứa đáp án |
+| `faithfulness` | 0.67 | câu trả lời bám citation (không bịa) |
+
+> *(thang 0–1; cos ≥ 0.6 ~ khớp nghĩa tốt cho tiếng Việt pháp lý)*
+
 **Automated test suite** — **107 tests** across 8 files, covering the whole pipeline (`pytest -q`).
 
 ### Trade-off analysis

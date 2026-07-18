@@ -1,56 +1,91 @@
-# Case mau: nong do con
+# Case mẫu: ngưỡng thuế hộ kinh doanh
 
-> Nguon: 3 van ban trong `data/raw/legal_docs/` va 512 post trong `data/raw/social_posts/`
-> (mock cho den khi P1 va P3 nap du lieu that o gio thu 8).
+> Nguồn: 3 văn bản thuế trong `data/processed/legal_docs_structured/` +
+> 3.321 bình luận thật trong `data/raw/social_posts.json` (VnExpress, 6/2025–4/2026).
+> Số liệu trend dưới đây lấy từ `scripts/run_pipeline.py` chạy trên cụm luồng tranh luận;
+> con số eval lấy từ `eval/run_eval.py` trên 48 claim gold gắn tay.
 
-## Van ban
+## Văn bản
 
-**Van ban moi (dang hieu luc):**
-Nghị định 168/2025/NĐ-CP — hiệu lực từ 01/07/2026.
-Điều 5 Khoản 2 Điểm a: "Phạt tiền từ 6.000.000 đồng đến 8.000.000 đồng đối với
-người điều khiển xe ô tô mà trong máu hoặc hơi thở có nồng độ cồn nhưng chưa
-vượt quá 50 miligam/100 mililit máu hoặc chưa vượt quá 0,25 miligam/1 lít khí
-thở. Ngoài ra bị tước quyền sử dụng Giấy phép lái xe từ 10 tháng đến 12 tháng."
+**Luật hiện hành (hiệu lực 01/07/2026):**
+Luật Thuế thu nhập cá nhân 109/2025/QH15.
 
-Điều 5 Khoản 9 Điểm a: khung cao nhất — 30–40 triệu đồng + tước GPLX 22–24 tháng
-(nồng độ cồn > 80mg/100ml máu). **Không có "tước vĩnh viễn".**
+- **`tncn2025-d7-k1`** — *"Cá nhân cư trú có hoạt động sản xuất, kinh doanh có mức
+  doanh thu năm từ 500 triệu đồng trở xuống không phải nộp thuế thu nhập cá nhân."*
+  → Ngưỡng miễn tính theo **DOANH THU**, và là **500 triệu/năm**.
+- **`tncn2025-d7-k2`** — trên ngưỡng thì mặc định tính thuế trên **thu nhập**
+  (doanh thu − chi phí) × thuế suất 15% (doanh thu đến 3 tỷ).
+- **`tncn2025-d7-k3-a`** — hoặc chọn tính trên **phần doanh thu vượt** 500 triệu,
+  thuế suất 0,5%–5% tùy ngành.
 
-**Văn bản cũ (đã bị thay thế một phần):**
-Nghị định 100/2019/NĐ-CP, Điều 5 Khoản 10 Điểm a: 30–40 triệu đồng — cùng khung
-tiền phạt với điểm mới nhưng câu chữ khác.
+**Luật cũ (đã bị thay thế):**
+Luật Quản lý thuế 38/2019/QH14, **`qlt2019-d51`** — *phương pháp khoán thuế* cho
+hộ kinh doanh. Luật mới (108/2025/QH15) **đã bỏ hẳn phương pháp khoán** — cụm từ
+"phương pháp khoán" chỉ còn xuất hiện trong văn bản 2019, 0 lần trong văn bản 2025.
 
 ## Tin đồn đang lan truyền
 
-> "Uống 1 lon bia bị tước bằng lái vĩnh viễn"
+Cụm hiểu nhầm lớn nhất hệ thống gom được (dạng chuẩn hoá theo bình luận nhiều
+tương tác nhất trong cụm):
+
+> **"Hộ kinh doanh có thu nhập ~100–120 triệu đồng/năm là đã phải nộp thuế TNCN"**
 
 | Chỉ số | Giá trị |
 |---|---|
-| Lần đầu xuất hiện | 15/07/2026 08:12 |
-| Số lần lặp trong 48h | 47 |
-| Tổng tương tác | 12.384 |
-| Vận tốc lan truyền | ~0.98 lần/giờ |
-| Cấp độ | HIGH |
+| Số lần lặp (cụm) | 6 |
+| Tổng tương tác | 98 |
+| Lần đầu xuất hiện | 09/06/2025 |
+| Gần nhất | 19/11/2025 |
+| Verdict | **INACCURATE** |
+
+*(Số trên là từ mẫu 5 luồng chạy demo — 374 post, 91 claim, 23 cụm. Quét toàn bộ
+3.321 post thì cụm này lớn hơn nhiều; ~70 post nhắc trực tiếp ngưỡng thấp.)*
+
+Bản chất hiểu nhầm: người dân tưởng **ngưỡng chịu thuế thấp** (100–200 triệu) và
+tính **trên doanh thu**, trong khi luật mới miễn tới **500 triệu doanh thu/năm**.
 
 ## Hệ thống đối chiếu
 
-- Claim → `REFERS_TO` → `nd168-d5-k2-a` (confidence 0.87) và `nd168-d5-k9-a` (0.82)
+- Claim → `REFERS_TO` → **`tncn2025-d7-k1`** (ngưỡng miễn 500 triệu)
 - Verdict: **INACCURATE**
-- Thực tế: chỉ tước bằng có thời hạn (10–12 tháng ở mức nhẹ, 22–24 tháng ở mức
-  cao nhất). Không có tước vĩnh viễn ở bất kỳ khoản nào.
-- Định chính: "Theo Điểm a Khoản 9 Điều 5 Nghị định 168/2025/NĐ-CP: mức phạt cao
-  nhất (nồng độ cồn > 80mg/100ml máu) là 30–40 triệu đồng kèm tước GPLX 22–24
-  tháng — **không tước vĩnh viễn**. Mức nhẹ (nồng độ thấp) chỉ 6–8 triệu đồng,
-  tước GPLX 10–12 tháng."
+- Định chính: *"Theo Điều 7 Khoản 1 Luật 109/2025/QH15, cá nhân kinh doanh có doanh
+  thu năm từ 500 triệu đồng trở xuống KHÔNG phải nộp thuế TNCN. Thu nhập 100–120
+  triệu tương ứng doanh thu thấp hơn nhiều ngưỡng này → được miễn hoàn toàn. Chỉ khi
+  doanh thu vượt 500 triệu mới bắt đầu chịu thuế, và chỉ tính trên phần vượt (Điểm a
+  Khoản 3) hoặc trên thu nhập sau khi trừ chi phí (Khoản 2)."*
 
 ## Tại sao graph ăn RAG vector ở case này
 
-Tin đồn "vĩnh viễn" gắn với **mức phạt của văn bản CŨ** (nd100) dù cả 2 văn bản
-đều có mức 30–40 triệu. Nhờ `SUPERSEDED_BY` ở mức Điểm giữa
-`nd100-d5-k10-a → nd168-d5-k9-a`, hệ thống chỉ ra được:
+Tin đồn bám **cách hiểu của luật CŨ**: hộ nhỏ đóng thuế khoán theo doanh thu, ngưỡng
+thấp. Điểm khớp text nhất với tin đồn là `qlt2019-d51` (thuế khoán — luật cũ), nhưng
+căn cứ ĐÚNG để định chính là `tncn2025-d7-k1` (ngưỡng 500 triệu — luật mới).
 
-1. Người dân đang nhớ nhầm quy định cũ, không phải bịa hoàn toàn.
-2. Điểm khác biệt cụ thể (thời hạn tước bằng), không phải đọc lại cả điều luật.
-3. Định chính tập trung vào chỗ đổi, giúp truyền thông chính xác hơn.
+Nhờ quan hệ giữa hai văn bản (`REPLACES` + `SUPERSEDED_BY` ở mức Điểm), hệ thống chỉ ra:
 
-Vector store thuần thì gộp 2 điểm lại (embedding gần như trùng nhau) và không
-biết cái nào còn hiệu lực tại ngày X.
+1. Người dân đang **nhớ quy định cũ**, không phải bịa hoàn toàn.
+2. Điểm khác biệt cụ thể: bỏ thuế khoán, nâng ngưỡng lên 500 triệu, đổi cách tính.
+3. Định chính tập trung vào **chỗ đã đổi**, không bắt đọc lại cả luật.
+
+Vector store thuần trả về `qlt2019-d51` (giống text tin đồn nhất) và **không biết nó
+đã hết hiệu lực** — sẽ định chính bằng chính quy định cũ mà dân đang nhớ nhầm.
+
+## Con số đo được (trả lời "làm sao biết phân loại đúng?")
+
+Chạy `python eval/run_eval.py` trên 48 claim gắn nhãn tay (`eval/gold_set.jsonl`),
+**có graph thật** (Neo4j + 119 cạnh `SUPERSEDED_BY`):
+
+| Chỉ số | Giá trị |
+|---|---|
+| Verdict accuracy (toàn bộ, 4 nhãn) | **60,4%** (±14%) |
+| Citation accuracy (trỏ đúng điều luật) | **54,3%** |
+| Trong phạm vi Điều 7, gộp 2 nhãn (khớp luật / hiểu sai) | **~82%** |
+| Baseline (đoán bừa nhãn phổ biến nhất) | 29,2% |
+| Độ phủ (thảo luận về ngưỡng/cách tính) | ~40% |
+
+Con số vượt baseline hơn 30 điểm. Phần khó nhất (`PARTIALLY_INACCURATE` — đúng cấu
+trúc, sai con số/điều kiện) là ranh giới mờ mà cả người cũng cãi nhau.
+
+Cấu hình: FPT AI `gpt-oss-120b`; truy hồi điều luật LAI — TF-IDF + embedding tiếng
+Việt tìm ứng viên, rồi graph mở rộng theo `SUPERSEDED_BY` (chỉ cho điểm luật cũ) +
+bắc cầu doc-level sang luật mới. Bật graph nâng citation accuracy 43%→54% và verdict
+lên 60% — vì nó đưa đúng điều luật HIỆN HÀNH cho LLM đối chiếu.

@@ -83,10 +83,9 @@ def _row(cid, verdict, citation, text="claim", note="vì sao"):
 
 
 def _full_set(**overrides):
-    """50 dòng hợp lệ, phân bổ cân. overrides thay một dòng cụ thể để test."""
+    """40 dòng hợp lệ, phân bổ cân (3 lớp). overrides thay một dòng cụ thể để test."""
     rows = []
-    plan = [("INACCURATE", 15), ("PARTIALLY_INACCURATE", 15),
-            ("ACCURATE", 10), ("UNVERIFIABLE", 10)]
+    plan = [("INACCURATE", 20), ("ACCURATE", 10), ("UNVERIFIABLE", 10)]
     i = 0
     for verdict, n in plan:
         for _ in range(n):

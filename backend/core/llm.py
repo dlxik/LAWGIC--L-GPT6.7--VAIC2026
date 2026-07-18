@@ -173,8 +173,12 @@ def _parse_tool_call(message, schema: type[T]) -> T:
         raise ValueError(f"LLM tra ve khong khop {schema.__name__}: {e}") from e
 
 
-def extract(prompt: str, schema: type[T], *, system: str | None = None) -> T:
-    """Goi LLM 1 lan, ep output theo schema Pydantic."""
+def extract(prompt: str, schema: type[T], *, system: str | None = None, model: str | None = None) -> T:
+    """Goi LLM 1 lan, ep output theo schema Pydantic.
+
+    model=None -> dung LLM_MODEL chung. Truyen model de chay 1 buoc bang model khac
+    (vd verdict tren Llama-70B trong khi classify/link tren gpt-oss-20b).
+    """
     messages: list[dict] = []
     if system:
         messages.append({"role": "system", "content": system})
@@ -183,7 +187,7 @@ def extract(prompt: str, schema: type[T], *, system: str | None = None) -> T:
     # _parse_tool_call NAM NGOAI retry: loi schema/tra rong khong phai loi tam thoi,
     # khong retry o day de khoi che giau bug that.
     response = _create_with_retry(
-        model=get_settings().llm_model,
+        model=model or get_settings().llm_model,
         max_tokens=MAX_TOKENS,
         temperature=0,  # trich xuat -> muon on dinh, khong muon sang tao
         messages=messages,

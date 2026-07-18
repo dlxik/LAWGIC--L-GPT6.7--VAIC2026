@@ -36,7 +36,9 @@ from scripts.show_law import load_nodes  # noqa: E402
 
 TOP_K = 8            # số node lấy mỗi retriever trước khi mở rộng
 FAMILY_ARTICLES = 2  # mở rộng toàn văn N Điều NHIỀU HIT NHẤT (Điều thật sự liên quan)
-MAX_CANDIDATES = 55  # trần số ứng viên gửi LLM: đủ recall, không đắt vô lý
+MAX_CANDIDATES = 20  # trần số ứng viên gửi LLM: ít lựa chọn -> model chọn đúng dễ hơn
+#                      (giảm từ 55: retrieval recall 85% vẫn giữ nếu điều đúng ở top,
+#                       nhưng model nhỏ đỡ lạc khi phải quét 55 ứng viên)
 SUCCESSOR_DOCS = {"qlt2019": "qlt2025"}  # doc cũ -> doc thay thế (đọc từ replaces)
 
 # Retrieval HYBRID: gộp embedding ngữ nghĩa (bắc cầu 200tr<->500tr) + TF-IDF từ vựng.

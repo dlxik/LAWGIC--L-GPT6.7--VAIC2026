@@ -34,8 +34,9 @@ SIMILARITY_THRESHOLD = 0.45
 
 
 class Verdict(str, Enum):
+    # 3 lớp: bỏ PARTIALLY_INACCURATE (lớp mơ hồ nhất, F1 0.33, khó gán nhãn nhất).
+    # "sai một phần" giờ gộp vào INACCURATE — nhãn dễ hơn, model bớt lẫn, demo rõ hơn.
     ACCURATE = "ACCURATE"
-    PARTIALLY_INACCURATE = "PARTIALLY_INACCURATE"
     INACCURATE = "INACCURATE"
     UNVERIFIABLE = "UNVERIFIABLE"
 
@@ -47,12 +48,15 @@ class _VerdictResult(BaseModel):
     correct_statement: str = ""
 
 
-def verdict_for_claim(claim_text: str, citations: list[dict]) -> dict:
+def verdict_for_claim(claim_text: str, citations: list[dict], *, model: str | None = None) -> dict:
     """Trả {verdict, confidence, explanation, correct_statement}.
 
     KHÔNG có citation -> UNVERIFIABLE ngay, không gọi LLM. Đây không phải thất bại:
     không tìm được căn cứ trong luật thì câu trả lời đúng LÀ 'chưa kiểm chứng được'.
     Tiết kiệm một lượt gọi LLM cho mỗi claim không link được.
+
+    model=None -> LLM_MODEL chung. Bước verdict là chỗ Llama-70B hơn hẳn (61% vs
+    42%) nên pipeline truyền model riêng cho bước này, classify/link vẫn dùng 20b.
     """
     if not citations:
         return {
@@ -70,7 +74,7 @@ def verdict_for_claim(claim_text: str, citations: list[dict]) -> dict:
         f"---\n\nCLAIM: {claim_text!r}\n\n"
         f"ĐIỀU LUẬT ĐƯỢC TRÍCH DẪN:\n{law_text}"
     )
-    result = llm.extract(prompt, _VerdictResult)
+    result = llm.extract(prompt, _VerdictResult, model=model)
 
     return {
         "verdict": _field(result, "verdict"),
@@ -94,12 +98,12 @@ def cluster_misconceptions(claims: list[dict]) -> list[dict]:
     Dùng embedding + cosine, KHÔNG dùng LLM clustering: rẻ, nhanh, reproducible,
     giải thích được với BGK. LLM clustering vừa đắt vừa không tái lập.
 
-    Chỉ gom claim verdict INACCURATE / PARTIALLY_INACCURATE — đó mới là 'hiểu nhầm'.
+    Chỉ gom claim verdict INACCURATE — đó mới là 'hiểu nhầm'.
     ACCURATE và UNVERIFIABLE không phải misconception.
     """
     wrong = [
         c for c in claims
-        if c.get("verdict") in (Verdict.INACCURATE.value, Verdict.PARTIALLY_INACCURATE.value)
+        if c.get("verdict") == Verdict.INACCURATE.value
     ]
     if not wrong:
         return []

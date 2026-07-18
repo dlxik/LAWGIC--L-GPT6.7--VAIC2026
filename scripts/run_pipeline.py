@@ -24,6 +24,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -33,6 +34,17 @@ from backend.discourse import classifier, linker, misinformation  # noqa: E402
 from backend.discourse.threads import build_threads, debated_first, load_posts  # noqa: E402
 
 OUT_DIR = get_settings().labeled_posts_dir
+
+# link + verdict I/O-bound (chờ API) -> song song. Retry trong llm.py lo rate-limit.
+# 6 luồng: đủ nhanh mà không dập FPT quá tay (classify đã dùng 8).
+PIPELINE_WORKERS = 6
+
+# HYBRID: verdict (gán 3 nhãn) là chỗ Llama-70B hơn hẳn 20b (61% vs 42%). Classify +
+# link vẫn dùng LLM_MODEL chung (20b, hạn mức thoáng). Đặt VERDICT_MODEL=... để bật.
+# Llama bị FPT rate-limit chặt -> verdict chạy ít luồng hơn để né tường 429.
+import os  # noqa: E402
+VERDICT_MODEL = os.environ.get("VERDICT_MODEL") or None
+VERDICT_WORKERS = 3 if VERDICT_MODEL else PIPELINE_WORKERS
 
 
 def _select_posts(n_threads: int | None) -> list[dict]:
@@ -66,27 +78,41 @@ def run(n_threads: int | None, as_of: str | None, window_hours: int | None = Non
                 "engagement": meta.get("engagement", 0),
                 "created_at": meta.get("created_at"),
             })
-    print(f"  [2/5] {len(claims)} claim pháp lý. Liên kết điều luật...")
+    print(f"  [2/5] {len(claims)} claim pháp lý. Liên kết điều luật (song song {PIPELINE_WORKERS} luồng)...")
 
-    for i, claim in enumerate(claims):
+    # Dựng index dùng chung MỘT LẦN trước khi song song (tránh N luồng cùng dựng).
+    linker._index()
+
+    def _link_one(claim: dict) -> dict:
         # 1 claim lỗi (model hỏng/từ chối) KHÔNG được làm sập cả pipeline.
         try:
             claim["citations"] = linker.link_claim(claim["text"], claim["topic"])
         except Exception as exc:  # noqa: BLE001
             print(f"\n        ! link lỗi {claim['claim_id']}: {exc}")
             claim["citations"] = []
-        print(f"        link {i+1}/{len(claims)}", end="\r")
+        return claim
+
+    with ThreadPoolExecutor(max_workers=PIPELINE_WORKERS) as pool:
+        for i, _ in enumerate(pool.map(_link_one, claims), 1):
+            print(f"        link {i}/{len(claims)}", end="\r")
     print()
 
-    print(f"  [3/5] Phán verdict...")
-    for i, claim in enumerate(claims):
+    vmodel_label = VERDICT_MODEL or "LLM_MODEL chung"
+    print(f"  [3/5] Phán verdict (model={vmodel_label}, song song {VERDICT_WORKERS} luồng)...")
+
+    def _verdict_one(claim: dict) -> dict:
         try:
-            claim.update(misinformation.verdict_for_claim(claim["text"], claim["citations"]))
+            claim.update(misinformation.verdict_for_claim(
+                claim["text"], claim["citations"], model=VERDICT_MODEL))
         except Exception as exc:  # noqa: BLE001
             print(f"\n        ! verdict lỗi {claim['claim_id']}: {exc}")
             claim.update({"verdict": "UNVERIFIABLE", "confidence": 0.0,
                           "explanation": f"lỗi model: {exc}", "correct_statement": ""})
-        print(f"        verdict {i+1}/{len(claims)}", end="\r")
+        return claim
+
+    with ThreadPoolExecutor(max_workers=VERDICT_WORKERS) as pool:
+        for i, _ in enumerate(pool.map(_verdict_one, claims), 1):
+            print(f"        verdict {i}/{len(claims)}", end="\r")
     print()
 
     print(f"  [4/5] Gom cụm hiểu nhầm...")

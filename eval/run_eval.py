@@ -31,7 +31,7 @@ from backend.discourse import linker, misinformation  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 GOLD_FILE = ROOT / "eval" / "gold_set.jsonl"
-VERDICTS = ["ACCURATE", "PARTIALLY_INACCURATE", "INACCURATE", "UNVERIFIABLE"]
+VERDICTS = ["ACCURATE", "INACCURATE", "UNVERIFIABLE"]  # 3 lớp (bỏ PARTIALLY_INACCURATE)
 SKIP = "SKIP"
 
 

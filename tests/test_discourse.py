@@ -49,18 +49,19 @@ def _post(post_id, content="nội dung", parent_id=None, created="2025-12-10T02:
 
 
 def test_thread_numbers_match_handover(real_posts):
-    """Số liệu phải khớp crawl_docs.md §1. Lệch = gom luồng sai, mọi thứ sau đó sai theo."""
+    """Số liệu sau khi thu hẹp phạm vi (bỏ 135 post VAT, re-root reply mồ côi).
+    Lệch = gom luồng sai, mọi thứ sau đó sai theo."""
     threads = build_threads(real_posts)
     debated = [t for t in threads.values() if len(t) > 1]
 
-    assert len(real_posts) == 3321
-    assert len(threads) == 1446
-    assert len(debated) == 314
-    assert max(len(t) for t in threads.values()) == 90
+    assert len(real_posts) == 3186
+    assert len(threads) == 1459
+    assert len(debated) == 296
+    assert max(len(t) for t in threads.values()) == 87
 
 
 def test_all_replies_live_in_debated_threads(real_posts):
-    """314 luồng tranh luận phải chứa TOÀN BỘ 1.875 reply.
+    """296 luồng tranh luận phải chứa TOÀN BỘ 1.727 reply (sau khi thu hẹp phạm vi).
 
     Đây là lý do cắt việc thì cắt luồng 1-post trước: chúng không chứa reply nào.
     """
@@ -68,7 +69,7 @@ def test_all_replies_live_in_debated_threads(real_posts):
     replies = sum(1 for p in real_posts if p.get("parent_id"))
     in_debated = sum(len(t) - 1 for t in threads.values() if len(t) > 1)
 
-    assert replies == 1875
+    assert replies == 1727
     assert in_debated == replies
 
 

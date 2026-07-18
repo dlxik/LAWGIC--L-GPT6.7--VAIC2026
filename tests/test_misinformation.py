@@ -30,8 +30,9 @@ def test_no_citation_is_unverifiable_without_llm(monkeypatch):
 def test_verdict_uses_llm_when_citations_present(monkeypatch):
     captured = {}
 
-    def fake_extract(prompt, schema):
+    def fake_extract(prompt, schema, **kwargs):
         captured["prompt"] = prompt
+        captured["model"] = kwargs.get("model")
         return schema(verdict="INACCURATE", confidence=0.9,
                       explanation="200 < 500", correct_statement="...")
 

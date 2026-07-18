@@ -250,3 +250,58 @@ EXTRACTOR   Graph triển khai = VOTING HYBRID (20b∩gemma + 20b penalties)
 Mỗi quyết định (model, cách kết hợp) đều có số đo trên gold gán tay 4 vòng — khác hẳn
 "chúng em parse xong" không bằng chứng. Đội tự nêu hạn chế của mình vững hơn đội nói
 "hoàn hảo".
+
+---
+
+# P3 Benchmark — Đối chiếu claim ↔ luật (verdict + citation)
+
+> Đo ngày 18/07/2026. Khác P1 (trích entity, đối chiếu tự động): đây đo **pipeline
+> dư luận** — `link_claim` (claim → Điều/Khoản/Điểm) + `verdict_for_claim` (đúng/sai/
+> chưa đủ căn cứ) — trên gold gán tay, đã audit theo text Điều 7 Luật TNCN.
+
+## Bảng 5 — gpt-oss-20b vs Llama-3.3-70B (head-to-head, CÙNG cấu hình)
+
+Cùng điều kiện: gold 36 claim (đã audit, 3 lớp), prompt có few-shot ACCURATE,
+`MAX_CANDIDATES=20`, graph Neo4j ON, embedding `Vietnamese_Embedding`. Chỉ đổi
+model ở bước link+verdict.
+
+| Chỉ số | gpt-oss-20b | **Llama-3.3-70B** | Chênh |
+|---|---|---|---|
+| **verdict_accuracy** | 41.7% | **61.1%** | **+19.4** |
+| **citation_accuracy** | 33.3% | **40.7%** | +7.4 |
+| vs baseline (50%) | −8.3% 🔴 dưới baseline | **+11.1%** ✅ | — |
+| INACCURATE recall | 0.28 | **0.72** | +0.44 |
+| macro-F1 | 0.41 | **0.58** | +0.17 |
+
+**Kết luận: model là đòn bẩy lớn nhất.** Trên cùng cấu hình, 70B hơn 20B **+19 điểm
+verdict**. 20B nằm DƯỚI baseline (tệ hơn đoán bừa); 70B vượt baseline rõ.
+
+## Điều benchmark P3 tiết lộ
+
+1. **Nút thắt citation KHÔNG phải retrieval.** Đo riêng: retrieval recall = **85%**
+   (điều luật đúng nằm trong ứng viên trước khi LLM chọn) — nhưng citation cuối chỉ
+   33–41%. → Lỗi ở **bước LLM CHỌN**, không phải embedding. Đổi model to hơn nâng
+   verdict (suy luận) nhưng **không sửa được bước chọn** (citation kẹt ~41%).
+
+2. **Bật Neo4j đáng giá.** 20B graph OFF → ON: verdict 35% → 51% (+16). Linker đi
+   cạnh `SUPERSEDED_BY` thật thay vì fallback doc-level yếu.
+
+3. **Đã chạm trần tự động ~61% verdict / 41% citation.** Đã thử: model mạnh, audit
+   gold, few-shot, giảm ứng viên 55→20, graph on. Few-shot + giảm ứng viên chỉ tác
+   động biên (citation +4, ACCURATE recall 0.22→0.33). Cú nhảy thật là đổi model.
+
+4. **Chi phí (FPT, VNĐ/1M token):** 20B in 1.309 / out 5.235; 70B in 5.526 / out
+   11.924. Ước tính full data (3.186 post): 20B ~20k, 70B ~72k VNĐ. GLM-5.2 (~530k,
+   ~26x) test 1 call còn sai câu dễ → loại.
+
+## Hạn chế P3 (nói thẳng)
+
+- **Gold chỉ 36 claim** → CI 95% ±16%. 61% nghĩa là thật sự nằm trong ~45–77%. Cần
+  gán thêm để số chắc hơn.
+- **Gold do LLM nháp rồi NGƯỜI audit** theo text luật (sửa 5 nhãn có căn cứ). Trung
+  thực hơn "gold do LLM tự gán", nhưng vẫn 1 người duyệt.
+- **ACCURATE recall yếu (0.33)** kể cả 70B — model thiên về phán INACCURATE.
+- **Trần ~61%/41% chưa đủ auto-phán pháp lý** → thiết kế đúng là **human-in-the-loop**:
+  máy tổng hợp + triage + nháp; người duyệt ca không chắc trước khi công bố. Giá trị
+  sản phẩm nằm ở **bức tranh tổng hợp** (hiểu nhầm nào lan mạnh nhất), nơi nhiễu từng
+  claim triệt tiêu — không phải ở phán đúng/sai từng bình luận.

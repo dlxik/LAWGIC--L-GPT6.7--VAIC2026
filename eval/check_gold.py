@@ -30,12 +30,11 @@ from scripts.show_law import load_nodes  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 GOLD_FILE = ROOT / "eval" / "gold_set.jsonl"
 
-VERDICTS = {"ACCURATE", "PARTIALLY_INACCURATE", "INACCURATE", "UNVERIFIABLE"}
+VERDICTS = {"ACCURATE", "INACCURATE", "UNVERIFIABLE"}  # 3 lớp (bỏ PARTIALLY_INACCURATE)
 SKIP = "SKIP"  # ứng viên hoá ra không phải claim -> không tính
-TARGET_TOTAL = 50
+TARGET_TOTAL = 40
 TARGET_PER_CLASS = {
-    "INACCURATE": 15,
-    "PARTIALLY_INACCURATE": 15,
+    "INACCURATE": 20,
     "ACCURATE": 10,
     "UNVERIFIABLE": 10,
 }

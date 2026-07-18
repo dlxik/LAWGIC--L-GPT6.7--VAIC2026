@@ -118,4 +118,4 @@ def test_load_gold_skips_unlabelled():
     """load_gold bỏ SKIP và TODO — chỉ chấm claim đã gắn nhãn thật."""
     gold = run_eval.load_gold()
     assert all(r["expected_verdict"] in run_eval.VERDICTS for r in gold)
-    assert len(gold) >= 40  # gold set thật đang có 48
+    assert len(gold) >= 30  # gold set sau thu hẹp phạm vi (3 lớp, bỏ VAT): 37 nhãn

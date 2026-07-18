@@ -166,7 +166,9 @@ def _retrieve_via_linker(question: str) -> list[dict] | None:
     except ImportError:
         return None
     try:
-        cand_ids, nodes = _candidate_set(question)
+        # anchor=False: KHÔNG ép họ Điều 7 lên đầu (đó là hack recall cho discourse).
+        # Q&A tổng quát cần retrieval trung thực -> repeal detection & câu ngoài Điều 7 đúng.
+        cand_ids, nodes = _candidate_set(question, anchor=False)
     except Exception as e:
         print(f"[qa] linker._candidate_set fail ({e.__class__.__name__}: {e}) -> fallback")
         return None

@@ -135,19 +135,66 @@ async function loadTrends() {
   }
 }
 
+// Nhãn + màu theo mức độ nghiêm trọng
+function sevMeta(sev) {
+  const s = ["HIGH", "MEDIUM", "LOW"].includes(sev) ? sev : "MEDIUM";
+  return { HIGH: { cls: "high", label: "Nghiêm trọng" },
+           MEDIUM: { cls: "med", label: "Trung bình" },
+           LOW: { cls: "low", label: "Thấp" } }[s];
+}
+
+const _DOC_VI = {
+  tncn2025: "Luật Thuế TNCN 2025", qlt2025: "Luật Quản lý thuế 2025",
+  qlt2019: "Luật Quản lý thuế 2019",
+};
+
+// node_id "tncn2025-d7-k1-a" -> "Điều 7 · Khoản 1 · Điểm a — Luật Thuế TNCN 2025"
+function formatCite(nodeId) {
+  const parts = String(nodeId || "").split("-");
+  const doc = _DOC_VI[parts[0]] || parts[0] || "";
+  const bits = [];
+  for (const p of parts.slice(1)) {
+    if (/^d\d+$/.test(p)) bits.push("Điều " + p.slice(1));
+    else if (/^k\d+$/.test(p)) bits.push("Khoản " + p.slice(1));
+    else bits.push("Điểm " + p);
+  }
+  return { path: bits.join(" · "), doc };
+}
+
+// Rút số Điều duy nhất từ list node_id (cho chip "trái Điều X" trên card)
+function articlesOf(nodeIds) {
+  const arts = [];
+  for (const nid of nodeIds || []) {
+    const m = String(nid).match(/-d(\d+)/);
+    if (m && !arts.includes(m[1])) arts.push(m[1]);
+  }
+  return arts;
+}
+
 function cardHtml(m) {
   const per24 = (m.velocity * 24).toFixed(0);
-  const sev = ["HIGH", "MEDIUM", "LOW"].includes(m.severity) ? m.severity : "MEDIUM";
+  const sv = sevMeta(m.severity);
+  const arts = articlesOf(m.contradicts);
+  const docLabel = m.contradicts && m.contradicts.length
+    ? (_DOC_VI[String(m.contradicts[0]).split("-")[0]] || "") : "";
+  const lawChip = arts.length
+    ? `<span class="law-chip">⚖ Trái Điều ${arts.slice(0, 2).join(", ")}${arts.length > 2 ? " +" + (arts.length - 2) : ""}${docLabel ? " · " + escapeHtml(docLabel) : ""}</span>`
+    : "";
   return `
-    <article class="card" data-id="${escapeHtml(m.misconception_id)}">
-      <div class="title-row">
-        <div class="canonical">"${escapeHtml(m.canonical_text)}"</div>
-        <div class="sev ${sev}">${sev}</div>
-      </div>
-      <div class="meta">
-        <span><b>${fmtNum(m.count)}</b> lần lặp</span>
-        <span><b>${fmtNum(m.total_engagement)}</b> tương tác</span>
-        <span><b>~${per24}</b>/24h</span>
+    <article class="card sev-${sv.cls}" data-id="${escapeHtml(m.misconception_id)}" role="button" tabindex="0">
+      <div class="card-bar"></div>
+      <div class="card-main">
+        <div class="card-top">
+          <span class="sev-pill ${sv.cls}">${sv.label}</span>
+          ${lawChip}
+        </div>
+        <div class="card-claim"><span class="quote-x">“</span>${escapeHtml(m.canonical_text)}<span class="quote-x">”</span></div>
+        <div class="card-stats">
+          <span title="Số lần xuất hiện"><b>${fmtNum(m.count)}</b> lần</span>
+          <span title="Tổng tương tác"><b>${fmtNum(m.total_engagement)}</b> tương tác</span>
+          <span title="Tốc độ lan"><b>~${per24}</b>/24h</span>
+          <span class="card-cta">Xem chi tiết →</span>
+        </div>
       </div>
     </article>
   `;
@@ -185,22 +232,35 @@ async function showMisconception(id) {
     const d = await api(`/misconception/${encodeURIComponent(id)}`);
     if (myToken !== _detailToken || !holder.isConnected) return;  // stale
     const m = d.misconception;
-    const citations = d.contradicts.map(citationHtml).join("");
+    const citations = d.contradicts.map(citationHtml).join("")
+      || `<div class="loading">Không xác định được điều luật bị vi phạm.</div>`;
     const postsBlock = role() === "guest"
-      ? `<div class="posts">
-           <h4>Post minh họa</h4>
+      ? `<div class="mc-section">
+           <h4>💬 Bằng chứng lan truyền</h4>
            <div class="locked-panel" style="padding:24px 20px">
              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
              <p style="margin:0">Đăng nhập để xem post minh họa gốc trên báo/mạng xã hội.</p>
            </div>
          </div>`
-      : `<div class="posts"><h4>Post minh họa</h4>${
+      : `<div class="mc-section"><h4>💬 Bằng chứng lan truyền <span class="mc-count">${(d.posts || []).length}</span></h4>${
           (d.posts || []).map(postHtml).join("") || `<div class="loading">Chưa nạp post minh họa.</div>`
         }</div>`;
     holder.innerHTML = `
-      <div class="correction"><strong>Đính chính:</strong> ${escapeHtml(m.correction)}</div>
-      <h4>Điều luật bị hiểu sai</h4>
-      <div class="contradicts">${citations}</div>
+      <div class="mc-contrast">
+        <div class="mc-block wrong">
+          <div class="mc-tag">✕ Đang lan truyền — SAI</div>
+          <p>“${escapeHtml(m.canonical_text)}”</p>
+        </div>
+        <div class="mc-arrow" aria-hidden="true">→</div>
+        <div class="mc-block right">
+          <div class="mc-tag">✓ Đúng theo luật</div>
+          <p>${escapeHtml(m.correction) || "<em>(chưa có đính chính)</em>"}</p>
+        </div>
+      </div>
+      <div class="mc-section">
+        <h4>⚖ Điều luật bị vi phạm <span class="mc-count">${d.contradicts.length}</span></h4>
+        <div class="contradicts">${citations}</div>
+      </div>
       ${postsBlock}
     `;
   } catch (e) {
@@ -210,25 +270,27 @@ async function showMisconception(id) {
 }
 
 function citationHtml(c) {
+  const cite = formatCite(c.node_id);
   return `
-    <div class="citation">
-      <div class="cite-head">
-        <span>${escapeHtml(c.display)}</span>
-        <span class="conf">${c.confidence != null ? `độ tin cậy ${(c.confidence*100).toFixed(0)}%` : ""}</span>
+    <div class="lawcard">
+      <div class="lawcard-head">
+        <div class="lawcard-cite">${escapeHtml(cite.path)}${cite.doc ? `<span class="lawcard-doc">${escapeHtml(cite.doc)}</span>` : ""}</div>
+        <span class="lawcard-badge">${escapeHtml(c.node_label || "")}</span>
       </div>
-      <div class="cite-text">${escapeHtml(c.text)}</div>
-      <div class="cite-id">${escapeHtml(c.node_id)}</div>
+      <div class="lawcard-text">${escapeHtml(c.text || "")}</div>
     </div>
   `;
 }
 
 function postHtml(p) {
-  const dt = new Date(p.created_at).toLocaleString("vi-VN");
+  const dt = new Date(p.created_at).toLocaleDateString("vi-VN");
   return `
     <div class="post">
-      <div>"${escapeHtml(p.content)}"</div>
-      <div class="meta-row">
-        ${escapeHtml(p.platform)} — ${escapeHtml(dt)} — tương tác ${fmtNum(p.engagement)} — <code>${escapeHtml(p.author_hash)}</code>
+      <div class="post-quote">“${escapeHtml(p.content)}”</div>
+      <div class="post-meta">
+        <span class="post-plat">${escapeHtml(p.platform)}</span>
+        <span>${escapeHtml(dt)}</span>
+        <span>❤ ${fmtNum(p.engagement)}</span>
       </div>
     </div>
   `;

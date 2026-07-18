@@ -34,13 +34,22 @@ _REL_VI = {
     "HAS_TAX_RATE": "thuế suất", "HAS_EXEMPTION": "miễn trừ", "PENALIZES": "xử phạt",
 }
 
+# CHỈ đi theo quan hệ LUẬT. Nếu không lọc, subgraphAll bò sang REFERS_TO (Claim->luật)
+# và CONTRADICTS (Misconception->luật) -> kéo hàng chục node dư luận vào, đè hết cấu
+# trúc luật (graph Q&A "loạn"). Whitelist relationshipFilter chặn tại gốc.
+_LAW_RELS = (
+    "HAS_ARTICLE|HAS_CLAUSE|HAS_POINT|SUPERSEDED_BY|REPLACES|APPLIES_TO|IMPOSES|"
+    "GRANTS|PROHIBITS|HAS_DEADLINE|HAS_TAX_BASE|HAS_TAX_RATE|HAS_EXEMPTION|PENALIZES"
+)
+
 # Cypher: coalesce các loại id khác nhau (point_id/clause_id/... ) về 1 khóa chung.
 # Trả list comprehension để giữ label + type (record.data() strip Node/Rel object).
 _CYPHER = """
 MATCH (c)
 WHERE c.point_id=$node OR c.clause_id=$node OR c.article_id=$node
    OR c.penalty_id=$node OR c.node_id=$node
-CALL apoc.path.subgraphAll(c, {maxLevel:$depth}) YIELD nodes, relationships
+CALL apoc.path.subgraphAll(c, {maxLevel:$depth, relationshipFilter:$relfilter})
+YIELD nodes, relationships
 RETURN
   [n IN nodes | {
      id: coalesce(n.point_id,n.clause_id,n.article_id,n.penalty_id,n.node_id,
@@ -87,7 +96,7 @@ def subgraph(
 
     from backend.graph.connection import run  # noqa: WPS433
 
-    rows = run(_CYPHER, node=node, depth=depth)
+    rows = run(_CYPHER, node=node, depth=depth, relfilter=_LAW_RELS)
     if not rows or not rows[0].get("nodes"):
         raise HTTPException(status_code=404, detail=f"Không tìm thấy node {node!r} trong graph")
 

@@ -26,14 +26,18 @@ EMBED_BATCH = 50  # số node embed mỗi request
 
 
 def _embed(texts: list[str]) -> np.ndarray:
-    """Gọi FPT embeddings, trả ma trận (n, dim) đã chuẩn hoá L2."""
-    from backend.core.llm import _client
+    """Gọi FPT embeddings, trả ma trận (n, dim) đã chuẩn hoá L2.
+
+    Đi qua llm.embed (có retry 429/5xx/mạng). KHÔNG gọi _client().embeddings.create
+    thẳng: _client đặt max_retries=0 nên gọi thẳng là mất hết retry -> build_cache
+    1.821 node đứt giữa chừng khi FPT rate-limit.
+    """
+    from backend.core import llm
 
     vectors: list[list[float]] = []
     for start in range(0, len(texts), EMBED_BATCH):
         chunk = texts[start:start + EMBED_BATCH]
-        response = _client().embeddings.create(model=EMBED_MODEL, input=chunk)
-        vectors.extend(d.embedding for d in response.data)
+        vectors.extend(llm.embed(chunk, model=EMBED_MODEL))
     matrix = np.asarray(vectors, dtype=np.float32)
     norms = np.linalg.norm(matrix, axis=1, keepdims=True)
     return matrix / np.clip(norms, 1e-9, None)

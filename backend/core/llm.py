@@ -98,18 +98,21 @@ def _retry_after_seconds(exc: Exception) -> float | None:
         return None  # dang HTTP-date -> bo qua, dung backoff mu
 
 
-def _create_with_retry(**kwargs):
-    """Goi chat.completions.create, retry loi tam thoi (429 / 5xx / mang).
+def _with_retry(call, *, op: str = "api"):
+    """Chay `call()` co retry loi tam thoi (429 / 5xx / mang) + backoff + jitter.
+
+    DUNG CHUNG cho MOI duong goi API (chat.completions VA embeddings) — vi _client()
+    dat max_retries=0, moi duong khong boc qua day se KHONG co retry nao. Truoc kia
+    chi chat duoc boc -> embeddings mat retry -> build_cache 1.821 node chet giua chung
+    khi ket rate-limit. Gio ca hai di qua day.
 
     Loi vinh vien (BadRequest/Auth/PermissionDenied...) khong nam trong _RETRYABLE
-    nen bat ra ngoai vong lap va nem ngay. Het luot retry -> nem loi cuoi cung de
-    caller (vd extract_batch) xu ly nhu truoc.
+    nen khong bi bat -> nem ngay. Het luot -> nem loi cuoi cung, caller tu xu ly.
     """
-    client = _client()
     last_exc: Exception | None = None
     for attempt in range(MAX_RETRIES + 1):
         try:
-            return client.chat.completions.create(**kwargs)
+            return call()
         except _RETRYABLE as exc:
             last_exc = exc
             if attempt == MAX_RETRIES:
@@ -121,12 +124,29 @@ def _create_with_retry(**kwargs):
             else:
                 delay = random.uniform(0, capped)  # full jitter: 8 luong khong retry cung nhip
             print(
-                f"[llm.retry] {type(exc).__name__} (thu {attempt + 1}/{MAX_RETRIES}) "
+                f"[llm.retry:{op}] {type(exc).__name__} (thu {attempt + 1}/{MAX_RETRIES}) "
                 f"-> cho {delay:.1f}s"
             )
             time.sleep(delay)
     assert last_exc is not None  # vao _RETRYABLE it nhat 1 lan moi toi day
     raise last_exc
+
+
+def _create_with_retry(**kwargs):
+    """chat.completions.create co retry. Xem _with_retry."""
+    client = _client()
+    return _with_retry(lambda: client.chat.completions.create(**kwargs), op="chat")
+
+
+def embed(inputs: list[str], *, model: str):
+    """embeddings.create co retry. Tra list vector (raw response.data).
+
+    Duoc discourse/embeddings.py goi thay cho _client().embeddings.create truc tiep,
+    de duong embedding cung huong retry giong chat.
+    """
+    client = _client()
+    response = _with_retry(lambda: client.embeddings.create(model=model, input=inputs), op="embed")
+    return [d.embedding for d in response.data]
 
 
 def _tool_for(schema: type[BaseModel]) -> dict:
@@ -235,4 +255,4 @@ def load_prompt(name: str) -> str:
     raise FileNotFoundError(f"Prompt {name!r} not found under {prompts_dir}")
 
 
-__all__ = ["extract", "extract_cached", "extract_batch", "load_prompt"]
+__all__ = ["extract", "extract_cached", "extract_batch", "embed", "load_prompt"]

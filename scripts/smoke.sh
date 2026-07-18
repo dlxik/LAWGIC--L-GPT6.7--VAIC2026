@@ -6,6 +6,11 @@
 #   ./scripts/smoke.sh               # tro vao http://localhost:8000
 #   API=http://staging.foo scripts/smoke.sh
 #
+# LUU Y: script tieu ~15 /qa call (chinh la 10/60s cap) trong 1 lan chay. Neu
+# chay lai trong 60s -> bucket con day tu lan truoc -> 4 check /qa se 429.
+# Cho 60s hoac restart uvicorn de reset in-memory bucket. Neu tich hop vao CI,
+# dat RATELIMIT_TRUST_XFF=1 + gui X-Forwarded-For rieng cho moi section.
+#
 # Exit code:
 #   0 = tat ca check pass
 #   >0 = so luong check fail

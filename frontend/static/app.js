@@ -1,5 +1,20 @@
 // [P4] Logic dashboard. Khong framework, khong build step.
 
+// ---------- theme (chay TRUOC render de tranh flash) ----------
+
+const THEME_KEY = "lawgic-theme";
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem(THEME_KEY, t); } catch (_) {}
+}
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (_) {}
+  const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+  const initial = saved || (prefersLight ? "light" : "dark");
+  document.documentElement.setAttribute("data-theme", initial);
+})();
+
 // Origin thay doi tuy noi mo:
 //   - Mo qua /static (uvicorn serve) -> API cung origin
 //   - Mo file://       -> tro sang localhost:8000
@@ -57,14 +72,14 @@ async function loadStats() {
     badge.className = "badge " + health.graph_source;
 
     $("#stats").innerHTML = `
-      <div class="stat"><b>${fmtNum(s.documents)}</b>Van ban</div>
-      <div class="stat"><b>${fmtNum(s.points)}</b>Diem</div>
-      <div class="stat"><b>${fmtNum(s.posts_analysed)}</b>Post da phan tich</div>
-      <div class="stat"><b>${fmtNum(s.misconceptions_active)}</b>Canh bao</div>
-      <div class="stat"><b>${fmtNum(s.total_engagement_flagged)}</b>Tuong tac gan co</div>
+      <div class="stat"><span>Văn bản</span><b>${fmtNum(s.documents)}</b></div>
+      <div class="stat"><span>Điểm / khoản / điều</span><b>${fmtNum(s.points)}</b></div>
+      <div class="stat"><span>Post phân tích</span><b>${fmtNum(s.posts_analysed)}</b></div>
+      <div class="stat"><span>Cảnh báo</span><b>${fmtNum(s.misconceptions_active)}</b></div>
+      <div class="stat"><span>Tương tác gắn cờ</span><b>${fmtNum(s.total_engagement_flagged)}</b></div>
     `;
   } catch (e) {
-    $("#stats").innerHTML = `<div class="error">Khong ket noi API: ${escapeHtml(e.message)}</div>`;
+    $("#stats").innerHTML = `<div class="error">Không kết nối được API: ${escapeHtml(e.message)}</div>`;
   }
 }
 
@@ -74,11 +89,11 @@ const $trends = $("#trends-list");
 const $detail = $("#misc-detail");
 
 async function loadTrends() {
-  $trends.innerHTML = `<div class="loading">Dang tai canh bao...</div>`;
+  $trends.innerHTML = `<div class="loading">Đang tải cảnh báo…</div>`;
   try {
     const items = await api("/trends");
     if (!items.length) {
-      $trends.innerHTML = `<div class="loading">Chua co canh bao nao.</div>`;
+      $trends.innerHTML = `<div class="loading">Chưa có cảnh báo nào.</div>`;
       return;
     }
     $trends.innerHTML = items.map(cardHtml).join("");
@@ -86,7 +101,7 @@ async function loadTrends() {
       c.addEventListener("click", () => showMisconception(c.dataset.id));
     });
   } catch (e) {
-    $trends.innerHTML = `<div class="error">Loi tai trend: ${escapeHtml(e.message)}</div>`;
+    $trends.innerHTML = `<div class="error">Lỗi tải trend: ${escapeHtml(e.message)}</div>`;
   }
 }
 
@@ -97,8 +112,8 @@ function cardHtml(m) {
       <div class="sev ${escapeHtml(m.severity)}">${escapeHtml(m.severity)}</div>
       <div class="canonical">"${escapeHtml(m.canonical_text)}"</div>
       <div class="meta">
-        <span><b>${fmtNum(m.count)}</b> lan lap</span>
-        <span><b>${fmtNum(m.total_engagement)}</b> tuong tac</span>
+        <span><b>${fmtNum(m.count)}</b> lần lặp</span>
+        <span><b>${fmtNum(m.total_engagement)}</b> tương tác</span>
         <span><b>~${per24}</b>/24h</span>
       </div>
     </article>
@@ -107,22 +122,22 @@ function cardHtml(m) {
 
 async function showMisconception(id) {
   $detail.hidden = false;
-  $detail.innerHTML = `<div class="loading">Dang tai chi tiet...</div>`;
+  $detail.innerHTML = `<div class="loading">Đang tải chi tiết…</div>`;
   $detail.scrollIntoView({ behavior: "smooth", block: "start" });
   try {
     const d = await api(`/misconception/${encodeURIComponent(id)}`);
     const m = d.misconception;
     const citations = d.contradicts.map(citationHtml).join("");
-    const posts = (d.posts || []).map(postHtml).join("") || `<div class="loading">Chua nap post minh hoa.</div>`;
+    const posts = (d.posts || []).map(postHtml).join("") || `<div class="loading">Chưa nạp post minh họa.</div>`;
     $detail.innerHTML = `
       <h3>"${escapeHtml(m.canonical_text)}"</h3>
-      <div class="correction"><strong>Dinh chinh:</strong> ${escapeHtml(m.correction)}</div>
-      <h4>Dieu luat bi hieu sai</h4>
+      <div class="correction"><strong>Đính chính:</strong> ${escapeHtml(m.correction)}</div>
+      <h4>Điều luật bị hiểu sai</h4>
       <div class="contradicts">${citations}</div>
-      <div class="posts"><h4>Post minh hoa</h4>${posts}</div>
+      <div class="posts"><h4>Post minh họa</h4>${posts}</div>
     `;
   } catch (e) {
-    $detail.innerHTML = `<div class="error">Loi: ${escapeHtml(e.message)}</div>`;
+    $detail.innerHTML = `<div class="error">Lỗi: ${escapeHtml(e.message)}</div>`;
   }
 }
 
@@ -131,7 +146,7 @@ function citationHtml(c) {
     <div class="citation">
       <div class="cite-head">
         <span>${escapeHtml(c.display)}</span>
-        <span class="conf">${c.confidence != null ? `confidence ${(c.confidence*100).toFixed(0)}%` : ""}</span>
+        <span class="conf">${c.confidence != null ? `độ tin cậy ${(c.confidence*100).toFixed(0)}%` : ""}</span>
       </div>
       <div class="cite-text">${escapeHtml(c.text)}</div>
       <div class="cite-id">${escapeHtml(c.node_id)}</div>
@@ -145,7 +160,7 @@ function postHtml(p) {
     <div class="post">
       <div>"${escapeHtml(p.content)}"</div>
       <div class="meta-row">
-        ${escapeHtml(p.platform)} — ${escapeHtml(dt)} — tuong tac ${fmtNum(p.engagement)} — <code>${escapeHtml(p.author_hash)}</code>
+        ${escapeHtml(p.platform)} — ${escapeHtml(dt)} — tương tác ${fmtNum(p.engagement)} — <code>${escapeHtml(p.author_hash)}</code>
       </div>
     </div>
   `;
@@ -175,7 +190,7 @@ $$(".qa-samples button").forEach((b) => {
 async function askQuestion(question, asOfDate) {
   if (!question) return;
   $qaAnswer.hidden = false;
-  $qaAnswer.innerHTML = `<div class="loading">Dang tra loi...</div>`;
+  $qaAnswer.innerHTML = `<div class="loading">Đang trả lời…</div>`;
   try {
     const r = await api("/qa", {
       method: "POST",
@@ -183,18 +198,18 @@ async function askQuestion(question, asOfDate) {
     });
     renderAnswer(r);
   } catch (e) {
-    $qaAnswer.innerHTML = `<div class="error">Loi: ${escapeHtml(e.message)}</div>`;
+    $qaAnswer.innerHTML = `<div class="error">Lỗi: ${escapeHtml(e.message)}</div>`;
   }
 }
 
 function renderAnswer(r) {
   const cites = (r.citations || []).map(citationHtml).join("")
-    || `<div class="loading">Khong co citation.</div>`;
+    || `<div class="loading">Không có trích dẫn.</div>`;
   $qaAnswer.innerHTML = `
-    <h4>Cau tra loi <span class="mode ${r.mode}">${r.mode.toUpperCase()}</span></h4>
+    <h4>Câu trả lời <span class="mode ${r.mode}">${r.mode.toUpperCase()}</span></h4>
     <div class="body">${escapeHtml(r.answer)}</div>
-    <h4>Trich dan Dieu &mdash; Khoan &mdash; Diem
-      ${r.confidence != null ? `<span style="text-transform:none;color:var(--muted)"> — confidence ${(r.confidence*100).toFixed(0)}%</span>` : ""}
+    <h4>Trích dẫn Điều &mdash; Khoản &mdash; Điểm
+      ${r.confidence != null ? `<span style="text-transform:none;color:var(--ink-dim)"> — độ tin cậy ${(r.confidence*100).toFixed(0)}%</span>` : ""}
     </h4>
     ${cites}
   `;
@@ -205,31 +220,31 @@ function renderAnswer(r) {
 let diffLoaded = false;
 async function loadDiff(docId) {
   const $list = $("#diff-list");
-  $list.innerHTML = `<div class="loading">Dang tai...</div>`;
+  $list.innerHTML = `<div class="loading">Đang tải…</div>`;
   try {
     const d = await api(`/document/${encodeURIComponent(docId)}/diff`);
     $("#diff-doc-title").textContent = `${d.document.doc_number} — ${d.document.title}`;
     if (!d.diffs.length) {
-      $list.innerHTML = `<div class="loading">Van ban nay khong co diff.</div>`;
+      $list.innerHTML = `<div class="loading">Văn bản này không có diff.</div>`;
     } else {
       $list.innerHTML = d.diffs.map(diffHtml).join("");
     }
     diffLoaded = true;
   } catch (e) {
-    $list.innerHTML = `<div class="error">Loi: ${escapeHtml(e.message)}</div>`;
+    $list.innerHTML = `<div class="error">Lỗi: ${escapeHtml(e.message)}</div>`;
   }
 }
 
 function diffHtml(d) {
   const oldSide = d.old_point
-    ? `<div class="side old"><h5>Van ban cu — ${escapeHtml(d.old_point.display)}</h5>${escapeHtml(d.old_point.text)}</div>`
-    : `<div class="side old empty">(Diem moi hoan toan, khong co ban cu)</div>`;
+    ? `<div class="side old"><h5>Văn bản cũ — ${escapeHtml(d.old_point.display)}</h5>${escapeHtml(d.old_point.text)}</div>`
+    : `<div class="side old empty">(Điểm mới hoàn toàn, không có bản cũ)</div>`;
   const newSide = d.new_point
-    ? `<div class="side new"><h5>Van ban moi — ${escapeHtml(d.new_point.display)}</h5>${escapeHtml(d.new_point.text)}</div>`
-    : `<div class="side new empty">(Diem cu bi xoa, khong co ban moi)</div>`;
+    ? `<div class="side new"><h5>Văn bản mới — ${escapeHtml(d.new_point.display)}</h5>${escapeHtml(d.new_point.text)}</div>`
+    : `<div class="side new empty">(Điểm cũ bị xóa, không có bản mới)</div>`;
   return `
     <div class="diff-row">
-      <div class="change">${escapeHtml(d.change_type)} · similarity ${(d.similarity*100).toFixed(0)}% · tu ${escapeHtml(d.effective_from)}</div>
+      <div class="change">${escapeHtml(d.change_type)} · độ tương đồng ${(d.similarity*100).toFixed(0)}% · từ ${escapeHtml(d.effective_from)}</div>
       <div class="sides">${oldSide}${newSide}</div>
       <div class="summary">${escapeHtml(d.summary)}</div>
     </div>
@@ -237,6 +252,11 @@ function diffHtml(d) {
 }
 
 // ---------- boot ----------
+
+$("#theme-toggle").addEventListener("click", () => {
+  const cur = document.documentElement.getAttribute("data-theme") || "dark";
+  applyTheme(cur === "dark" ? "light" : "dark");
+});
 
 loadStats();
 loadTrends();

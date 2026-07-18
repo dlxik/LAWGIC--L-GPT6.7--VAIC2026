@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- [P4] Dashboard 1 trang, 2 tab. HTML+JS thuan, khong build step. -->
+<!-- [P4] Dashboard 1 trang, 3 tab. HTML+JS thuan, khong build step. -->
 <html lang="vi">
 <head>
   <meta charset="utf-8">
@@ -14,19 +14,23 @@
       <p>Legal Analytics With Graph-Integrated Cognition</p>
     </div>
     <div id="stats" class="stats" aria-live="polite"></div>
+    <button id="theme-toggle" class="icon-btn" aria-label="Đổi chế độ sáng/tối" title="Đổi chế độ sáng/tối">
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.93 19.07 1.41-1.41"/><path d="m17.66 6.34 1.41-1.41"/></svg>
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
   </header>
 
   <nav role="tablist">
-    <button data-tab="trends" class="active" role="tab" aria-selected="true">Canh bao hieu nham</button>
-    <button data-tab="qa" role="tab" aria-selected="false">Hoi &mdash; Dap</button>
-    <button data-tab="diff" role="tab" aria-selected="false">Van ban cu vs moi</button>
+    <button data-tab="trends" class="active" role="tab" aria-selected="true">Cảnh báo hiểu nhầm</button>
+    <button data-tab="qa" role="tab" aria-selected="false">Hỏi &mdash; Đáp</button>
+    <button data-tab="diff" role="tab" aria-selected="false">Văn bản cũ vs mới</button>
   </nav>
 
   <!-- TAB 1: canh bao trend -->
   <section id="trends" role="tabpanel">
     <div class="panel-head">
-      <h2>Canh bao trend</h2>
-      <button id="refresh-trends" class="ghost">Lam moi</button>
+      <h2>Cảnh báo trend</h2>
+      <button id="refresh-trends" class="ghost">Làm mới</button>
     </div>
     <div id="trends-list" class="cards"></div>
     <div id="misc-detail" class="detail" hidden></div>
@@ -34,23 +38,23 @@
 
   <!-- TAB 2: Q&A -->
   <section id="qa" role="tabpanel" hidden>
-    <div class="panel-head"><h2>Hoi cau hoi phap luat</h2></div>
+    <div class="panel-head"><h2>Hỏi câu hỏi pháp luật</h2></div>
     <form id="qa-form" class="qa-form">
-      <label for="qa-input">Cau hoi</label>
+      <label for="qa-input">Câu hỏi</label>
       <textarea id="qa-input" rows="2" required
-        placeholder="Vi du: Ho kinh doanh doanh thu 400 trieu/nam co phai nop thue TNCN?"></textarea>
+        placeholder="Ví dụ: Hộ kinh doanh doanh thu 400 triệu/năm có phải nộp thuế TNCN?"></textarea>
       <div class="qa-row">
-        <label for="qa-date">Hieu luc tinh den ngay (tuy chon)
+        <label for="qa-date">Hiệu lực tính đến ngày (tùy chọn)
           <input id="qa-date" type="date">
         </label>
-        <button type="submit">Hoi</button>
+        <button type="submit">Hỏi</button>
       </div>
       <div class="qa-samples">
-        <span>Cau hoi mau:</span>
-        <button type="button" data-sample="Ho kinh doanh doanh thu 400 trieu/nam co phai nop thue TNCN khong?">nguong 400 trieu</button>
-        <button type="button" data-sample="Nguong doanh thu mien thue TNCN cho ca nhan kinh doanh la bao nhieu?">nguong mien</button>
-        <button type="button" data-sample="Phuong phap khoan thue ho kinh doanh con ap dung tu 1/7/2026 khong?">bo khoan?</button>
-        <button type="button" data-sample="Toi nen dau tu tien ao khong?">cau hoi khong lien quan</button>
+        <span>Câu hỏi mẫu:</span>
+        <button type="button" data-sample="Hộ kinh doanh doanh thu 400 triệu/năm có phải nộp thuế TNCN không?">ngưỡng 400 triệu</button>
+        <button type="button" data-sample="Ngưỡng doanh thu miễn thuế TNCN cho cá nhân kinh doanh là bao nhiêu?">ngưỡng miễn</button>
+        <button type="button" data-sample="Phương pháp khoán thuế hộ kinh doanh còn áp dụng từ 1/7/2026 không?">bỏ khoán?</button>
+        <button type="button" data-sample="Tôi nên đầu tư tiền ảo không?">câu hỏi không liên quan</button>
       </div>
     </form>
     <div id="qa-answer" class="answer" hidden></div>
@@ -59,13 +63,13 @@
   <!-- TAB 3: Diff van ban -->
   <section id="diff" role="tabpanel" hidden>
     <div class="panel-head">
-      <h2>So sanh van ban: <span id="diff-doc-title"></span></h2>
+      <h2>So sánh văn bản: <span id="diff-doc-title"></span></h2>
     </div>
     <div id="diff-list" class="diffs"></div>
   </section>
 
   <footer>
-    <span>Nguon du lieu: <span id="source-badge" class="badge">-</span></span>
+    <span>Nguồn dữ liệu: <span id="source-badge" class="badge">-</span></span>
     <span>API: <code id="api-url"></code></span>
   </footer>
 

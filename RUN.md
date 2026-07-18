@@ -9,8 +9,8 @@ Cần: **Git**, **Docker Desktop**, **Python 3.11**.
 
 ```powershell
 # 1. Lấy code (đã có sẵn thì bỏ qua, chỉ cần: git pull)
-git clone https://github.com/dlxik/VAIC2026--L-GPT6.7.git
-cd VAIC2026--L-GPT6.7
+git clone https://github.com/dlxik/LAWGIC--L-GPT6.7--VAIC2026.git
+cd LAWGIC--L-GPT6.7--VAIC2026
 
 # 2. Cài thư viện Python
 pip install -r backend/requirements.txt

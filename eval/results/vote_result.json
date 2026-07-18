@@ -1,0 +1,522 @@
+{
+  "A": "gpt-oss-20b",
+  "B": "gemma-4-31B-it",
+  "configs": {
+    "A: gpt-oss-20b": {
+      "fields": {
+        "subjects": {
+          "precision": 0.7558,
+          "recall": 0.9848,
+          "f1": 0.8553,
+          "tp": 65,
+          "fp": 21,
+          "fn": 1
+        },
+        "obligations": {
+          "precision": 0.5738,
+          "recall": 0.8537,
+          "f1": 0.6863,
+          "tp": 35,
+          "fp": 26,
+          "fn": 6
+        },
+        "rights": {
+          "precision": 0.7778,
+          "recall": 0.875,
+          "f1": 0.8235,
+          "tp": 21,
+          "fp": 6,
+          "fn": 3
+        },
+        "prohibitions": {
+          "precision": 0.5385,
+          "recall": 1.0,
+          "f1": 0.7,
+          "tp": 7,
+          "fp": 6,
+          "fn": 0
+        },
+        "deadlines": {
+          "precision": 0.5926,
+          "recall": 1.0,
+          "f1": 0.7442,
+          "tp": 16,
+          "fp": 11,
+          "fn": 0
+        },
+        "references": {
+          "precision": 0.8235,
+          "recall": 0.9333,
+          "f1": 0.875,
+          "tp": 42,
+          "fp": 9,
+          "fn": 3
+        },
+        "tax_rates": {
+          "precision": 0.5556,
+          "recall": 1.0,
+          "f1": 0.7143,
+          "tp": 10,
+          "fp": 8,
+          "fn": 0
+        },
+        "tax_base": {
+          "precision": 0.7692,
+          "recall": 0.8333,
+          "f1": 0.8,
+          "tp": 10,
+          "fp": 3,
+          "fn": 2
+        },
+        "exemptions": {
+          "precision": 0.3077,
+          "recall": 0.5714,
+          "f1": 0.4,
+          "tp": 4,
+          "fp": 9,
+          "fn": 3
+        }
+      },
+      "micro": {
+        "precision": 0.6796,
+        "recall": 0.9211,
+        "f1": 0.7821,
+        "tp": 210,
+        "fp": 99,
+        "fn": 18
+      },
+      "hall": 0.3204,
+      "pen_acc": 0.7143
+    },
+    "B: gemma-4-31B-it": {
+      "fields": {
+        "subjects": {
+          "precision": 0.8923,
+          "recall": 0.8788,
+          "f1": 0.8855,
+          "tp": 58,
+          "fp": 7,
+          "fn": 8
+        },
+        "obligations": {
+          "precision": 0.78,
+          "recall": 0.9512,
+          "f1": 0.8571,
+          "tp": 39,
+          "fp": 11,
+          "fn": 2
+        },
+        "rights": {
+          "precision": 0.7273,
+          "recall": 1.0,
+          "f1": 0.8421,
+          "tp": 24,
+          "fp": 9,
+          "fn": 0
+        },
+        "prohibitions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "deadlines": {
+          "precision": 0.5926,
+          "recall": 1.0,
+          "f1": 0.7442,
+          "tp": 16,
+          "fp": 11,
+          "fn": 0
+        },
+        "references": {
+          "precision": 0.7719,
+          "recall": 0.9778,
+          "f1": 0.8627,
+          "tp": 44,
+          "fp": 13,
+          "fn": 1
+        },
+        "tax_rates": {
+          "precision": 0.8333,
+          "recall": 1.0,
+          "f1": 0.9091,
+          "tp": 10,
+          "fp": 2,
+          "fn": 0
+        },
+        "tax_base": {
+          "precision": 0.5,
+          "recall": 0.8333,
+          "f1": 0.625,
+          "tp": 10,
+          "fp": 10,
+          "fn": 2
+        },
+        "exemptions": {
+          "precision": 0.2,
+          "recall": 0.7143,
+          "f1": 0.3125,
+          "tp": 5,
+          "fp": 20,
+          "fn": 2
+        }
+      },
+      "micro": {
+        "precision": 0.7196,
+        "recall": 0.9342,
+        "f1": 0.813,
+        "tp": 213,
+        "fp": 83,
+        "fn": 15
+      },
+      "hall": 0.2804,
+      "pen_acc": 0.0
+    },
+    "A∩B  (giao/voting)": {
+      "fields": {
+        "subjects": {
+          "precision": 0.8056,
+          "recall": 0.8788,
+          "f1": 0.8406,
+          "tp": 58,
+          "fp": 14,
+          "fn": 8
+        },
+        "obligations": {
+          "precision": 0.7778,
+          "recall": 0.8537,
+          "f1": 0.814,
+          "tp": 35,
+          "fp": 10,
+          "fn": 6
+        },
+        "rights": {
+          "precision": 0.84,
+          "recall": 0.875,
+          "f1": 0.8571,
+          "tp": 21,
+          "fp": 4,
+          "fn": 3
+        },
+        "prohibitions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "deadlines": {
+          "precision": 0.7273,
+          "recall": 1.0,
+          "f1": 0.8421,
+          "tp": 16,
+          "fp": 6,
+          "fn": 0
+        },
+        "references": {
+          "precision": 0.875,
+          "recall": 0.9333,
+          "f1": 0.9032,
+          "tp": 42,
+          "fp": 6,
+          "fn": 3
+        },
+        "tax_rates": {
+          "precision": 0.7692,
+          "recall": 1.0,
+          "f1": 0.8696,
+          "tp": 10,
+          "fp": 3,
+          "fn": 0
+        },
+        "tax_base": {
+          "precision": 0.8333,
+          "recall": 0.8333,
+          "f1": 0.8333,
+          "tp": 10,
+          "fp": 2,
+          "fn": 2
+        },
+        "exemptions": {
+          "precision": 0.3636,
+          "recall": 0.5714,
+          "f1": 0.4444,
+          "tp": 4,
+          "fp": 7,
+          "fn": 3
+        }
+      },
+      "micro": {
+        "precision": 0.7961,
+        "recall": 0.8904,
+        "f1": 0.8406,
+        "tp": 203,
+        "fp": 52,
+        "fn": 25
+      },
+      "hall": 0.2039,
+      "pen_acc": 0.0
+    },
+    "A∪B  (hợp)": {
+      "fields": {
+        "subjects": {
+          "precision": 0.7558,
+          "recall": 0.9848,
+          "f1": 0.8553,
+          "tp": 65,
+          "fp": 21,
+          "fn": 1
+        },
+        "obligations": {
+          "precision": 0.5797,
+          "recall": 0.9756,
+          "f1": 0.7273,
+          "tp": 40,
+          "fp": 29,
+          "fn": 1
+        },
+        "rights": {
+          "precision": 0.6486,
+          "recall": 1.0,
+          "f1": 0.7869,
+          "tp": 24,
+          "fp": 13,
+          "fn": 0
+        },
+        "prohibitions": {
+          "precision": 0.5385,
+          "recall": 1.0,
+          "f1": 0.7,
+          "tp": 7,
+          "fp": 6,
+          "fn": 0
+        },
+        "deadlines": {
+          "precision": 0.5161,
+          "recall": 1.0,
+          "f1": 0.6809,
+          "tp": 16,
+          "fp": 15,
+          "fn": 0
+        },
+        "references": {
+          "precision": 0.7031,
+          "recall": 1.0,
+          "f1": 0.8257,
+          "tp": 45,
+          "fp": 19,
+          "fn": 0
+        },
+        "tax_rates": {
+          "precision": 0.5556,
+          "recall": 1.0,
+          "f1": 0.7143,
+          "tp": 10,
+          "fp": 8,
+          "fn": 0
+        },
+        "tax_base": {
+          "precision": 0.5238,
+          "recall": 0.9167,
+          "f1": 0.6667,
+          "tp": 11,
+          "fp": 10,
+          "fn": 1
+        },
+        "exemptions": {
+          "precision": 0.1852,
+          "recall": 0.7143,
+          "f1": 0.2941,
+          "tp": 5,
+          "fp": 22,
+          "fn": 2
+        }
+      },
+      "micro": {
+        "precision": 0.6093,
+        "recall": 0.9781,
+        "f1": 0.7508,
+        "tp": 223,
+        "fp": 143,
+        "fn": 5
+      },
+      "hall": 0.3907,
+      "pen_acc": 0.7143
+    },
+    "A∪B + lọc verbatim": {
+      "fields": {
+        "subjects": {
+          "precision": 0.7558,
+          "recall": 0.9848,
+          "f1": 0.8553,
+          "tp": 65,
+          "fp": 21,
+          "fn": 1
+        },
+        "obligations": {
+          "precision": 0.5797,
+          "recall": 0.9756,
+          "f1": 0.7273,
+          "tp": 40,
+          "fp": 29,
+          "fn": 1
+        },
+        "rights": {
+          "precision": 0.6486,
+          "recall": 1.0,
+          "f1": 0.7869,
+          "tp": 24,
+          "fp": 13,
+          "fn": 0
+        },
+        "prohibitions": {
+          "precision": 0.5385,
+          "recall": 1.0,
+          "f1": 0.7,
+          "tp": 7,
+          "fp": 6,
+          "fn": 0
+        },
+        "deadlines": {
+          "precision": 0.5161,
+          "recall": 1.0,
+          "f1": 0.6809,
+          "tp": 16,
+          "fp": 15,
+          "fn": 0
+        },
+        "references": {
+          "precision": 0.7031,
+          "recall": 1.0,
+          "f1": 0.8257,
+          "tp": 45,
+          "fp": 19,
+          "fn": 0
+        },
+        "tax_rates": {
+          "precision": 0.5556,
+          "recall": 1.0,
+          "f1": 0.7143,
+          "tp": 10,
+          "fp": 8,
+          "fn": 0
+        },
+        "tax_base": {
+          "precision": 0.5238,
+          "recall": 0.9167,
+          "f1": 0.6667,
+          "tp": 11,
+          "fp": 10,
+          "fn": 1
+        },
+        "exemptions": {
+          "precision": 0.2,
+          "recall": 0.7143,
+          "f1": 0.3125,
+          "tp": 5,
+          "fp": 20,
+          "fn": 2
+        }
+      },
+      "micro": {
+        "precision": 0.6126,
+        "recall": 0.9781,
+        "f1": 0.7534,
+        "tp": 223,
+        "fp": 141,
+        "fn": 5
+      },
+      "hall": 0.3874,
+      "pen_acc": 0.7143
+    },
+    "A∩B ent + A pen ⭐": {
+      "fields": {
+        "subjects": {
+          "precision": 0.8056,
+          "recall": 0.8788,
+          "f1": 0.8406,
+          "tp": 58,
+          "fp": 14,
+          "fn": 8
+        },
+        "obligations": {
+          "precision": 0.7778,
+          "recall": 0.8537,
+          "f1": 0.814,
+          "tp": 35,
+          "fp": 10,
+          "fn": 6
+        },
+        "rights": {
+          "precision": 0.84,
+          "recall": 0.875,
+          "f1": 0.8571,
+          "tp": 21,
+          "fp": 4,
+          "fn": 3
+        },
+        "prohibitions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "deadlines": {
+          "precision": 0.7273,
+          "recall": 1.0,
+          "f1": 0.8421,
+          "tp": 16,
+          "fp": 6,
+          "fn": 0
+        },
+        "references": {
+          "precision": 0.875,
+          "recall": 0.9333,
+          "f1": 0.9032,
+          "tp": 42,
+          "fp": 6,
+          "fn": 3
+        },
+        "tax_rates": {
+          "precision": 0.7692,
+          "recall": 1.0,
+          "f1": 0.8696,
+          "tp": 10,
+          "fp": 3,
+          "fn": 0
+        },
+        "tax_base": {
+          "precision": 0.8333,
+          "recall": 0.8333,
+          "f1": 0.8333,
+          "tp": 10,
+          "fp": 2,
+          "fn": 2
+        },
+        "exemptions": {
+          "precision": 0.3636,
+          "recall": 0.5714,
+          "f1": 0.4444,
+          "tp": 4,
+          "fp": 7,
+          "fn": 3
+        }
+      },
+      "micro": {
+        "precision": 0.7961,
+        "recall": 0.8904,
+        "f1": 0.8406,
+        "tp": 203,
+        "fp": 52,
+        "fn": 25
+      },
+      "hall": 0.2039,
+      "pen_acc": 0.7143
+    }
+  }
+}

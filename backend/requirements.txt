@@ -1,4 +1,5 @@
 anthropic>=0.116.0
+openai>=1.0  # P3: client cho FPT AI Marketplace (mkp-api.fptcloud.com), tương thích OpenAI
 pydantic>=2.9
 pydantic-settings>=2.5
 neo4j>=5.25

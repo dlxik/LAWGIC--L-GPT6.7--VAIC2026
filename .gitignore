@@ -45,3 +45,14 @@ data/processed/legal_docs_structured/*
 !data/raw/social_posts.json
 
 !data/**/.gitkeep
+
+# P3 scratch (chẩn đoán eval — không vào git). law_embeddings.npz cũng bị loại
+# bởi data/processed/* ở trên, sinh lại bằng embeddings.build_cache().
+eval/_diag*.py
+eval/_diag*.txt
+eval/_diag_cache.json
+eval/_last_run.txt
+eval/_last_run*.txt
+eval/_scoped*
+eval/_pipeline_run.txt
+eval/_last_run_graph.txt

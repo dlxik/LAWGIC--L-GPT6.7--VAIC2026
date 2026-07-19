@@ -198,11 +198,13 @@ def test_jitter_within_exponential_cap(patch_llm):
 
 def test_sdk_internal_retry_disabled(monkeypatch):
     captured = {}
-    real_openai = llm.OpenAI
 
     def spy(*args, **kwargs):
+        # Chi kiem KWARGS truyen vao OpenA(...) — KHONG dung real_openai(): SDK raise khi
+        # thieu api_key (moi truong offline/CI khong co key), lam test phu thuoc secret.
+        # Tra dummy: _client() chi can mot object, test chi assert max_retries/timeout.
         captured.update(kwargs)
-        return real_openai(*args, **kwargs)
+        return object()
 
     monkeypatch.setattr(llm, "OpenAI", spy)
     llm._client.cache_clear()  # _client la singleton (lru_cache) -> xoa cache de spy chay

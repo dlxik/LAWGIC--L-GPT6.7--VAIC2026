@@ -8,11 +8,9 @@ function applyTheme(t) {
   try { localStorage.setItem(THEME_KEY, t); } catch (_) {}
 }
 (function initTheme() {
-  let saved = null;
-  try { saved = localStorage.getItem(THEME_KEY); } catch (_) {}
-  const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-  const initial = saved || (prefersLight ? "light" : "dark");
-  document.documentElement.setAttribute("data-theme", initial);
+  // Ep LUON LIGHT (dark dang xau) — bo qua localStorage/prefers-color-scheme.
+  try { localStorage.setItem(THEME_KEY, "light"); } catch (_) {}
+  document.documentElement.setAttribute("data-theme", "light");
 })();
 
 // Origin thay doi tuy noi mo:
@@ -900,9 +898,9 @@ document.addEventListener("click", (e) => {
 
 // ---------- boot ----------
 
+// Da khoa LIGHT: nut toggle giu nguyen light, khong cho sang dark.
 $("#theme-toggle").addEventListener("click", () => {
-  const cur = document.documentElement.getAttribute("data-theme") || "dark";
-  applyTheme(cur === "dark" ? "light" : "dark");
+  applyTheme("light");
 });
 
 renderAuth();

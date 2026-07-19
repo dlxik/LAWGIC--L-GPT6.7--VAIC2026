@@ -26,7 +26,9 @@
 - [5. Deployment & Demo](#5-deployment--demo)
 - [6. Limitations & Future Work](#6-limitations--future-work)
 - [7. Impact & Applications](#7-impact--applications)
-- [8. Authors & License](#8-authors--license)
+- [8. Production System Architecture](#8-production-system-architecture)
+- [9. Long-term Vision & Roadmap](#9-long-term-vision--roadmap)
+- [10. Authors & License](#10-authors--license)
 
 ---
 
@@ -249,25 +251,25 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 | Lexical TF-IDF only | 63% |
 | **Hybrid (embeddings + TF-IDF + graph expansion)** | **86%** |
 
-**Q&A — EXTRACT-MATCH (khớp chữ · 44 answerable + 6 off-topic)** *(Requirement 7)*
+**Q&A — EXACT-MATCH (literal string match · 44 answerable + 6 off-topic)** *(Requirement 7)*
 
-| Metric | Kết quả | Ý nghĩa |
+| Metric | Result | Meaning |
 |---|---|---|
-| `citation_accuracy` | **73%** (32/44) | điều luật đúng có trong citation trả về |
-| `answer_correctness` | **68%** (17/25) | số/tỷ lệ (500tr, 15%…) đúng trong câu trả lời |
-| `answerable_answered` | **93%** (41/44) | câu trả được, không từ chối oan |
-| `offtopic_refused` | **100%** (6/6) | lạc đề PHẢI từ chối — chống bịa (mạnh nhất) |
+| `citation_accuracy` | **73%** (32/44) | the correct provision appears in the returned citation |
+| `answer_correctness` | **68%** (17/25) | the number/rate (500M, 15%…) in the answer is correct |
+| `answerable_answered` | **93%** (41/44) | answerable questions get answered — no false refusals |
+| `offtopic_refused` | **100%** (6/6) | off-topic MUST be refused — anti-fabrication (strongest signal) |
 
-**Q&A — SEMANTIC / RAGAS-style (so nghĩa bằng embedding FPT · 44 mẫu)**
+**Q&A — SEMANTIC / RAGAS-style (meaning comparison via FPT embeddings · 44 samples)**
 
-| Metric | Điểm | Ánh xạ RAGAS |
+| Metric | Score | RAGAS mapping |
 |---|---:|---|
-| `answer_similarity` | 0.59 | ~ answer_correctness (cos đáp án vs gold) |
-| `answer_relevancy` | 0.64 | câu trả lời bám câu hỏi |
-| `context_recall` | 0.58 | citation có chứa đáp án |
-| `faithfulness` | 0.67 | câu trả lời bám citation (không bịa) |
+| `answer_similarity` | 0.59 | ~ answer_correctness (cosine of answer vs gold) |
+| `answer_relevancy` | 0.64 | the answer stays on the question |
+| `context_recall` | 0.58 | the citation contains the answer |
+| `faithfulness` | 0.67 | the answer stays grounded in the citation (no fabrication) |
 
-> *(thang 0–1; cos ≥ 0.6 ~ khớp nghĩa tốt cho tiếng Việt pháp lý)*
+> *(scale 0–1; cosine ≥ 0.6 ~ good semantic match for Vietnamese legal text)*
 
 **Automated test suite** — **118 tests** across 9 files, covering the whole pipeline. CI runs them against a real Neo4j service container on every push (92 pass offline + 26 graph tests that need a live DB), enforces `ruff` lint, checks coverage, and builds the Docker image — see [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
@@ -398,7 +400,148 @@ docker compose exec api python scripts/load_social_to_neo4j.py
 
 ---
 
-## 8. Authors & License
+## 8. Production System Architecture
+
+> The sections above (§1–§8) describe the **competition MVP** — a single-node stack that fully implements every requirement and runs with `docker compose up`. This section describes the **target production architecture** the MVP is designed to grow into. The MVP was deliberately built contract-first (`backend/models/schemas.py`, `backend/graph/schema.py`) precisely so this evolution needs no rewrite — only horizontal replacement of components behind stable interfaces.
+
+### 9.1 Design principles
+
+| Principle | How the codebase already honors it |
+|---|---|
+| **Contract-first, swappable components** | Two frozen contracts (data + graph); LLM behind one client (`core/llm.py`), swap provider via 3 env vars |
+| **Stateless serving tier** | The API holds no session state → replicas scale horizontally behind a load balancer |
+| **Grounding is non-negotiable** | Every answer re-validated against a real graph node; no citation → refuse. This invariant survives every scaling step |
+| **Batch ≠ online** | Heavy work (parsing, extraction, embedding, diffing) is offline/idempotent; the request path only retrieves + answers |
+| **Fail safe, degrade gracefully** | LLM down → template answer with real citations; Neo4j down → mock probe; every layer has a defined fallback |
+
+### 9.2 Target production topology
+
+```mermaid
+flowchart TB
+    subgraph EDGE["Edge / Client"]
+        U["Web dashboard · Q&A widget · Partner API clients"]
+    end
+
+    subgraph GW["API Gateway"]
+        LB["Load balancer + TLS"]
+        AUTH["AuthN/AuthZ · API keys · JWT · per-tenant quota"]
+        RL["Distributed rate limit (Redis)"]
+    end
+
+    subgraph SERVE["Serving tier — stateless, autoscaled"]
+        API1["FastAPI replica"]
+        API2["FastAPI replica"]
+        APIn["FastAPI replica …"]
+    end
+
+    subgraph RETR["Retrieval & Reasoning"]
+        VEC["Vector index<br/>(embeddings, ANN)"]
+        CACHE["Answer + embedding cache<br/>(Redis)"]
+        LLMGW["LLM gateway<br/>routing · fallback · budget cap"]
+    end
+
+    subgraph DATA["Stateful stores"]
+        NEO[("Neo4j causal cluster<br/>1 core + N read replicas")]
+        OBJ[("Object store<br/>raw docs / .docx / snapshots")]
+    end
+
+    subgraph INGEST["Async ingestion pipeline (offline, idempotent)"]
+        Q["Job queue"]
+        W["Workers: parse → extract (voting) → embed → diff → load"]
+        SCHED["Scheduler: crawl social · watch official gazette"]
+    end
+
+    subgraph OBS["Cross-cutting"]
+        MON["Metrics · logs · traces"]
+        EVAL["Continuous eval on gold sets (CI-gated)"]
+    end
+
+    U --> LB --> AUTH --> RL --> API1 & API2 & APIn
+    API1 & API2 & APIn --> CACHE
+    API1 & API2 & APIn --> VEC
+    API1 & API2 & APIn --> LLMGW
+    API1 & API2 & APIn --> NEO
+    SCHED --> Q --> W
+    W --> NEO
+    W --> VEC
+    W --> OBJ
+    API1 -.metrics.-> MON
+    W -.metrics.-> MON
+    EVAL -.gates deploy.-> SERVE
+```
+
+### 9.3 Component responsibilities & scaling strategy
+
+| Layer | Tech (target) | Responsibility | Scaling |
+|---|---|---|---|
+| **API gateway** | Nginx/Envoy + Redis | TLS, auth, per-tenant rate limit, request shaping | Stateless; scale replicas |
+| **Serving tier** | FastAPI (async) | Retrieve → answer → re-validate citations | Horizontal autoscale on CPU/RPS |
+| **Vector index** | pgvector / Qdrant / Neo4j vector | ANN over article/clause/point embeddings | Sharded by document domain |
+| **Graph store** | Neo4j causal cluster | Source of truth: Điều–Khoản–Điểm, `SUPERSEDED_BY`, entities, discourse | 1 write-core + read replicas; reads scale out |
+| **LLM gateway** | Provider-agnostic proxy | Model routing, retry/backoff, budget cap, provider fallback | Provider-side; cap tail cost per tier |
+| **Cache** | Redis | Hot answers, embeddings, rate-limit buckets | Cluster mode |
+| **Ingestion** | Queue + workers | Parse, extract (A∩B voting), embed, diff, load — all idempotent | Scale workers by backlog |
+| **Scheduler** | Cron/queue | Poll official legal gazette + social sources | Per-source cadence |
+| **Observability** | OpenTelemetry stack | Metrics, structured logs, traces; hallucination-drop counter | — |
+| **Continuous eval** | pytest + gold sets in CI | Block deploys that regress citation accuracy / recall | Gated in pipeline |
+
+### 9.4 Two data planes
+
+- **Ingestion plane (offline, write-heavy):** documents and social posts flow through idempotent workers — deterministic parsing → hybrid-voting extraction → embedding → semantic diffing → graph load. Re-runnable end to end; a failed batch never leaves a half-written subtree (single-transaction load per document).
+- **Serving plane (online, read-heavy):** a request only *retrieves* (hybrid: vector + lexical + `SUPERSEDED_BY` expansion) and *answers* (one grounded LLM call, citations re-validated). No LLM call on the write path of a query; search hits the graph directly with **zero** LLM cost.
+
+### 9.5 From MVP to production — honest gap list
+
+| Concern | MVP today | Production target |
+|---|---|---|
+| Auth | Client-side demo auth | Real API keys + JWT, per-tenant isolation |
+| Rate limit | In-process (per replica) | Redis-backed, correct across replicas |
+| Graph | Single Neo4j node | Causal cluster (HA + read scale) |
+| Retrieval | TF-IDF + cached embeddings | Dedicated ANN vector index |
+| CORS | `*` (demo) | Locked to tenant domains |
+| Ingestion | Scripts, run once | Queue + scheduled workers, event-driven on new gazette |
+| Eval | Run on demand | Continuous, deploy-gating in CI |
+
+> Every row is a **component swap behind an existing interface**, not a redesign — which is the whole point of the contract-first MVP.
+
+---
+
+## 9. Long-term Vision & Roadmap
+
+**North star:** make *"what does the law actually say — right now, with a citation I can trust"* a solved problem for every Vietnamese citizen, business, and public-communications team — and catch policy misinformation before it spreads, not after.
+
+### 10.1 Phased roadmap
+
+**Phase 1 — MVP (done, this submission).** One legal knowledge graph, three tax documents, grounded Q&A with mandatory citations, time-travel over `SUPERSEDED_BY`, misinformation detection with severity ranking, dashboard + API. Every requirement implemented and measured on hand-labeled gold sets.
+
+**Phase 2 — Pilot hardening (0–6 months).** Productionize §9 (auth, HA graph, distributed rate limit, vector index, continuous eval). Ship the design-partner pilot from `docs/PILOT_ROADMAP.md`: 2–3 accounting-service firms, gate on ≥80% citation accuracy on real questions. Add ≥2 annotators + Cohen's kappa; lift the weakest field (`exemptions`) with a dedicated prompt/gold set.
+
+**Phase 3 — Multi-domain & multi-source scale (6–18 months).** Expand beyond tax to labor, enterprise, and social-insurance law — the graph architecture is domain-independent. Add discourse sources (Tuổi Trẻ, Dân Trí, VietnamNet, Facebook public pages). Event-driven ingestion that watches the official gazette and auto-builds `SUPERSEDED_BY` the day a new document is published.
+
+**Phase 4 — Platform & agentic reasoning (18 months+).** Multi-tenant SaaS with white-label + accounting-software APIs (MISA/Fast). Move from single-hop citation to **multi-hop legal reasoning** (chain provisions across documents to answer compliance questions), with every hop still grounded and cited. Real-time misinformation alerting wired to comms teams.
+
+### 10.2 Expansion axes
+
+| Axis | From → To |
+|---|---|
+| **Legal domains** | Tax → labor, enterprise, insurance, administrative |
+| **Sources** | VnExpress → multi-outlet + social platforms |
+| **Freshness** | Batch load → event-driven on new gazette |
+| **Reasoning** | Single-provision citation → grounded multi-hop chains |
+| **Delivery** | Dashboard → embeddable widget + partner API + SaaS |
+| **Trust** | Citation-exists check → citation-*supports*-answer (entailment) |
+
+### 10.3 Why it compounds (defensibility)
+
+- **The graph is a moat, not a feature.** Node-level effectivity + `SUPERSEDED_BY` history accrues over time — every new document and amendment makes "what did the law say on date X?" answerable for a wider range of X. A vector store cannot represent this; a competitor starting later starts with an empty timeline.
+- **Grounding discipline is a habit baked into the contracts**, not a prompt — it survives every model swap and every scale step.
+- **Measured, not claimed.** Gold sets + continuous eval mean quality is a number that gates deploys, so the system gets *provably* better, not just bigger.
+
+> The MVP already runs every one of these ideas at small scale. The roadmap is about **depth and reliability at scale**, on the same architecture — not a pivot.
+
+---
+
+## 10. Authors & License
 
 Built by **Team L-GPT 6.7**, a 4-member team from the [University of Engineering and Technology (UET) - VNU](https://uet.vnu.edu.vn):
 

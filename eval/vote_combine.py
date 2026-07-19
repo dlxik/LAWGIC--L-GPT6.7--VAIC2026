@@ -183,14 +183,14 @@ def main() -> None:
         row(name, r)
 
     rA = results[0][1]
-    print(f"\n  So với A đơn (mục tiêu: chất hơn mà GIỮ recall):")
+    print("\n  So với A đơn (mục tiêu: chất hơn mà GIỮ recall):")
     for name, r in results[2:]:
         print(f"    {name:24s} F1 {(r['micro']['f1']-rA['micro']['f1'])*100:+.0f}  "
               f"P {(r['micro']['precision']-rA['micro']['precision'])*100:+.0f}  "
               f"Hall {(r['hall']-rA['hall'])*100:+.0f}  "
               f"R {(r['micro']['recall']-rA['micro']['recall'])*100:+.0f}")
 
-    print(f"\n  Theo trường (F1):")
+    print("\n  Theo trường (F1):")
     hdr = "  {:14s}".format("trường") + "".join(f"{n.split(':')[0][:8]:>9s}" for n, _ in results)
     print(hdr)
     for f in ENTITY_FIELDS:

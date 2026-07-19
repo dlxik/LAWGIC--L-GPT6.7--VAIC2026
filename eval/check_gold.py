@@ -124,7 +124,7 @@ def check(rows: list[dict], nodes: dict) -> int:
         baseline = top_n / len(labelled)
         half = ci95(baseline, len(labelled))
         print(f"\n  BASELINE (đoán bừa {top_verdict!r} cho mọi claim): {baseline:.0%}")
-        print(f"  Pipeline phải vượt rõ mức này thì con số mới có nghĩa.")
+        print("  Pipeline phải vượt rõ mức này thì con số mới có nghĩa.")
         lo, hi = max(0.0, 0.8 - half), min(1.0, 0.8 + half)
         print(f"  Với n={len(labelled)}, sai số 95% khoảng ±{half:.0%}"
               f" — accuracy 80% nghĩa là thật sự nằm trong {lo:.0%}–{hi:.0%}.")

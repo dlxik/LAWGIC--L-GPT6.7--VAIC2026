@@ -9,7 +9,8 @@
   ![Python](https://img.shields.io/badge/Python-3.11+-red?logo=python&logoColor=white)
   ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)
   ![Neo4j](https://img.shields.io/badge/Neo4j-5.25-008CC1?logo=neo4j&logoColor=white)
-  ![Tests](https://img.shields.io/badge/tests-107%20passing-2ea44f)
+  ![Tests](https://img.shields.io/badge/tests-118%20passing-2ea44f)
+  [![CI](https://github.com/dlxik/LAWGIC--L-GPT6.7--VAIC2026/actions/workflows/ci.yml/badge.svg)](https://github.com/dlxik/LAWGIC--L-GPT6.7--VAIC2026/actions/workflows/ci.yml)
 
   [![GitHub](https://img.shields.io/badge/GitHub-LAWGIC%20L--GPT%206.7-181717?logo=github&logoColor=white)](https://github.com/dlxik/LAWGIC--L-GPT6.7--VAIC2026)
 </div>
@@ -97,7 +98,7 @@ LAWGIC--L-GPT6.7--VAIC2026/
 │  ├── run_pipeline.py
 │  └── load_social_to_neo4j.py
 │
-├── tests/                    # 107 automated tests (parser, graph, linker, discourse, eval)
+├── tests/                    # 118 automated tests (parser, graph, linker, discourse, eval)
 ├── data/                     # raw / processed (committed — no need to re-run)
 ├── demo/                     # Demo script + color-coded Neo4j queries
 ├── docs/images/              # Demo / README images
@@ -268,7 +269,7 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 
 > *(thang 0–1; cos ≥ 0.6 ~ khớp nghĩa tốt cho tiếng Việt pháp lý)*
 
-**Automated test suite** — **107 tests** across 8 files, covering the whole pipeline (`pytest -q`).
+**Automated test suite** — **118 tests** across 9 files, covering the whole pipeline. CI runs them against a real Neo4j service container on every push (92 pass offline + 26 graph tests that need a live DB), enforces `ruff` lint, checks coverage, and builds the Docker image — see [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ### Trade-off analysis
 - **TF-IDF only:** simple, but low recall (63%) because it can't bridge semantic gaps.

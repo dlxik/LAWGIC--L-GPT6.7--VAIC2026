@@ -46,7 +46,7 @@ def _fact_in_answer(fact: str, answer: str) -> bool:
 
 
 def main() -> None:
-    gold = [json.loads(l) for l in GOLD.read_text(encoding="utf-8").splitlines() if l.strip()]
+    gold = [json.loads(ln) for ln in GOLD.read_text(encoding="utf-8").splitlines() if ln.strip()]
     answerable = [g for g in gold if g["type"] == "answerable"]
     offtopic = [g for g in gold if g["type"] == "offtopic"]
 

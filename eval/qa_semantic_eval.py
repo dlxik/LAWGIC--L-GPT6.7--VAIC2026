@@ -69,7 +69,7 @@ def main() -> None:
     print(f"  answer_relevancy                        : {avg(ans_rel):.2f}")
     print(f"  context_recall                          : {avg(ctx_rec):.2f}")
     print(f"  faithfulness                            : {avg(faith):.2f}")
-    print(f"\n  (thang 0..1; cos>=0.6 ~ khớp nghĩa tốt cho tiếng Việt pháp lý)")
+    print("\n  (thang 0..1; cos>=0.6 ~ khớp nghĩa tốt cho tiếng Việt pháp lý)")
 
 
 if __name__ == "__main__":

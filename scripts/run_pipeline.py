@@ -79,7 +79,7 @@ def run(n_threads: int | None, as_of: str | None, window_hours: int | None = Non
         print(f"        link {i+1}/{len(claims)}", end="\r")
     print()
 
-    print(f"  [3/5] Phán verdict...")
+    print("  [3/5] Phán verdict...")
     for i, claim in enumerate(claims):
         try:
             claim.update(misinformation.verdict_for_claim(claim["text"], claim["citations"]))
@@ -90,7 +90,7 @@ def run(n_threads: int | None, as_of: str | None, window_hours: int | None = Non
         print(f"        verdict {i+1}/{len(claims)}", end="\r")
     print()
 
-    print(f"  [4/5] Gom cụm hiểu nhầm...")
+    print("  [4/5] Gom cụm hiểu nhầm...")
     misconceptions = misinformation.cluster_misconceptions(claims)
 
     print(f"  [5/5] Phát hiện trend (as_of={as_of or 'tự động'}, window={window_hours or 'mặc định'}h, "
@@ -116,13 +116,13 @@ def _print_summary(result: dict) -> None:
 
     claims = result["claims"]
     dist = Counter(c.get("verdict") for c in claims)
-    print(f"\n  === KẾT QUẢ ===")
+    print("\n  === KẾT QUẢ ===")
     print(f"  Claim: {len(claims)}")
     for v, n in dist.most_common():
         print(f"    {v:<24} {n}")
     print(f"  Misconception (cụm hiểu sai): {len(result['misconceptions'])}")
 
-    print(f"\n  TREND — tin đồn đang lan (cảnh báo chính của hệ thống):")
+    print("\n  TREND — tin đồn đang lan (cảnh báo chính của hệ thống):")
     if not result["trends"]:
         print("    (không có trend vượt ngưỡng trong cửa sổ — thử --as-of khác)")
     for t in result["trends"][:5]:

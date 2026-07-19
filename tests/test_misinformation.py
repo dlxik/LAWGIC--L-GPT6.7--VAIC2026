@@ -5,7 +5,6 @@ Chạy:  pytest tests/test_misinformation.py -v      (không cần Neo4j / API k
 
 from __future__ import annotations
 
-import pytest
 
 from backend.discourse import misinformation as mis
 

@@ -63,3 +63,7 @@ eval/_scoped2*
 eval/_ablate*
 eval/_run_*.txt
 eval/*.jsonl.bak
+
+# coverage
+.coverage
+htmlcov/

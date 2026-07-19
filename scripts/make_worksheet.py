@@ -326,7 +326,7 @@ def main() -> None:
     for bucket, n in sorted(buckets.items()):
         print(f"    {bucket:<14} {n:>3d}")
     print(f"  bàn làm việc -> {WORKSHEET_FILE.relative_to(ROOT)}")
-    print(f"\n  Tiếp: mở 2 file cạnh nhau, điền nhãn, rồi `python eval/check_gold.py`")
+    print("\n  Tiếp: mở 2 file cạnh nhau, điền nhãn, rồi `python eval/check_gold.py`")
 
 
 if __name__ == "__main__":

@@ -402,9 +402,9 @@ docker compose exec api python scripts/load_social_to_neo4j.py
 
 ## 8. Production System Architecture
 
-> The sections above (§1–§8) describe the **competition MVP** — a single-node stack that fully implements every requirement and runs with `docker compose up`. This section describes the **target production architecture** the MVP is designed to grow into. The MVP was deliberately built contract-first (`backend/models/schemas.py`, `backend/graph/schema.py`) precisely so this evolution needs no rewrite — only horizontal replacement of components behind stable interfaces.
+> The sections above (§1–§7) describe the **competition MVP** — a single-node stack that fully implements every requirement and runs with `docker compose up`. This section describes the **target production architecture** the MVP is designed to grow into. The MVP was deliberately built contract-first (`backend/models/schemas.py`, `backend/graph/schema.py`) precisely so this evolution needs no rewrite — only horizontal replacement of components behind stable interfaces.
 
-### 9.1 Design principles
+### 8.1 Design principles
 
 | Principle | How the codebase already honors it |
 |---|---|
@@ -414,7 +414,7 @@ docker compose exec api python scripts/load_social_to_neo4j.py
 | **Batch ≠ online** | Heavy work (parsing, extraction, embedding, diffing) is offline/idempotent; the request path only retrieves + answers |
 | **Fail safe, degrade gracefully** | LLM down → template answer with real citations; Neo4j down → mock probe; every layer has a defined fallback |
 
-### 9.2 Target production topology
+### 8.2 Target production topology
 
 ```mermaid
 flowchart TB
@@ -470,7 +470,7 @@ flowchart TB
     EVAL -.gates deploy.-> SERVE
 ```
 
-### 9.3 Component responsibilities & scaling strategy
+### 8.3 Component responsibilities & scaling strategy
 
 | Layer | Tech (target) | Responsibility | Scaling |
 |---|---|---|---|
@@ -485,12 +485,12 @@ flowchart TB
 | **Observability** | OpenTelemetry stack | Metrics, structured logs, traces; hallucination-drop counter | — |
 | **Continuous eval** | pytest + gold sets in CI | Block deploys that regress citation accuracy / recall | Gated in pipeline |
 
-### 9.4 Two data planes
+### 8.4 Two data planes
 
 - **Ingestion plane (offline, write-heavy):** documents and social posts flow through idempotent workers — deterministic parsing → hybrid-voting extraction → embedding → semantic diffing → graph load. Re-runnable end to end; a failed batch never leaves a half-written subtree (single-transaction load per document).
 - **Serving plane (online, read-heavy):** a request only *retrieves* (hybrid: vector + lexical + `SUPERSEDED_BY` expansion) and *answers* (one grounded LLM call, citations re-validated). No LLM call on the write path of a query; search hits the graph directly with **zero** LLM cost.
 
-### 9.5 From MVP to production — honest gap list
+### 8.5 From MVP to production — honest gap list
 
 | Concern | MVP today | Production target |
 |---|---|---|
@@ -510,17 +510,17 @@ flowchart TB
 
 **North star:** make *"what does the law actually say — right now, with a citation I can trust"* a solved problem for every Vietnamese citizen, business, and public-communications team — and catch policy misinformation before it spreads, not after.
 
-### 10.1 Phased roadmap
+### 9.1 Phased roadmap
 
 **Phase 1 — MVP (done, this submission).** One legal knowledge graph, three tax documents, grounded Q&A with mandatory citations, time-travel over `SUPERSEDED_BY`, misinformation detection with severity ranking, dashboard + API. Every requirement implemented and measured on hand-labeled gold sets.
 
-**Phase 2 — Pilot hardening (0–6 months).** Productionize §9 (auth, HA graph, distributed rate limit, vector index, continuous eval). Ship the design-partner pilot from `docs/PILOT_ROADMAP.md`: 2–3 accounting-service firms, gate on ≥80% citation accuracy on real questions. Add ≥2 annotators + Cohen's kappa; lift the weakest field (`exemptions`) with a dedicated prompt/gold set.
+**Phase 2 — Pilot hardening (0–6 months).** Productionize §8 (auth, HA graph, distributed rate limit, vector index, continuous eval). Ship the design-partner pilot from `docs/PILOT_ROADMAP.md`: 2–3 accounting-service firms, gate on ≥80% citation accuracy on real questions. Add ≥2 annotators + Cohen's kappa; lift the weakest field (`exemptions`) with a dedicated prompt/gold set.
 
 **Phase 3 — Multi-domain & multi-source scale (6–18 months).** Expand beyond tax to labor, enterprise, and social-insurance law — the graph architecture is domain-independent. Add discourse sources (Tuổi Trẻ, Dân Trí, VietnamNet, Facebook public pages). Event-driven ingestion that watches the official gazette and auto-builds `SUPERSEDED_BY` the day a new document is published.
 
 **Phase 4 — Platform & agentic reasoning (18 months+).** Multi-tenant SaaS with white-label + accounting-software APIs (MISA/Fast). Move from single-hop citation to **multi-hop legal reasoning** (chain provisions across documents to answer compliance questions), with every hop still grounded and cited. Real-time misinformation alerting wired to comms teams.
 
-### 10.2 Expansion axes
+### 9.2 Expansion axes
 
 | Axis | From → To |
 |---|---|
@@ -531,7 +531,7 @@ flowchart TB
 | **Delivery** | Dashboard → embeddable widget + partner API + SaaS |
 | **Trust** | Citation-exists check → citation-*supports*-answer (entailment) |
 
-### 10.3 Why it compounds (defensibility)
+### 9.3 Why it compounds (defensibility)
 
 - **The graph is a moat, not a feature.** Node-level effectivity + `SUPERSEDED_BY` history accrues over time — every new document and amendment makes "what did the law say on date X?" answerable for a wider range of X. A vector store cannot represent this; a competitor starting later starts with an empty timeline.
 - **Grounding discipline is a habit baked into the contracts**, not a prompt — it survives every model swap and every scale step.

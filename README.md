@@ -264,9 +264,9 @@ The full measurement process is documented in [`benchmark.md`](benchmark.md). Pr
 
 > These scores are a **deliberately strict literal-match floor**: `citation_accuracy` demands the **exact** node_id — a correct answer that cites the parent clause instead of the precise point still counts as a miss — and `answer_correctness` needs the number **character-for-character**. Read them as a **conservative lower bound**; the AI-judge below grades the same answers on meaning against the source law.
 
-**Q&A — AI-JUDGE evaluation (Claude Opus 4.8, graded against the source law text)** *(Requirement 7)*
+**Q&A — LLM-JUDGE evaluation (Claude Opus 4.8, graded against the source law text)** *(Requirement 7)*
 
-> **Why an AI judge instead of embedding cosine?** Cosine similarity unfairly punishes the two things that make LAWGIC valuable: answers that **cite the article** (*"Theo Điều 24 Khoản 2…"* dilutes the vector) and terse gold such as *"1%."*. We replace it with an **LLM-as-judge (Claude Opus 4.8)** that reads each answer, **cross-checks it against the exact Điều–Khoản–Điểm text in the graph**, and scores four dimensions: *factual correctness · citation accuracy · completeness · safety*.
+> **Why an LLM judge instead of embedding cosine?** Cosine similarity unfairly punishes the two things that make LAWGIC valuable: answers that **cite the article** (*"Theo Điều 24 Khoản 2…"* dilutes the vector) and terse gold such as *"1%."*. We replace it with an **LLM-as-judge (Claude Opus 4.8)** that reads each answer, **cross-checks it against the exact Điều–Khoản–Điểm text in the graph**, and scores four dimensions: *factual correctness · citation accuracy · completeness · safety*.
 
 **Step 1 — a 10-question classified probe (question asked → answer returned)**
 

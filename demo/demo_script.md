@@ -1,61 +1,79 @@
-# Kịch bản demo (5 phút)
+# Kịch bản Demo LAWGIC — 4 phút (Vòng 3 · Demo Day)
 
-> Cả team diễn tập **2 lần** có bấm giờ ở giờ thứ 22. Người demo mở sẵn 3 tab.
+> Mọi câu hỏi/ngày trong script đã **test thật** trên hệ thống. Làm đúng là ra đúng.
 
-## Chuẩn bị trước khi bấm chạy
+---
 
-Ba tab mở sẵn theo thứ tự:
-1. Slide bìa (vấn đề + số liệu)
-2. Neo4j Browser — `http://localhost:7474` — chạy sẵn query
-   `MATCH (o:Point)-[r:SUPERSEDED_BY]->(n:Point) RETURN o, r, n LIMIT 25`
-3. Dashboard — `http://localhost:8000/` (tab Trends được active mặc định)
-4. Slide eval (số accuracy từ `eval/run_eval.py`)
+## 0. CHUẨN BỊ TRƯỚC KHI QUAY (KHÔNG quay phần này)
 
-Kiểm tra `curl :8000/health` → `graph_source` phải là **`neo4j`** (nếu vẫn
-`mock` nghĩa là P2 chưa nạp — cắm cờ demo mock cũng chạy nhưng phải nói rõ).
+1. **Bật server** (đảm bảo chạy):
+   ```bash
+   # health phải trả graph_source: neo4j
+   curl http://localhost:8000/health
+   ```
+2. **Mở sẵn 2 tab trình duyệt:**
+   - Tab 1 — **Web app:** `http://localhost:8000` → đang ở tab **"Cảnh báo hiểu nhầm"**, bấm **Ctrl+Shift+R** (xoá cache, nạp bản mới nhất).
+   - Tab 2 — **Neo4j Browser:** `http://localhost:7474`
+     - Ô **Connect URL:** `bolt://localhost:7687`
+     - **Username:** `neo4j`
+     - **Password:** `lawgic-dev-password`
+     - Bấm **Connect**. Dán sẵn (CHƯA Enter) câu Cypher ở mục 1 dưới.
+3. **Phóng to chữ** trình duyệt (Ctrl +) cho dễ nhìn khi quay.
+4. Đóng hết tab/thông báo thừa. Chế độ **Khách** là đủ (KHÔNG cần đăng nhập).
 
-## Kịch bản
+---
 
-| Phút | Màn hình | Lời thoại |
+## 1. THÔNG TIN TRUY CẬP (copy sẵn ra giấy nhớ)
+
+| Thứ | Giá trị |
+|---|---|
+| Web app | `http://localhost:8000` |
+| Neo4j Browser | `http://localhost:7474` · bolt: `bolt://localhost:7687` |
+| Neo4j user / pass | `neo4j` / `lawgic-dev-password` |
+
+**Câu hỏi Hỏi–Đáp (gõ TAY hoặc dùng chip):**
+- Time-travel A: `Hội đồng tư vấn thuế xã phường còn hoạt động từ 1/7/2026 không?`
+- Time-travel B: `Hội đồng tư vấn thuế xã phường còn hoạt động từ 1/6/2026 không?`
+- Chống ảo giác: chip **"câu hỏi không liên quan"** (tiền ảo)
+- Câu thường: chip **"ngưỡng miễn"**
+
+**Cypher dán vào Neo4j Browser (hiện graph cũ→mới):**
+```cypher
+MATCH path = (old:Clause)-[:SUPERSEDED_BY]->(new:Clause)
+WHERE old.clause_id STARTS WITH 'qlt2019-d10'
+RETURN path
+```
+
+---
+
+## 2. KỊCH BẢN TỪNG GIÂY (~3:55)
+
+| Thời gian | THAO TÁC (làm gì) | LỜI NÓI (đọc) |
 |---|---|---|
-| 0:00 | Slide | "Nghị định 168/2025 có hiệu lực 01/07/2026. Trong 2 tuần đầu, 47 lần tin đồn 'uống 1 lon bia bị tước bằng vĩnh viễn' đã lan trên mạng — không cơ quan nào chỉnh chính thức. Chúng tôi phát hiện được vì nối hai luồng dữ liệu vào một graph." |
-| 0:30 | Neo4j Browser | "Đây là graph THẬT, không phải vector store. Điều — Khoản — Điểm là node, `SUPERSEDED_BY` ở mức Điểm là cạnh — cho phép trả lời 'luật nói gì tại ngày 1/7' và 'điều này đổi thế nào'." Chỉ vào 1 cạnh cụ thể. |
-| 1:30 | Dashboard tab **Cảnh báo hiệu nhầm** | "Đây là 3 hiểu nhầm đang lan. Cái đầu 47 lần lặp, 12k tương tác, cấp HIGH. Click vào." |
-| 2:00 | Card mở ra | Đọc câu định chính từ hệ thống. "Không phải bịa — người dân đang nhớ khung phạt cũ. Cả 2 văn bản đều có 30–40 triệu, nhưng chỉ văn bản cũ *có thể diễn giải* thành vĩnh viễn." |
-| 2:45 | Tab **Văn bản cũ vs mới** | Side-by-side `nd100-d5-k10-a` ↔ `nd168-d5-k9-a`. "SUPERSEDED_BY ở mức Điểm, có `change_type`, có ngày hiệu lực. Vector RAG không làm được." |
-| 3:30 | Tab **Hỏi — Đáp** | Nhập: "Uống 1 lon bia thì bị phạt bao nhiêu từ 1/7/2026?" — chọn ngày 2026-07-01. |
-| 3:50 | Kết quả | "Trả lời kèm citation Điều — Khoản — Điểm. Mỗi `node_id` được API validate lại với graph — LLM bịa là bị lọc luôn." |
-| 4:15 | Câu hỏi lạc đề | Nhập "Tôi nên đầu tư cổ phiếu nào?" — hệ thống trả `refused` **"không đủ căn cứ"**. "Không đoán bừa. Đây là nguyên tắc cứng." |
-| 4:35 | Slide eval | "48 claim gắn nhãn tay. Metric chính — PHÁT HIỆN TIN SAI: **86,8%** (recall 0,86), trích đúng điều luật **76,2%**. Verdict 4-nhãn ~60% vì ranh giới đúng/sai-một-phần mơ hồ — ta nói thẳng. Số ở `eval/run_eval.py`, không nói suông." |
+| **0:00–0:18** | Màn hình đang ở tab **Cảnh báo hiểu nhầm** (danh sách cảnh báo). | "Từ 1/7/2026, luật thuế hộ kinh doanh thay đổi lớn. Trong giai đoạn giao thời, người dân hiểu sai và tin đồn lan nhanh trên mạng xã hội. LAWGIC nối **luật** với **dư luận** trên một đồ thị tri thức để phát hiện và định chính." |
+| **0:18–0:55** | **Nhấn** cảnh báo mức **HIGH** đầu tiên *("Thu nhập 120 triệu/năm không phải nộp thuế")*. Chỉ vào khối đỏ↔xanh. | "Hệ thống tự phát hiện hiểu nhầm này — 23 lần lặp, hơn 2.000 tương tác. Bên trái là điều dân đang tin **SAI**; bên phải là **ĐÚNG theo luật**, kèm trích dẫn Điều 7." |
+| **0:55–1:15** | Cuộn xuống mục **"Điều luật bị vi phạm"** rồi **"Bằng chứng lan truyền"**. | "Không phải nói suông: đây là các điều luật bị vi phạm — có trích dẫn đầy đủ — và các bài đăng thật làm bằng chứng. Mỗi cảnh báo đều **truy được về luật gốc**." |
+| **1:15–1:25** | Chuyển sang tab **Hỏi – Đáp**. | "Đây là phần lõi và là **khác biệt lớn nhất** của chúng tôi." |
+| **1:25–1:55** | Gõ (hoặc dán) câu **A**: *"Hội đồng tư vấn thuế xã phường còn hoạt động từ 1/7/2026 không?"* → **Hỏi**. Đợi ra kết quả. | "Hỏi: hội đồng tư vấn thuế xã phường còn hoạt động từ 1/7/2026 không? Trả lời: **KHÔNG — không còn kể từ 1/7/2026**, và trích chính Điều 28 Luật cũ 2019, dán nhãn **đã hết hiệu lực**." |
+| **1:55–2:25** | Sửa trong câu hỏi **1/7/2026 → 1/6/2026** (câu **B**) → **Hỏi** lại. | "Giờ tôi đổi đúng **một con số** — hỏi tính đến **1/6/2026**. Cùng câu hỏi, hệ thống trả lời **CÓ — vẫn còn hoạt động**, vì lúc đó luật cũ chưa hết hiệu lực. **RAG vector không làm được điều này** — nó chỉ so độ giống chữ, không hiểu hiệu lực theo thời gian." |
+| **2:25–2:45** | **Nhấn một node** trong đồ thị quan hệ điều luật bên phải → hiện nội dung; nhấn **"Mở rộng"**. | "Mỗi trích dẫn nằm trong **đồ thị Điều–Khoản–Điểm**. Nhấn vào là đọc luật gốc, mở rộng để xem quan hệ — đây là graph thật, không phải kho vector." |
+| **2:45–3:05** | Nhấn chip **"câu hỏi không liên quan"** (đầu tư tiền ảo) → **Hỏi**. | "Và khi ngoài phạm vi — ví dụ đầu tư tiền ảo — hệ thống **TỪ CHỐI**: 'không đủ căn cứ'. Trong pháp lý, **thà từ chối còn hơn bịa**. Mọi trích dẫn đều được đối chiếu với node có thật, ID bịa bị loại." |
+| **3:05–3:30** | Sang **tab 2 (Neo4j Browser)** đã dán sẵn Cypher → **Enter**. Graph nhỏ cũ→mới hiện ra. | "Đây là cơ chế đứng sau: cạnh **SUPERSEDED_BY** nối điều luật **cũ 2019 → mới 2025**. Chính cạnh này cho phép 'du hành thời gian' vừa rồi. Đây là lý do bài toán **cần cơ sở dữ liệu đồ thị**." |
+| **3:30–3:55** | Quay lại tab web → tab **Tra cứu** → gõ *"hóa đơn điện tử"* → **Tìm** → nhấn 1 kết quả (bung nguyên Điều) → tick **"Chỉ luật đang hiệu lực"**. | "Cuối cùng, cho dân chuyên môn: tra cứu và **đọc nguyên Điều luật gốc** theo đúng thời điểm hiệu lực, không qua AI. LAWGIC — trợ lý pháp lý **đúng thời điểm, có căn cứ, không bịa**. Xin cảm ơn." |
 
-## Câu BGK sẽ hỏi — chuẩn bị trước
+---
 
-1. **"Sao không dùng RAG vector cho nhanh?"**
-   → Vector không trả lời được "luật nói gì ngày 1/7" và "điều này đổi thế nào".
-   `SUPERSEDED_BY` ở mức Điểm làm được. Mở Neo4j Browser cho xem.
-2. **"Làm sao biết phân loại đúng/sai chính xác?"**
-   → Mở `eval/`. **Phát hiện tin sai 86,8%** (recall 0,86), citation 76,2% trên gold
-   48 claim. Verdict 4-nhãn ~60% — nói thẳng là bị chặn bởi ranh giới ACCURATE↔PARTIAL
-   mơ hồ (người gán nhãn cũng cãi), không giấu. (KHÔNG có số này = mất điểm nặng)
-3. **"LLM bịa điều luật thì sao?"**
-   → Mỗi câu trả lời trích `node_id` có thật trong graph — API validate ở
-   `backend/api/qa_endpoint.py::_llm_answer`, citation không khớp bị lọc. Không
-   tìm thấy → từ chối trả lời (`mode = refused`). Demo bằng câu hỏi lạc đề.
-4. **"Dữ liệu comment lấy thế nào, có vi phạm gì không?"**
-   → Chỉ nội dung công khai trên báo điện tử, hash tác giả (`author_hash`),
-   không lưu danh tính. Xem `backend/models/schemas.py::Post`.
-5. **"Nếu Anthropic API sập giữa demo?"**
-   → API tự fallback sang `mode = template`: trả nguyên văn điều luật khớp
-   keyword + citation vẫn thật. Dashboard không vỡ.
+## 3. PHÒNG HỜ & Q&A (2 phút hỏi đáp sau pitch)
 
-## Checklist trước demo
+**Nếu bị hỏi "khác gì ChatGPT/RAG?"**
+→ "RAG vector trả điều luật giống nhất về chữ — thường là luật đã hết hiệu lực. Chúng tôi có **hiệu lực ở mức node + cạnh SUPERSEDED_BY**, nên trả đúng luật theo **thời điểm**. Vừa rồi cô/chú thấy: cùng câu hỏi, đổi ngày → đổi đáp án."
 
-- [ ] `docker compose up` xanh cả `neo4j` và `api`
-- [ ] `curl :8000/health` → `graph_source: neo4j`
-- [ ] `curl :8000/trends | jq length` ≥ 1 (data thuế: 1 trend "120tr phải nộp thuế"
-      với `--as-of 2025-11-20 --window 48 --min-occ 3`; regen bằng `run_pipeline.py`)
-- [ ] Ask thử 2 câu mẫu + 1 câu lạc đề, đều có kết quả đúng mode
-- [ ] `USE_EMBEDDINGS=0 python eval/run_eval.py` in số (TF-IDF ổn định, tránh timeout
-      524 FPT) — chạy ≥2 lần vì dao động ±8đ, chụp màn hình số đại diện cho slide
-- [ ] Neo4j Browser đã save query `SUPERSEDED_BY` — bấm 1 phát là ra hình
-- [ ] Người demo ngủ ≥ 4 tiếng trước giờ trình bày
+**Nếu bị hỏi "độ chính xác / có bịa không?"**
+→ "Mỗi câu trả lời kèm trích dẫn được **validate với node thật**; không đủ căn cứ thì **từ chối**. Chúng tôi đo bằng **gold gán tay** và có cả bảng exact-match lẫn semantic, tự nêu hạn chế."
+
+**Nếu bị hỏi "kinh doanh thế nào?"**
+→ "B2B cho **công ty dịch vụ kế toán / đại lý thuế** phục vụ hộ kinh doanh — giảm giờ tra cứu, giảm rủi ro trích nhầm luật cũ. Lộ trình pilot 3 giai đoạn: design-partner → trả phí → mở rộng." (xem `docs/PILOT_ROADMAP.md`)
+
+**Nếu một câu hỏi lỡ trả sai/lag khi quay:** đừng sửa live — **quay lại beat đó**. Ưu tiên giữ **beat time-travel (1:25–2:25)** và **beat cảnh báo (0:18–1:15)** thật mượt; đó là toàn bộ khác biệt.
+
+**Nếu hết giờ:** cắt beat Tra cứu (3:30) trước, rồi beat Neo4j Browser. **Không bao giờ cắt** time-travel.

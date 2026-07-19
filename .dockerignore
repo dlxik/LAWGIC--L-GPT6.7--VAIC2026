@@ -1,0 +1,22 @@
+# Giu image gon — loai code moi truong, secret, va artifact dev khong can luc chay.
+.git
+.gitignore
+.venv
+venv
+**/__pycache__
+*.pyc
+.pytest_cache
+
+# Secret: KHONG dong .env vao image — set env tren Render dashboard
+.env
+
+# Artifact dev khong can o runtime (extractor da nap vao Neo4j roi)
+data/processed/_backup_20b
+data/processed/_backup_llama70b
+data/processed/_voting_inputs
+eval/results
+docs/images
+
+# Rac he thong
+.~lock*
+**/.DS_Store

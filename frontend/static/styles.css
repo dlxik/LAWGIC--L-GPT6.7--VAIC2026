@@ -1437,3 +1437,73 @@ mark { background: #fff2a8; color: inherit; border-radius: 2px; padding: 0 1px; 
   .mc-contrast { grid-template-columns: 1fr; }
   .mc-arrow { transform: rotate(90deg); justify-self: center; }
 }
+
+/* ============ Brand polish: logo that + title noi bat hon ============ */
+:root {
+  --brand-red:  #b01e28;
+  --brand-navy: #1a2b57;
+  --brand-grad: linear-gradient(135deg, #b01e28 0%, #7a1622 45%, #1a2b57 100%);
+}
+
+/* Logo tron o sidebar */
+.brand-logo {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 10px rgba(26,43,87,0.22), 0 0 0 1px var(--border);
+  flex: 0 0 auto;
+}
+
+/* Wordmark LAWGIC: to, day, gradient thuong hieu */
+.sidebar-brand { padding-bottom: 22px; }
+.sidebar-brand h1 {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  background: var(--brand-grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.sidebar-brand p {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--brand-navy);
+  opacity: 0.72;
+}
+
+/* Tieu de trang: to & dam hon han + gach nhan gradient */
+.page-header h2 {
+  font-size: 31px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+.page-header h2::after {
+  content: "";
+  display: block;
+  width: 54px; height: 4px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: var(--brand-grad);
+}
+.page-header p { font-size: 14px; }
+
+/* Section heading dam hon, mau navy thuong hieu */
+.section-heading h3 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--brand-navy);
+}
+
+/* Logo trong modal dang nhap: to, canh giua */
+.brand-logo.modal-brand {
+  width: 66px; height: 66px;
+  margin: 0 auto 8px;
+  display: block;
+}

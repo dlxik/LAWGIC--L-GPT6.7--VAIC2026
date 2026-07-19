@@ -5,15 +5,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LAWGIC — Legal Analytics With Graph-Integrated Cognition</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-mark" aria-hidden="true">L</div>
+      <img src="logo.png" alt="LAWGIC" class="brand-logo">
       <div>
         <h1>LAWGIC</h1>
-        <p>Legal analytics</p>
+        <p>Luật gặp dư luận</p>
       </div>
     </div>
 
@@ -58,7 +60,7 @@
       <div class="page-header">
         <div>
           <h2>Cảnh báo hiểu nhầm</h2>
-          <p>Hiểu nhầm đang lan truyền trong dữ liệu công khai. Bấm vào một cảnh báo để xem điều luật bị hiểu sai và định chính.</p>
+          <p>Tin đồn về luật lan nhanh hơn cả đính chính. Đây là những hiểu nhầm đang nóng nhất — kèm mức lan truyền, điều luật bị hiểu sai, và định chính lấy thẳng từ văn bản gốc. Bấm một cảnh báo để soi tận nơi.</p>
         </div>
         <button id="refresh-trends" class="ghost">Làm mới</button>
       </div>
@@ -77,7 +79,7 @@
       <div class="page-header">
         <div>
           <h2>Hỏi — Đáp có trích dẫn</h2>
-          <p>Mọi câu trả lời đều kèm citation Điều — Khoản — Điểm. Không tìm được căn cứ trong graph thì hệ thống từ chối trả lời, không đoán.</p>
+          <p>Hỏi thẳng bằng tiếng Việt, đáp có căn cứ. Mỗi câu trả lời trỏ đúng Điều — Khoản — Điểm; không có trong luật thì thẳng thắn nói "không đủ căn cứ" — tuyệt đối không bịa.</p>
         </div>
       </div>
 
@@ -120,7 +122,7 @@
       <div class="page-header">
         <div>
           <h2>Tra cứu văn bản</h2>
-          <p>Tìm Điều — Khoản — Điểm theo từ khóa. Không gọi LLM: kết quả trực tiếp từ full-text index trên graph.</p>
+          <p>Gõ từ khóa, ra ngay Điều — Khoản — Điểm — kèm trạng thái còn hay hết hiệu lực. Lấy thẳng từ đồ thị, không qua LLM: nhanh, chính xác, không đoán.</p>
         </div>
       </div>
 
@@ -150,9 +152,9 @@
       <div class="modal-close-x" data-close="1" aria-label="Đóng">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </div>
-      <div class="brand-mark modal-brand" aria-hidden="true">L</div>
+      <img src="logo.png" alt="" class="brand-logo modal-brand">
       <h3 id="signin-title">Đăng nhập LAWGIC</h3>
-      <p class="modal-sub">Đăng nhập để dùng đầy đủ tính năng: hỏi đáp không giới hạn, lọc theo ngày hiệu lực, và post minh họa của cảnh báo.</p>
+      <p class="modal-sub">Mở khóa toàn bộ sức mạnh: hỏi đáp không giới hạn, xem luật tại bất kỳ mốc thời gian nào, và đọc chính những bình luận đứng sau mỗi cảnh báo.</p>
       <form id="signin-form" class="signin-form">
         <label>Email
           <input type="email" required id="signin-email" placeholder="ban@vidu.vn" autocomplete="email">
